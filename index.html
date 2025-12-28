@@ -4,33 +4,255 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EU97</title>
-    <h1>EU97 site!</h1>
+    <meta name="description" content="EU97 - Developer Portfolio. Explore my projects, skills, and get in touch.">
+    <meta name="keywords" content="EU97, portfolio, developer, web development, programming">
+    <meta name="author" content="EU97">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicon/site.webmanifest">
+    
+    <title>EU97 - Developer Portfolio</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
-<p>First deploy.</p>
-<p>It would be use for development and practice programation methodology.</p>
-<p>Personal portafolio of EU97</p>
-<img src="images/HeadDog.svg" alt="Working..." height="500" width="500" />
-<img></img>
-<h2>Actual deploy</h2>
-<p>CM test<br>
-Internal deploy: <br>
-<a href="CMindex.html">CM</a></p>
-    <br><br>
-    <br><br>
- Social Media:
- <a href="https://www.facebook.com/EUR97">Facebook</a>
- <p>VS web Test</p>
- if you find this page go to fb and like me, i have a surprise for you :D
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">EU97</a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-15/08/23
-IDX
-<p>This is a test</p>
-<p>This is a test</p>
-    <meta charset="UTF-8">
-    <script src="/src.0494e0dd.js"></script>
-    <link rel="stylesheet" href="/src.9bb44a3b.css">
-<p>This is a test 3</p>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="section-container">
+            <div class="hero-content">
+                <h1>EU97</h1>
+                <p class="hero-subtitle">Developer | Creator | Problem Solver</p>
+                <p class="hero-subtitle">Building amazing experiences for development and practice programming methodology</p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="section-container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p>Welcome to my portfolio! I'm EU97, a passionate developer focused on creating innovative solutions and exploring new technologies.</p>
+                    <p>This site serves as a platform for development and practice of programming methodologies. Here you'll find a collection of my projects, experiments, and creative works.</p>
+                    <p>I'm constantly learning and expanding my skills across various technologies including React, MongoDB, and backend development.</p>
+                    <div style="margin-top: 2rem;">
+                        <a href="#projects" class="btn btn-primary">Explore My Work</a>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="/images/HeadDog.svg" alt="EU97 Avatar" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Projects</h2>
+                <p>A collection of my work showcasing various technologies and creative solutions</p>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Flight Instruments Project -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="4"/>
+                            <circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="2"/>
+                            <line x1="100" y1="40" x2="100" y2="60" stroke="white" stroke-width="3"/>
+                            <line x1="100" y1="140" x2="100" y2="160" stroke="white" stroke-width="3"/>
+                            <line x1="40" y1="100" x2="60" y2="100" stroke="white" stroke-width="3"/>
+                            <line x1="140" y1="100" x2="160" y2="100" stroke="white" stroke-width="3"/>
+                            <circle cx="100" cy="100" r="5" fill="white"/>
+                            <line x1="100" y1="100" x2="100" y2="60" stroke="white" stroke-width="4"/>
+                            <line x1="100" y1="100" x2="130" y2="120" stroke="white" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Flight Instruments</h3>
+                        <p class="project-description">
+                            Interactive flight instruments built with Snap SVG and JavaScript. Features fully functional analog instruments with demo mode and interactive controls.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">SVG</span>
+                            <span class="tag">Animation</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="/projects/flight-instruments.html" class="project-link">View Demo</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ciencia Magica Project -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="/images/LOGO CMWorking.svg" alt="Ciencia Magica Logo" />
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Ciencia Magica</h3>
+                        <p class="project-description">
+                            A creative project exploring the intersection of science and magic. This platform demonstrates innovative approaches to educational content.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">Design</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="/CMindex.html" class="project-link">View Project</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Project Placeholder -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="50" y="50" width="100" height="100" fill="none" stroke="white" stroke-width="3" rx="10"/>
+                            <line x1="100" y1="80" x2="100" y2="120" stroke="white" stroke-width="4"/>
+                            <line x1="80" y1="100" x2="120" y2="100" stroke="white" stroke-width="4"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Coming Soon</h3>
+                        <p class="project-description">
+                            More exciting projects are in development. Stay tuned for updates on new technologies and creative solutions.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">MongoDB</span>
+                            <span class="tag">Backend</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#contact" class="project-link">Get Updates</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Skills & Technologies</h2>
+                <p>Technologies and tools I work with</p>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>🎨 Frontend</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item">HTML5 & CSS3</li>
+                        <li class="skill-item">JavaScript (ES6+)</li>
+                        <li class="skill-item">React</li>
+                        <li class="skill-item">Responsive Design</li>
+                        <li class="skill-item">SVG & Animations</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>⚙️ Backend</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item">Node.js</li>
+                        <li class="skill-item">MongoDB</li>
+                        <li class="skill-item">RESTful APIs</li>
+                        <li class="skill-item">Database Design</li>
+                        <li class="skill-item">Server Architecture</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>🛠️ Tools & Methods</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item">Git & GitHub</li>
+                        <li class="skill-item">Visual Studio Code</li>
+                        <li class="skill-item">Agile Development</li>
+                        <li class="skill-item">Problem Solving</li>
+                        <li class="skill-item">Continuous Learning</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>🚀 Currently Learning</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item">Advanced React Patterns</li>
+                        <li class="skill-item">TypeScript</li>
+                        <li class="skill-item">Cloud Services</li>
+                        <li class="skill-item">Testing Frameworks</li>
+                        <li class="skill-item">Performance Optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section-container">
+            <div class="contact-content">
+                <h2>Get In Touch</h2>
+                <p>I'm always open to new opportunities, collaborations, and interesting conversations. Feel free to reach out!</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/EUR97" target="_blank" rel="noopener noreferrer" class="social-link" title="Facebook">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/EU97" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p style="margin-top: 2rem; font-style: italic; color: var(--primary-color);">
+                    If you find this page, go to Facebook and like me - I have a surprise for you! 😊
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <p>&copy; 2023-2024 EU97. Built with passion for development and learning.</p>
+            <p>Personal portfolio for development and practice programming methodology</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/scripts/main.js"></script>
 </body>
 </html>

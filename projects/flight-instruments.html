@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Instruments Demo - EU97</title>
+    <link rel="stylesheet" href="/src.9bb44a3b.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-panel h2 {
+            color: #2563eb;
+            margin-top: 0;
+        }
+
+        .info-panel p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .instruments-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .demo-note {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            color: #1e40af;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .info-panel,
+            .instruments-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-link">
+                <span>←</span>
+                <span>Back to Portfolio</span>
+            </a>
+            <h1>Flight Instruments Demo</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="info-panel">
+            <h2>Interactive Flight Instruments</h2>
+            <p>
+                Fully functional flight instruments built entirely with Snap SVG and JavaScript. 
+                By default, the instruments all go into demo mode with random changes to their properties.
+            </p>
+            <div class="demo-note">
+                <strong>Demo Mode Active:</strong> The instruments are automatically animating with random values.
+                Buttons are functional - try clicking the HDG button on the directional gyro.
+                Rotate with the mouse (when not in demo mode) to change values.
+            </div>
+            <p>
+                <strong>Features:</strong>
+            </p>
+            <ul style="color: #6b7280;">
+                <li>Airspeed Indicator</li>
+                <li>Attitude Indicator (Artificial Horizon)</li>
+                <li>Altimeter</li>
+                <li>Turn Coordinator</li>
+                <li>Heading Indicator (Directional Gyro)</li>
+                <li>Vertical Speed Indicator</li>
+                <li>Tachometer (RPM)</li>
+            </ul>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #9ca3af;">
+                These instruments are free and open source for anyone to use without remuneration, attribution or compensation.
+            </p>
+        </div>
+
+        <div class="instruments-container">
+            <!-- Flight instruments will be rendered here by the JavaScript -->
+        </div>
+    </div>
+
+    <script src="/src.0494e0dd.js"></script>
+</body>
+</html>
