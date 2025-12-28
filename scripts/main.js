@@ -38,13 +38,28 @@
   }
 
   // ============================================
+  // Performance Optimization: Debounce Function
+  // ============================================
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // ============================================
   // Navbar Scroll Effect
   // ============================================
   let lastScrollTop = 0;
   const navbar = document.getElementById('navbar');
   const scrollThreshold = 100;
 
-  window.addEventListener('scroll', function() {
+  function handleNavbarScroll() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
     // Hide navbar on scroll down, show on scroll up
@@ -55,7 +70,7 @@
     }
     
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  }, false);
+  }
 
   // ============================================
   // Smooth Scroll for Navigation Links
@@ -105,8 +120,6 @@
     });
   }
 
-  window.addEventListener('scroll', highlightNavigation);
-
   // ============================================
   // Intersection Observer for Fade-in Animations
   // ============================================
@@ -144,19 +157,28 @@
   }
 
   // ============================================
-  // Parallax Effect for Hero Section
+  // Parallax Effect for Hero Section (Optimized with RAF)
   // ============================================
   const hero = document.querySelector('.hero');
+  let ticking = false;
   
   if (hero) {
-    window.addEventListener('scroll', function() {
+    function updateParallax() {
       const scrolled = window.pageYOffset;
       const parallaxSpeed = 0.5;
       
       if (scrolled < hero.offsetHeight) {
         hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
       }
-    });
+      ticking = false;
+    }
+
+    function requestParallaxUpdate() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }
   }
 
   // ============================================
@@ -213,7 +235,7 @@
     
     document.body.appendChild(button);
     
-    window.addEventListener('scroll', function() {
+    function updateScrollButton() {
       if (window.pageYOffset > 500) {
         button.style.opacity = '1';
         button.style.visibility = 'visible';
@@ -221,7 +243,7 @@
         button.style.opacity = '0';
         button.style.visibility = 'hidden';
       }
-    });
+    }
     
     button.addEventListener('click', function() {
       window.scrollTo({
@@ -237,29 +259,35 @@
     button.addEventListener('mouseleave', function() {
       this.style.transform = 'scale(1)';
     });
+
+    return updateScrollButton;
   }
 
   // Initialize scroll to top button
-  createScrollToTopButton();
+  const updateScrollButton = createScrollToTopButton();
 
   // ============================================
-  // Performance Optimization: Debounce Scroll Events
+  // Consolidated Scroll Handler (Performance Optimized)
   // ============================================
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
+  function handleScroll() {
+    handleNavbarScroll();
+    highlightNavigation();
+    updateScrollButton();
+    if (hero) {
+      requestParallaxUpdate();
+    }
   }
 
-  // Apply debounce to scroll handlers if needed
-  // const debouncedHighlight = debounce(highlightNavigation, 100);
-  // window.addEventListener('scroll', debouncedHighlight);
+  // Use throttled scroll for better performance
+  let scrollTimeout;
+  window.addEventListener('scroll', function() {
+    if (!scrollTimeout) {
+      scrollTimeout = setTimeout(function() {
+        handleScroll();
+        scrollTimeout = null;
+      }, 10); // Throttle to ~100fps
+    }
+  }, { passive: true });
 
   // ============================================
   // Console Welcome Message
