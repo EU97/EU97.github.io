@@ -161,6 +161,7 @@
   // ============================================
   const hero = document.querySelector('.hero');
   let ticking = false;
+  let requestParallaxUpdate;
   
   if (hero) {
     function updateParallax() {
@@ -173,20 +174,20 @@
       ticking = false;
     }
 
-    function requestParallaxUpdate() {
+    requestParallaxUpdate = function() {
       if (!ticking) {
         window.requestAnimationFrame(updateParallax);
         ticking = true;
       }
-    }
+    };
   }
 
   // ============================================
   // Project Card Tilt Effect (Optional Enhancement)
   // ============================================
-  const projectCards = document.querySelectorAll('.project-card');
+  const tiltCards = document.querySelectorAll('.project-card');
   
-  projectCards.forEach(card => {
+  tiltCards.forEach(card => {
     card.addEventListener('mousemove', function(e) {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -296,7 +297,141 @@
   console.log('%cInterested in the code? Check out the repo!', 'color: #6b7280; font-size: 14px;');
 
   // ============================================
+  // Project Tabs Filtering
+  // ============================================
+  const projectTabs = document.querySelectorAll('.tab-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  if (projectTabs.length > 0 && projectCards.length > 0) {
+    projectTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        projectTabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        const category = this.getAttribute('data-category');
+        
+        // Filter projects
+        projectCards.forEach(card => {
+          const cardCategories = card.getAttribute('data-category').split(' ');
+          
+          if (category === 'all') {
+            card.style.display = '';
+            card.classList.remove('hidden');
+          } else if (cardCategories.includes(category)) {
+            card.style.display = '';
+            card.classList.remove('hidden');
+          } else {
+            card.style.display = 'none';
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+  }
+
+  // ============================================
+  // Expandable Tool Categories
+  // ============================================
+  const toolCategories = document.querySelectorAll('.tool-category');
+  
+  if (toolCategories.length > 0) {
+    // Expand the first category by default
+    if (toolCategories[0]) {
+      toolCategories[0].classList.add('expanded');
+    }
+
+    toolCategories.forEach(category => {
+      const header = category.querySelector('.category-header');
+      
+      if (header) {
+        header.addEventListener('click', function() {
+          const isExpanded = category.classList.contains('expanded');
+          
+          // Toggle current category
+          if (isExpanded) {
+            category.classList.remove('expanded');
+          } else {
+            category.classList.add('expanded');
+          }
+        });
+      }
+    });
+  }
+
+  // ============================================
+  // Counter Animation for Hero Stats
+  // ============================================
+  function animateCounter(element, target, duration = 2000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target + '+';
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current);
+      }
+    }, 16);
+  }
+
+  // Observe hero stats for animation
+  const statNumbers = document.querySelectorAll('.stat-number');
+  
+  if (statNumbers.length > 0) {
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.getAttribute('data-target'));
+          animateCounter(entry.target, target);
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(stat => statsObserver.observe(stat));
+  }
+
+  // ============================================
+  // Enhanced Scroll Reveal Animations
+  // ============================================
+  const revealElements = document.querySelectorAll('.detail-item, .tool-item, .contact-item');
+  
+  if (revealElements.length > 0) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }, index * 100);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      revealObserver.observe(el);
+    });
+  }
+
+  // ============================================
+  // Smooth Scroll Enhancement
+  // ============================================
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  // ============================================
   // Initialize
   // ============================================
   console.log('Portfolio initialized successfully!');
+  console.log('✨ Enhanced features loaded: Project filtering, expandable tools, animated counters');
 })();
