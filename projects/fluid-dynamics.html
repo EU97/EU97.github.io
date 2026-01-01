@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid Dynamics Simulator - EU97</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #00d4ff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-panel h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .info-panel p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .control-group input[type="range"] {
+            width: 150px;
+        }
+
+        .control-group input[type="number"] {
+            width: 80px;
+            padding: 0.3rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 0.3rem;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #00d4ff, #7b68ee);
+            border: none;
+            border-radius: 0.5rem;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .canvas-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1rem;
+            overflow: hidden;
+        }
+
+        #fluidCanvas {
+            width: 100%;
+            height: 600px;
+            display: block;
+            border-radius: 0.5rem;
+            background: #000;
+            cursor: crosshair;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .stat-label {
+            color: #00d4ff;
+            font-size: 0.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .controls-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group input[type="range"] {
+                width: 100%;
+            }
+
+            #fluidCanvas {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-link">
+                <span>←</span>
+                <span>Back to Portfolio</span>
+            </a>
+            <h1>Fluid Dynamics Simulator</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="info-panel">
+            <h2>🌊 Computational Fluid Dynamics Simulation</h2>
+            <p>
+                Interactive fluid dynamics simulation demonstrating fluid flow patterns, particle movement, 
+                and turbulence effects. Click and drag on the canvas to create flow disturbances and observe 
+                how particles react to the fluid dynamics.
+            </p>
+            <p>
+                <strong>Features:</strong> Real-time particle system, velocity field visualization, 
+                interactive flow control, and customizable simulation parameters.
+            </p>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-group">
+                <label for="particleCount">Particles: <span id="particleCountValue">1000</span></label>
+                <input type="range" id="particleCount" min="100" max="3000" value="1000" step="100">
+            </div>
+
+            <div class="control-group">
+                <label for="flowSpeed">Flow Speed: <span id="flowSpeedValue">1.0</span></label>
+                <input type="range" id="flowSpeed" min="0.1" max="3.0" value="1.0" step="0.1">
+            </div>
+
+            <div class="control-group">
+                <label for="viscosity">Viscosity: <span id="viscosityValue">0.5</span></label>
+                <input type="range" id="viscosity" min="0.1" max="2.0" value="0.5" step="0.1">
+            </div>
+
+            <button class="btn" id="resetBtn">Reset Simulation</button>
+            <button class="btn" id="toggleFlowBtn">Toggle Flow</button>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="fluidCanvas"></canvas>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Active Particles</div>
+                <div class="stat-value" id="activeParticles">1000</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Average Velocity</div>
+                <div class="stat-value" id="avgVelocity">0.0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">FPS</div>
+                <div class="stat-value" id="fps">60</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fluid Dynamics Simulation
+        class Particle {
+            constructor(x, y, vx, vy) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx || 0;
+                this.vy = vy || 0;
+                this.life = 1.0;
+                this.size = Math.random() * 2 + 1;
+                this.hue = Math.random() * 60 + 180; // Blue to cyan range
+            }
+
+            update(dt, flowSpeed, viscosity, width, height) {
+                // Apply flow forces
+                this.vx += (Math.sin(this.y * 0.01 + Date.now() * 0.001) * flowSpeed * 0.1);
+                this.vy += (Math.cos(this.x * 0.01 + Date.now() * 0.001) * flowSpeed * 0.1);
+
+                // Apply viscosity (damping)
+                this.vx *= (1 - viscosity * 0.01);
+                this.vy *= (1 - viscosity * 0.01);
+
+                // Update position
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+
+                // Wrap around edges
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+
+                // Update life
+                this.life -= 0.001;
+                if (this.life <= 0) this.life = 1.0;
+            }
+
+            draw(ctx) {
+                const alpha = this.life * 0.6;
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                const brightness = Math.min(100, 50 + speed * 10);
+                
+                ctx.fillStyle = `hsla(${this.hue}, 100%, ${brightness}%, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw motion trail
+                if (speed > 0.5) {
+                    ctx.strokeStyle = `hsla(${this.hue}, 100%, ${brightness}%, ${alpha * 0.3})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x - this.vx * 2, this.y - this.vy * 2);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        class FluidSimulation {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.particles = [];
+                this.flowSpeed = 1.0;
+                this.viscosity = 0.5;
+                this.particleCount = 1000;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.mouseDown = false;
+                this.flowEnabled = true;
+                this.lastTime = Date.now();
+                this.fps = 60;
+                this.frameCount = 0;
+                this.lastFpsUpdate = Date.now();
+
+                this.resize();
+                this.init();
+                this.setupEventListeners();
+                this.animate();
+            }
+
+            resize() {
+                const rect = this.canvas.getBoundingClientRect();
+                this.canvas.width = rect.width;
+                this.canvas.height = rect.height;
+            }
+
+            init() {
+                this.particles = [];
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push(new Particle(
+                        Math.random() * this.canvas.width,
+                        Math.random() * this.canvas.height,
+                        (Math.random() - 0.5) * 2,
+                        (Math.random() - 0.5) * 2
+                    ));
+                }
+            }
+
+            setupEventListeners() {
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.mouseX = e.clientX - rect.left;
+                    this.mouseY = e.clientY - rect.top;
+
+                    if (this.mouseDown) {
+                        this.applyForce(this.mouseX, this.mouseY, 50, 5);
+                    }
+                });
+
+                this.canvas.addEventListener('mousedown', () => {
+                    this.mouseDown = true;
+                });
+
+                this.canvas.addEventListener('mouseup', () => {
+                    this.mouseDown = false;
+                });
+
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.mouseDown = false;
+                });
+
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            applyForce(x, y, radius, strength) {
+                this.particles.forEach(particle => {
+                    const dx = particle.x - x;
+                    const dy = particle.y - y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < radius && dist > 0) {
+                        const force = (1 - dist / radius) * strength;
+                        particle.vx += (dx / dist) * force;
+                        particle.vy += (dy / dist) * force;
+                    }
+                });
+            }
+
+            update() {
+                const now = Date.now();
+                const dt = (now - this.lastTime) / 16.67; // Normalize to 60fps
+                this.lastTime = now;
+
+                // Update FPS
+                this.frameCount++;
+                if (now - this.lastFpsUpdate > 1000) {
+                    this.fps = this.frameCount;
+                    this.frameCount = 0;
+                    this.lastFpsUpdate = now;
+                    document.getElementById('fps').textContent = this.fps;
+                }
+
+                // Update particles
+                let totalVelocity = 0;
+                this.particles.forEach(particle => {
+                    if (this.flowEnabled) {
+                        particle.update(dt, this.flowSpeed, this.viscosity, this.canvas.width, this.canvas.height);
+                    }
+                    totalVelocity += Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+                });
+
+                // Update stats
+                const avgVelocity = (totalVelocity / this.particles.length).toFixed(2);
+                document.getElementById('avgVelocity').textContent = avgVelocity;
+                document.getElementById('activeParticles').textContent = this.particles.length;
+            }
+
+            draw() {
+                // Fade effect for trails
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Draw particles
+                this.particles.forEach(particle => particle.draw(this.ctx));
+
+                // Draw mouse interaction indicator
+                if (this.mouseDown) {
+                    this.ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.arc(this.mouseX, this.mouseY, 50, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                }
+            }
+
+            animate() {
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            setParticleCount(count) {
+                this.particleCount = count;
+                this.init();
+            }
+
+            setFlowSpeed(speed) {
+                this.flowSpeed = speed;
+            }
+
+            setViscosity(viscosity) {
+                this.viscosity = viscosity;
+            }
+
+            toggleFlow() {
+                this.flowEnabled = !this.flowEnabled;
+            }
+
+            reset() {
+                this.init();
+            }
+        }
+
+        // Initialize simulation
+        const canvas = document.getElementById('fluidCanvas');
+        const simulation = new FluidSimulation(canvas);
+
+        // Setup controls
+        document.getElementById('particleCount').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('particleCountValue').textContent = value;
+            simulation.setParticleCount(value);
+        });
+
+        document.getElementById('flowSpeed').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            document.getElementById('flowSpeedValue').textContent = value.toFixed(1);
+            simulation.setFlowSpeed(value);
+        });
+
+        document.getElementById('viscosity').addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            document.getElementById('viscosityValue').textContent = value.toFixed(1);
+            simulation.setViscosity(value);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            simulation.reset();
+        });
+
+        document.getElementById('toggleFlowBtn').addEventListener('click', () => {
+            simulation.toggleFlow();
+        });
+    </script>
+</body>
+</html>
