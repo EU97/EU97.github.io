@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garmin G1000 System - EU97</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 0.8rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .g1000-frame {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 3px solid #333;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+
+        .displays-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .display-unit {
+            background: #000;
+            border: 4px solid #333;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .display-header {
+            background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #00ff00;
+            border-bottom: 2px solid #333;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            background: #000;
+        }
+
+        .controls-panel {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #333;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .control-section {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .control-section h3 {
+            color: #00ff00;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.3rem;
+        }
+
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .control-label {
+            color: #00ff00;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .control-value {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .g1000-button {
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, #333, #222);
+            border: 2px solid #555;
+            border-radius: 0.3rem;
+            color: #00ff00;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        .g1000-button:hover {
+            background: linear-gradient(135deg, #444, #333);
+            border-color: #00ff00;
+            transform: translateY(-2px);
+        }
+
+        .g1000-button:active {
+            transform: translateY(0);
+        }
+
+        .g1000-button.active {
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            color: #000;
+            border-color: #00ff00;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #00ff00;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #00ff00;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        @media (max-width: 1024px) {
+            .displays-container {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-link">
+                <span>←</span>
+                <span>BACK TO PORTFOLIO</span>
+            </a>
+            <h1>⚡ GARMIN G1000 INTEGRATED FLIGHT SYSTEM</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="g1000-frame">
+            <div class="displays-container">
+                <!-- Primary Flight Display (PFD) -->
+                <div class="display-unit">
+                    <div class="display-header">PRIMARY FLIGHT DISPLAY (PFD)</div>
+                    <canvas id="pfdCanvas" width="800" height="600"></canvas>
+                </div>
+
+                <!-- Multi-Function Display (MFD) -->
+                <div class="display-unit">
+                    <div class="display-header">MULTI-FUNCTION DISPLAY (MFD)</div>
+                    <canvas id="mfdCanvas" width="800" height="600"></canvas>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <!-- Flight Controls -->
+                <div class="control-section">
+                    <h3>Flight Parameters</h3>
+                    <div class="control-row">
+                        <span class="control-label">Airspeed</span>
+                        <span class="control-value" id="airspeedDisplay">0 KTS</span>
+                    </div>
+                    <input type="range" id="airspeedControl" min="0" max="300" value="0" step="5">
+                    
+                    <div class="control-row">
+                        <span class="control-label">Altitude</span>
+                        <span class="control-value" id="altitudeDisplay">0 FT</span>
+                    </div>
+                    <input type="range" id="altitudeControl" min="0" max="50000" value="0" step="100">
+                    
+                    <div class="control-row">
+                        <span class="control-label">Heading</span>
+                        <span class="control-value" id="headingDisplay">0°</span>
+                    </div>
+                    <input type="range" id="headingControl" min="0" max="360" value="0" step="1">
+                </div>
+
+                <!-- Attitude Controls -->
+                <div class="control-section">
+                    <h3>Attitude</h3>
+                    <div class="control-row">
+                        <span class="control-label">Pitch</span>
+                        <span class="control-value" id="pitchDisplay">0°</span>
+                    </div>
+                    <input type="range" id="pitchControl" min="-30" max="30" value="0" step="1">
+                    
+                    <div class="control-row">
+                        <span class="control-label">Roll</span>
+                        <span class="control-value" id="rollDisplay">0°</span>
+                    </div>
+                    <input type="range" id="rollControl" min="-45" max="45" value="0" step="1">
+                    
+                    <div class="control-row">
+                        <span class="control-label">V/S</span>
+                        <span class="control-value" id="vsDisplay">0 FPM</span>
+                    </div>
+                    <input type="range" id="vsControl" min="-2000" max="2000" value="0" step="50">
+                </div>
+
+                <!-- Autopilot -->
+                <div class="control-section">
+                    <h3>Autopilot</h3>
+                    <div class="button-group">
+                        <button class="g1000-button" id="apBtn">AP</button>
+                        <button class="g1000-button" id="hdgBtn">HDG</button>
+                        <button class="g1000-button" id="navBtn">NAV</button>
+                        <button class="g1000-button" id="aprBtn">APR</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="g1000-button" id="altBtn">ALT</button>
+                        <button class="g1000-button" id="vsBtn">VS</button>
+                        <button class="g1000-button" id="flcBtn">FLC</button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="control-section">
+                    <h3>Navigation</h3>
+                    <div class="button-group">
+                        <button class="g1000-button" id="directBtn">DIRECT</button>
+                        <button class="g1000-button" id="fplBtn">FPL</button>
+                        <button class="g1000-button" id="procBtn">PROC</button>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-label">Course</span>
+                        <span class="control-value" id="courseDisplay">360°</span>
+                    </div>
+                    <input type="range" id="courseControl" min="0" max="360" value="360" step="1">
+                </div>
+
+                <!-- Systems -->
+                <div class="control-section">
+                    <h3>Systems</h3>
+                    <div class="button-group">
+                        <button class="g1000-button" id="engBtn">ENGINE</button>
+                        <button class="g1000-button" id="fuelBtn">FUEL</button>
+                        <button class="g1000-button" id="elecBtn">ELEC</button>
+                    </div>
+                    <div class="control-row">
+                        <span class="control-label">RPM</span>
+                        <span class="control-value" id="rpmDisplay">0</span>
+                    </div>
+                    <input type="range" id="rpmControl" min="0" max="3000" value="0" step="50">
+                </div>
+
+                <!-- Display Options -->
+                <div class="control-section">
+                    <h3>Display</h3>
+                    <div class="button-group">
+                        <button class="g1000-button active" id="mapBtn">MAP</button>
+                        <button class="g1000-button" id="trafficBtn">TRAFFIC</button>
+                        <button class="g1000-button" id="wxBtn">WEATHER</button>
+                    </div>
+                    <div class="button-group">
+                        <button class="g1000-button" id="terrainBtn">TERRAIN</button>
+                        <button class="g1000-button" id="nrst">NRST</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const ALTITUDE_SCALE_DIVISOR = 100; // Used to display altitude in hundreds of feet
+        
+        // G1000 System State
+        const state = {
+            airspeed: 0,
+            altitude: 0,
+            heading: 0,
+            pitch: 0,
+            roll: 0,
+            verticalSpeed: 0,
+            course: 360,
+            rpm: 0,
+            autopilot: {
+                enabled: false,
+                hdg: false,
+                nav: false,
+                apr: false,
+                alt: false,
+                vs: false,
+                flc: false
+            },
+            display: {
+                map: true,
+                traffic: false,
+                weather: false,
+                terrain: false
+            }
+        };
+
+        // Get canvas contexts
+        const pfdCanvas = document.getElementById('pfdCanvas');
+        const mfdCanvas = document.getElementById('mfdCanvas');
+        const pfdCtx = pfdCanvas.getContext('2d');
+        const mfdCtx = mfdCanvas.getContext('2d');
+
+        // Draw PFD (Primary Flight Display)
+        function drawPFD() {
+            pfdCtx.fillStyle = '#000';
+            pfdCtx.fillRect(0, 0, pfdCanvas.width, pfdCanvas.height);
+
+            const centerX = pfdCanvas.width / 2;
+            const centerY = pfdCanvas.height / 2;
+
+            // Draw artificial horizon
+            pfdCtx.save();
+            pfdCtx.translate(centerX, centerY);
+            pfdCtx.rotate(state.roll * Math.PI / 180);
+
+            // Sky
+            pfdCtx.fillStyle = '#0066cc';
+            pfdCtx.fillRect(-400, -400 + state.pitch * 5, 800, 400);
+
+            // Ground
+            pfdCtx.fillStyle = '#654321';
+            pfdCtx.fillRect(-400, 0 + state.pitch * 5, 800, 400);
+
+            // Horizon line
+            pfdCtx.strokeStyle = '#fff';
+            pfdCtx.lineWidth = 3;
+            pfdCtx.beginPath();
+            pfdCtx.moveTo(-400, state.pitch * 5);
+            pfdCtx.lineTo(400, state.pitch * 5);
+            pfdCtx.stroke();
+
+            // Pitch ladder
+            pfdCtx.strokeStyle = '#fff';
+            pfdCtx.lineWidth = 2;
+            for (let i = -30; i <= 30; i += 10) {
+                if (i === 0) continue;
+                const y = -i * 5 + state.pitch * 5;
+                const lineWidth = i % 20 === 0 ? 60 : 40;
+                
+                pfdCtx.beginPath();
+                pfdCtx.moveTo(-lineWidth, y);
+                pfdCtx.lineTo(lineWidth, y);
+                pfdCtx.stroke();
+
+                pfdCtx.fillStyle = '#fff';
+                pfdCtx.font = '14px Courier New';
+                pfdCtx.fillText(Math.abs(i), lineWidth + 10, y + 5);
+                pfdCtx.fillText(Math.abs(i), -lineWidth - 30, y + 5);
+            }
+
+            pfdCtx.restore();
+
+            // Aircraft reference symbol
+            pfdCtx.strokeStyle = '#ffff00';
+            pfdCtx.lineWidth = 4;
+            pfdCtx.beginPath();
+            pfdCtx.moveTo(centerX - 60, centerY);
+            pfdCtx.lineTo(centerX - 20, centerY);
+            pfdCtx.moveTo(centerX + 20, centerY);
+            pfdCtx.lineTo(centerX + 60, centerY);
+            pfdCtx.moveTo(centerX, centerY);
+            pfdCtx.lineTo(centerX, centerY + 15);
+            pfdCtx.stroke();
+
+            // Airspeed tape (left)
+            pfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            pfdCtx.fillRect(10, 50, 80, 500);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.lineWidth = 2;
+            pfdCtx.strokeRect(10, 50, 80, 500);
+
+            pfdCtx.fillStyle = '#00ff00';
+            pfdCtx.font = 'bold 24px Courier New';
+            pfdCtx.fillText('IAS', 20, 40);
+
+            for (let i = 0; i <= 300; i += 20) {
+                const y = 300 - (i / 300) * 400 + 100;
+                pfdCtx.fillStyle = '#00ff00';
+                pfdCtx.font = '16px Courier New';
+                pfdCtx.fillText(i, 20, y);
+                pfdCtx.strokeStyle = '#00ff00';
+                pfdCtx.beginPath();
+                pfdCtx.moveTo(70, y - 5);
+                pfdCtx.lineTo(85, y - 5);
+                pfdCtx.stroke();
+            }
+
+            // Current airspeed
+            const asY = 300 - (state.airspeed / 300) * 400 + 100;
+            pfdCtx.fillStyle = '#000';
+            pfdCtx.fillRect(45, asY - 18, 45, 36);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(45, asY - 18, 45, 36);
+            pfdCtx.fillStyle = '#00ffff';
+            pfdCtx.font = 'bold 20px Courier New';
+            pfdCtx.fillText(state.airspeed, 50, asY + 8);
+
+            // Altitude tape (right)
+            pfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            pfdCtx.fillRect(710, 50, 80, 500);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(710, 50, 80, 500);
+
+            pfdCtx.fillStyle = '#00ff00';
+            pfdCtx.font = 'bold 24px Courier New';
+            pfdCtx.fillText('ALT', 720, 40);
+
+            for (let i = 0; i <= 50000; i += 1000) {
+                const y = 300 - (i / 50000) * 400 + 100;
+                if (y >= 50 && y <= 550) {
+                    pfdCtx.fillStyle = '#00ff00';
+                    pfdCtx.font = '14px Courier New';
+                    pfdCtx.fillText(i / ALTITUDE_SCALE_DIVISOR, 720, y);
+                }
+            }
+
+            // Current altitude
+            const altY = 300;
+            pfdCtx.fillStyle = '#000';
+            pfdCtx.fillRect(710, altY - 18, 80, 36);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(710, altY - 18, 80, 36);
+            pfdCtx.fillStyle = '#00ffff';
+            pfdCtx.font = 'bold 18px Courier New';
+            pfdCtx.fillText(state.altitude, 715, altY + 7);
+
+            // Heading indicator (bottom)
+            pfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            pfdCtx.fillRect(200, 520, 400, 70);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(200, 520, 400, 70);
+
+            pfdCtx.fillStyle = '#00ff00';
+            pfdCtx.font = '16px Courier New';
+            for (let i = -180; i <= 180; i += 30) {
+                const hdg = (state.heading + i + 360) % 360;
+                const x = centerX + i * 2;
+                if (x >= 200 && x <= 600) {
+                    pfdCtx.fillText(hdg, x - 10, 545);
+                    pfdCtx.beginPath();
+                    pfdCtx.moveTo(x, 555);
+                    pfdCtx.lineTo(x, 575);
+                    pfdCtx.stroke();
+                }
+            }
+
+            // Current heading
+            pfdCtx.fillStyle = '#ffff00';
+            pfdCtx.beginPath();
+            pfdCtx.moveTo(centerX, 520);
+            pfdCtx.lineTo(centerX - 10, 510);
+            pfdCtx.lineTo(centerX + 10, 510);
+            pfdCtx.closePath();
+            pfdCtx.fill();
+
+            pfdCtx.fillStyle = '#000';
+            pfdCtx.fillRect(centerX - 25, 552, 50, 30);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(centerX - 25, 552, 50, 30);
+            pfdCtx.fillStyle = '#00ffff';
+            pfdCtx.font = 'bold 20px Courier New';
+            pfdCtx.fillText(state.heading, centerX - 18, 575);
+
+            // Vertical speed indicator
+            pfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            pfdCtx.fillRect(620, 200, 70, 200);
+            pfdCtx.strokeStyle = '#00ff00';
+            pfdCtx.strokeRect(620, 200, 70, 200);
+
+            pfdCtx.fillStyle = '#00ff00';
+            pfdCtx.font = '12px Courier New';
+            pfdCtx.fillText('V/S', 635, 215);
+
+            const vsNeedleY = 300 - (state.verticalSpeed / 2000) * 90;
+            pfdCtx.strokeStyle = '#00ffff';
+            pfdCtx.lineWidth = 3;
+            pfdCtx.beginPath();
+            pfdCtx.moveTo(625, vsNeedleY);
+            pfdCtx.lineTo(685, vsNeedleY);
+            pfdCtx.stroke();
+
+            // Autopilot status
+            if (state.autopilot.enabled) {
+                pfdCtx.fillStyle = '#00ff00';
+                pfdCtx.font = 'bold 20px Courier New';
+                pfdCtx.fillText('AP', 20, 580);
+
+                let apModes = [];
+                if (state.autopilot.hdg) apModes.push('HDG');
+                if (state.autopilot.nav) apModes.push('NAV');
+                if (state.autopilot.alt) apModes.push('ALT');
+                if (state.autopilot.vs) apModes.push('VS');
+                
+                pfdCtx.fillText(apModes.join(' '), 60, 580);
+            }
+        }
+
+        // Draw MFD (Multi-Function Display)
+        function drawMFD() {
+            mfdCtx.fillStyle = '#000';
+            mfdCtx.fillRect(0, 0, mfdCanvas.width, mfdCanvas.height);
+
+            const centerX = mfdCanvas.width / 2;
+            const centerY = mfdCanvas.height / 2;
+
+            if (state.display.map) {
+                // Draw moving map
+                mfdCtx.strokeStyle = '#00ff00';
+                mfdCtx.lineWidth = 2;
+
+                // Grid
+                for (let i = 0; i < 800; i += 50) {
+                    mfdCtx.beginPath();
+                    mfdCtx.moveTo(i, 0);
+                    mfdCtx.lineTo(i, 600);
+                    mfdCtx.stroke();
+
+                    mfdCtx.beginPath();
+                    mfdCtx.moveTo(0, i);
+                    mfdCtx.lineTo(800, i);
+                    mfdCtx.stroke();
+                }
+
+                // Aircraft position
+                mfdCtx.save();
+                mfdCtx.translate(centerX, centerY);
+                mfdCtx.rotate(-state.heading * Math.PI / 180);
+
+                // Aircraft symbol
+                mfdCtx.fillStyle = '#ffff00';
+                mfdCtx.beginPath();
+                mfdCtx.moveTo(0, -20);
+                mfdCtx.lineTo(-15, 15);
+                mfdCtx.lineTo(0, 10);
+                mfdCtx.lineTo(15, 15);
+                mfdCtx.closePath();
+                mfdCtx.fill();
+
+                mfdCtx.restore();
+
+                // Course line
+                if (state.course !== state.heading) {
+                    mfdCtx.strokeStyle = '#ff00ff';
+                    mfdCtx.lineWidth = 3;
+                    mfdCtx.setLineDash([10, 5]);
+                    const courseRad = state.course * Math.PI / 180;
+                    mfdCtx.beginPath();
+                    mfdCtx.moveTo(centerX, centerY);
+                    mfdCtx.lineTo(
+                        centerX + Math.sin(courseRad) * 250,
+                        centerY - Math.cos(courseRad) * 250
+                    );
+                    mfdCtx.stroke();
+                    mfdCtx.setLineDash([]);
+                }
+
+                // Scale
+                mfdCtx.fillStyle = '#00ff00';
+                mfdCtx.font = '16px Courier New';
+                mfdCtx.fillText('Scale: 10 NM', 20, 580);
+            }
+
+            // Navigation info
+            mfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            mfdCtx.fillRect(10, 10, 780, 60);
+            mfdCtx.strokeStyle = '#00ff00';
+            mfdCtx.strokeRect(10, 10, 780, 60);
+
+            mfdCtx.fillStyle = '#00ff00';
+            mfdCtx.font = '16px Courier New';
+            mfdCtx.fillText(`TRK: ${state.heading}°`, 20, 35);
+            mfdCtx.fillText(`GS: ${state.airspeed} KT`, 150, 35);
+            mfdCtx.fillText(`ALT: ${state.altitude} FT`, 300, 35);
+            mfdCtx.fillText(`CRS: ${state.course}°`, 500, 35);
+            mfdCtx.fillText(`RPM: ${state.rpm}`, 650, 35);
+
+            // Engine parameters
+            mfdCtx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            mfdCtx.fillRect(620, 100, 170, 400);
+            mfdCtx.strokeStyle = '#00ff00';
+            mfdCtx.strokeRect(620, 100, 170, 400);
+
+            mfdCtx.fillStyle = '#00ff00';
+            mfdCtx.font = 'bold 18px Courier New';
+            mfdCtx.fillText('ENGINE', 650, 125);
+
+            const engineParams = [
+                { label: 'RPM', value: state.rpm, max: 3000, color: '#00ff00' },
+                { label: 'MP', value: Math.round(state.rpm / 100), max: 30, color: '#00ff00' },
+                { label: 'FUEL', value: Math.round(100 - state.rpm / 30), max: 100, color: '#00ffff' },
+                { label: 'OIL T', value: Math.round(state.rpm / 15), max: 200, color: '#ffff00' },
+                { label: 'OIL P', value: Math.round(state.rpm / 50), max: 60, color: '#00ff00' }
+            ];
+
+            let yPos = 150;
+            engineParams.forEach(param => {
+                mfdCtx.fillStyle = param.color;
+                mfdCtx.font = '14px Courier New';
+                mfdCtx.fillText(param.label, 630, yPos);
+                mfdCtx.fillText(param.value, 730, yPos);
+
+                // Bar graph
+                const barWidth = (param.value / param.max) * 140;
+                mfdCtx.fillStyle = param.color;
+                mfdCtx.fillRect(630, yPos + 5, barWidth, 10);
+                mfdCtx.strokeStyle = param.color;
+                mfdCtx.strokeRect(630, yPos + 5, 140, 10);
+
+                yPos += 50;
+            });
+        }
+
+        // Animation loop
+        function animate() {
+            drawPFD();
+            drawMFD();
+            requestAnimationFrame(animate);
+        }
+
+        // Setup controls
+        document.getElementById('airspeedControl').addEventListener('input', (e) => {
+            state.airspeed = parseInt(e.target.value);
+            document.getElementById('airspeedDisplay').textContent = `${state.airspeed} KTS`;
+        });
+
+        document.getElementById('altitudeControl').addEventListener('input', (e) => {
+            state.altitude = parseInt(e.target.value);
+            document.getElementById('altitudeDisplay').textContent = `${state.altitude} FT`;
+        });
+
+        document.getElementById('headingControl').addEventListener('input', (e) => {
+            state.heading = parseInt(e.target.value);
+            document.getElementById('headingDisplay').textContent = `${state.heading}°`;
+        });
+
+        document.getElementById('pitchControl').addEventListener('input', (e) => {
+            state.pitch = parseInt(e.target.value);
+            document.getElementById('pitchDisplay').textContent = `${state.pitch}°`;
+        });
+
+        document.getElementById('rollControl').addEventListener('input', (e) => {
+            state.roll = parseInt(e.target.value);
+            document.getElementById('rollDisplay').textContent = `${state.roll}°`;
+        });
+
+        document.getElementById('vsControl').addEventListener('input', (e) => {
+            state.verticalSpeed = parseInt(e.target.value);
+            document.getElementById('vsDisplay').textContent = `${state.verticalSpeed} FPM`;
+        });
+
+        document.getElementById('courseControl').addEventListener('input', (e) => {
+            state.course = parseInt(e.target.value);
+            document.getElementById('courseDisplay').textContent = `${state.course}°`;
+        });
+
+        document.getElementById('rpmControl').addEventListener('input', (e) => {
+            state.rpm = parseInt(e.target.value);
+            document.getElementById('rpmDisplay').textContent = state.rpm;
+        });
+
+        // Autopilot buttons
+        document.getElementById('apBtn').addEventListener('click', function() {
+            state.autopilot.enabled = !state.autopilot.enabled;
+            this.classList.toggle('active');
+        });
+
+        ['hdg', 'nav', 'apr', 'alt', 'vs', 'flc'].forEach(mode => {
+            document.getElementById(`${mode}Btn`).addEventListener('click', function() {
+                if (state.autopilot.enabled) {
+                    state.autopilot[mode] = !state.autopilot[mode];
+                    this.classList.toggle('active');
+                }
+            });
+        });
+
+        // Display buttons
+        document.getElementById('mapBtn').addEventListener('click', function() {
+            state.display.map = true;
+            document.querySelectorAll('.control-section:last-child .g1000-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>

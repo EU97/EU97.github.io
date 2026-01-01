@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aircraft Systems Visualizer - EU97</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #00ff88;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-panel h2 {
+            color: #00ff88;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .info-panel p {
+            color: #b0b0b0;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .instrument-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .instrument-title {
+            color: #00d4ff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .dial-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .dial {
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .control-label {
+            color: #00ff88;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .control-value {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #00d4ff, #00ff88);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 0.5rem;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 0.5rem;
+            text-align: center;
+            color: #00ff88;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-indicator.warning {
+            background: rgba(255, 165, 0, 0.1);
+            border-color: rgba(255, 165, 0, 0.3);
+            color: #ffa500;
+        }
+
+        .status-indicator.danger {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .dial-container {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-link">
+                <span>←</span>
+                <span>Back to Portfolio</span>
+            </a>
+            <h1>✈️ Aircraft Systems Visualizer</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="info-panel">
+            <h2>Interactive Aircraft Systems Dashboard</h2>
+            <p>
+                Real-time visualization and control of aircraft systems. Use the input controls to adjust parameters 
+                and observe how the instrument dials respond. All instruments are fully functional and provide 
+                visual feedback based on your inputs.
+            </p>
+        </div>
+
+        <div class="dashboard">
+            <!-- Airspeed Indicator -->
+            <div class="instrument-panel">
+                <div class="instrument-title">AIRSPEED INDICATOR</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="airspeedDial">
+                        <!-- Outer circle -->
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <!-- Speed markings -->
+                        <g id="airspeedMarkings"></g>
+                        <!-- Needle -->
+                        <g id="airspeedNeedle">
+                            <line x1="100" y1="100" x2="100" y2="30" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        </g>
+                        <!-- Center text -->
+                        <text x="100" y="140" text-anchor="middle" fill="#00d4ff" font-size="12">KNOTS</text>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Airspeed</span>
+                            <span class="control-value" id="airspeedValue">0 kts</span>
+                        </label>
+                        <input type="range" id="airspeedInput" min="0" max="300" value="0" step="5">
+                    </div>
+                    <div class="status-indicator" id="airspeedStatus">NORMAL</div>
+                </div>
+            </div>
+
+            <!-- Altimeter -->
+            <div class="instrument-panel">
+                <div class="instrument-title">ALTIMETER</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="altimeterDial">
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <g id="altimeterMarkings"></g>
+                        <!-- 100s needle -->
+                        <g id="altimeter100Needle">
+                            <line x1="100" y1="100" x2="100" y2="40" stroke="#00d4ff" stroke-width="3" stroke-linecap="round"/>
+                        </g>
+                        <!-- 1000s needle -->
+                        <g id="altimeter1000Needle">
+                            <line x1="100" y1="100" x2="100" y2="60" stroke="#7b68ee" stroke-width="4" stroke-linecap="round"/>
+                        </g>
+                        <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        <text x="100" y="140" text-anchor="middle" fill="#00d4ff" font-size="12">FEET</text>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Altitude</span>
+                            <span class="control-value" id="altitudeValue">0 ft</span>
+                        </label>
+                        <input type="range" id="altitudeInput" min="0" max="50000" value="0" step="100">
+                    </div>
+                    <div class="status-indicator" id="altitudeStatus">NORMAL</div>
+                </div>
+            </div>
+
+            <!-- Heading Indicator -->
+            <div class="instrument-panel">
+                <div class="instrument-title">HEADING INDICATOR</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="headingDial">
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <g id="headingMarkings"></g>
+                        <g id="headingCard">
+                            <polygon points="100,25 95,35 105,35" fill="#00ff88"/>
+                            <text x="100" y="50" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold" id="headingText">N</text>
+                        </g>
+                        <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        <polygon points="100,15 95,25 105,25" fill="#ff4444"/>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Heading</span>
+                            <span class="control-value" id="headingValue">0°</span>
+                        </label>
+                        <input type="range" id="headingInput" min="0" max="360" value="0" step="1">
+                    </div>
+                    <div class="status-indicator">NORMAL</div>
+                </div>
+            </div>
+
+            <!-- Vertical Speed Indicator -->
+            <div class="instrument-panel">
+                <div class="instrument-title">VERTICAL SPEED</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="vsiDial">
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <g id="vsiMarkings"></g>
+                        <g id="vsiNeedle">
+                            <line x1="100" y1="100" x2="100" y2="100" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        </g>
+                        <text x="100" y="140" text-anchor="middle" fill="#00d4ff" font-size="10">FPM x100</text>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Vertical Speed</span>
+                            <span class="control-value" id="vsiValue">0 fpm</span>
+                        </label>
+                        <input type="range" id="vsiInput" min="-2000" max="2000" value="0" step="50">
+                    </div>
+                    <div class="status-indicator" id="vsiStatus">NORMAL</div>
+                </div>
+            </div>
+
+            <!-- Engine RPM -->
+            <div class="instrument-panel">
+                <div class="instrument-title">ENGINE RPM</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="rpmDial">
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <g id="rpmMarkings"></g>
+                        <g id="rpmNeedle">
+                            <line x1="100" y1="100" x2="100" y2="30" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        </g>
+                        <text x="100" y="140" text-anchor="middle" fill="#00d4ff" font-size="10">RPM x100</text>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Engine RPM</span>
+                            <span class="control-value" id="rpmValue">0 RPM</span>
+                        </label>
+                        <input type="range" id="rpmInput" min="0" max="3000" value="0" step="50">
+                    </div>
+                    <div class="status-indicator" id="rpmStatus">NORMAL</div>
+                </div>
+            </div>
+
+            <!-- Fuel Quantity -->
+            <div class="instrument-panel">
+                <div class="instrument-title">FUEL QUANTITY</div>
+                <div class="dial-container">
+                    <svg class="dial" viewBox="0 0 200 200" id="fuelDial">
+                        <circle cx="100" cy="100" r="90" fill="#0a0a0a" stroke="#00d4ff" stroke-width="2"/>
+                        <g id="fuelMarkings"></g>
+                        <g id="fuelNeedle">
+                            <line x1="100" y1="100" x2="100" y2="30" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="100" cy="100" r="8" fill="#00ff88"/>
+                        </g>
+                        <text x="100" y="140" text-anchor="middle" fill="#00d4ff" font-size="12">GAL</text>
+                    </svg>
+                </div>
+                <div class="controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Fuel Level</span>
+                            <span class="control-value" id="fuelValue">0 gal</span>
+                        </label>
+                        <input type="range" id="fuelInput" min="0" max="100" value="50" step="1">
+                    </div>
+                    <div class="status-indicator" id="fuelStatus">NORMAL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility function to create dial markings
+        function createMarkings(svgId, config) {
+            const svg = document.getElementById(svgId);
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            
+            for (let i = config.min; i <= config.max; i += config.step) {
+                const angle = config.startAngle + (i - config.min) / (config.max - config.min) * (config.endAngle - config.startAngle);
+                const rad = angle * Math.PI / 180;
+                const isMajor = i % config.majorStep === 0;
+                
+                const x1 = 100 + Math.sin(rad) * (isMajor ? 75 : 80);
+                const y1 = 100 - Math.cos(rad) * (isMajor ? 75 : 80);
+                const x2 = 100 + Math.sin(rad) * 85;
+                const y2 = 100 - Math.cos(rad) * 85;
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', isMajor ? '#00d4ff' : '#666');
+                line.setAttribute('stroke-width', isMajor ? '2' : '1');
+                g.appendChild(line);
+                
+                if (isMajor && config.labels) {
+                    const label = i / config.labelDiv || i;
+                    const textX = 100 + Math.sin(rad) * 65;
+                    const textY = 100 - Math.cos(rad) * 65;
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    text.setAttribute('x', textX);
+                    text.setAttribute('y', textY);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('dominant-baseline', 'middle');
+                    text.setAttribute('fill', '#00d4ff');
+                    text.setAttribute('font-size', '10');
+                    text.textContent = label;
+                    g.appendChild(text);
+                }
+            }
+            
+            svg.appendChild(g);
+        }
+
+        // Initialize all dials
+        createMarkings('airspeedMarkings', {
+            min: 0, max: 300, step: 10, majorStep: 50,
+            startAngle: -135, endAngle: 135,
+            labels: true, labelDiv: 1
+        });
+
+        createMarkings('altimeterMarkings', {
+            min: 0, max: 10, step: 1, majorStep: 1,
+            startAngle: 0, endAngle: 360,
+            labels: true, labelDiv: 1
+        });
+
+        createMarkings('headingMarkings', {
+            min: 0, max: 360, step: 5, majorStep: 30,
+            startAngle: 0, endAngle: 360,
+            labels: true, labelDiv: 10
+        });
+
+        createMarkings('vsiMarkings', {
+            min: -20, max: 20, step: 2, majorStep: 10,
+            startAngle: -135, endAngle: 135,
+            labels: true, labelDiv: 1
+        });
+
+        createMarkings('rpmMarkings', {
+            min: 0, max: 30, step: 1, majorStep: 5,
+            startAngle: -135, endAngle: 135,
+            labels: true, labelDiv: 1
+        });
+
+        createMarkings('fuelMarkings', {
+            min: 0, max: 100, step: 10, majorStep: 25,
+            startAngle: -135, endAngle: 135,
+            labels: true, labelDiv: 1
+        });
+
+        // Update functions
+        function updateNeedle(needleId, value, min, max, startAngle, endAngle) {
+            const angle = startAngle + (value - min) / (max - min) * (endAngle - startAngle);
+            const needle = document.getElementById(needleId);
+            if (needle) {
+                needle.setAttribute('transform', `rotate(${angle}, 100, 100)`);
+            }
+        }
+
+        // Airspeed
+        document.getElementById('airspeedInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('airspeedValue').textContent = `${value} kts`;
+            updateNeedle('airspeedNeedle', value, 0, 300, -135, 135);
+            
+            const status = document.getElementById('airspeedStatus');
+            if (value < 60) {
+                status.textContent = 'STALL WARNING';
+                status.className = 'status-indicator danger';
+            } else if (value > 250) {
+                status.textContent = 'OVERSPEED';
+                status.className = 'status-indicator warning';
+            } else {
+                status.textContent = 'NORMAL';
+                status.className = 'status-indicator';
+            }
+        });
+
+        // Altimeter
+        document.getElementById('altitudeInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('altitudeValue').textContent = `${value.toLocaleString()} ft`;
+            updateNeedle('altimeter100Needle', (value % 1000) / 100, 0, 10, 0, 360);
+            updateNeedle('altimeter1000Needle', value / 1000, 0, 50, 0, 360);
+            
+            const status = document.getElementById('altitudeStatus');
+            if (value > 18000) {
+                status.textContent = 'HIGH ALTITUDE';
+                status.className = 'status-indicator warning';
+            } else {
+                status.textContent = 'NORMAL';
+                status.className = 'status-indicator';
+            }
+        });
+
+        // Heading
+        document.getElementById('headingInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('headingValue').textContent = `${value}°`;
+            updateNeedle('headingCard', -value, 0, 360, 0, 360);
+            
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            const index = Math.round(value / 45) % 8;
+            document.getElementById('headingText').textContent = directions[index];
+        });
+
+        // Vertical Speed
+        document.getElementById('vsiInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('vsiValue').textContent = `${value} fpm`;
+            updateNeedle('vsiNeedle', value / 100, -20, 20, -135, 135);
+            
+            const status = document.getElementById('vsiStatus');
+            if (Math.abs(value) > 1500) {
+                status.textContent = 'HIGH RATE';
+                status.className = 'status-indicator warning';
+            } else {
+                status.textContent = 'NORMAL';
+                status.className = 'status-indicator';
+            }
+        });
+
+        // RPM
+        document.getElementById('rpmInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('rpmValue').textContent = `${value} RPM`;
+            updateNeedle('rpmNeedle', value / 100, 0, 30, -135, 135);
+            
+            const status = document.getElementById('rpmStatus');
+            if (value > 2700) {
+                status.textContent = 'HIGH RPM';
+                status.className = 'status-indicator danger';
+            } else if (value < 1000 && value > 0) {
+                status.textContent = 'LOW RPM';
+                status.className = 'status-indicator warning';
+            } else {
+                status.textContent = 'NORMAL';
+                status.className = 'status-indicator';
+            }
+        });
+
+        // Fuel
+        document.getElementById('fuelInput').addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            document.getElementById('fuelValue').textContent = `${value} gal`;
+            updateNeedle('fuelNeedle', value, 0, 100, -135, 135);
+            
+            const status = document.getElementById('fuelStatus');
+            if (value < 10) {
+                status.textContent = 'LOW FUEL';
+                status.className = 'status-indicator danger';
+            } else if (value < 25) {
+                status.textContent = 'FUEL WARNING';
+                status.className = 'status-indicator warning';
+            } else {
+                status.textContent = 'NORMAL';
+                status.className = 'status-indicator';
+            }
+        });
+
+        // Initialize fuel to 50%
+        document.getElementById('fuelInput').dispatchEvent(new Event('input'));
+    </script>
+</body>
+</html>
