@@ -430,6 +430,29 @@
   }
 
   // ============================================
+  // Language Toggle
+  // ============================================
+  const langToggle = document.getElementById('lang-toggle');
+  
+  if (langToggle) {
+    langToggle.addEventListener('click', function() {
+      const currentLang = localStorage.getItem('preferredLanguage') || 'en';
+      const newLang = currentLang === 'en' ? 'es' : 'en';
+      
+      // Update language
+      localStorage.setItem('preferredLanguage', newLang);
+      
+      // Update button text
+      this.textContent = newLang === 'en' ? '🇪🇸 ES' : '🇬🇧 EN';
+      
+      // Apply translations
+      if (typeof applyTranslations === 'function') {
+        applyTranslations(newLang);
+      }
+    });
+  }
+
+  // ============================================
   // Initialize
   // ============================================
   console.log('Portfolio initialized successfully!');
