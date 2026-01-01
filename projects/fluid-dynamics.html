@@ -335,6 +335,9 @@
                 this.fps = 60;
                 this.frameCount = 0;
                 this.lastFpsUpdate = Date.now();
+                
+                // Target frame duration in milliseconds (1000ms / 60fps = 16.67ms)
+                this.TARGET_FRAME_DURATION = 16.67;
 
                 this.resize();
                 this.init();
@@ -402,7 +405,7 @@
 
             update() {
                 const now = Date.now();
-                const dt = (now - this.lastTime) / 16.67; // Normalize to 60fps
+                const dt = (now - this.lastTime) / this.TARGET_FRAME_DURATION; // Normalize to 60fps
                 this.lastTime = now;
 
                 // Update FPS

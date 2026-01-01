@@ -359,6 +359,9 @@
     </div>
 
     <script>
+        // Constants
+        const ALTITUDE_SCALE_DIVISOR = 100; // Used to display altitude in hundreds of feet
+        
         // G1000 System State
         const state = {
             airspeed: 0,
@@ -502,7 +505,7 @@
                 if (y >= 50 && y <= 550) {
                     pfdCtx.fillStyle = '#00ff00';
                     pfdCtx.font = '14px Courier New';
-                    pfdCtx.fillText(i / 100, 720, y);
+                    pfdCtx.fillText(i / ALTITUDE_SCALE_DIVISOR, 720, y);
                 }
             }
 
