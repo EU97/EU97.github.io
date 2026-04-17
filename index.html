@@ -263,6 +263,10 @@
                     <span class="tab-icon">🎓</span>
                     <span>Academic &amp; Leadership</span>
                 </button>
+                <button class="tab-btn" data-category="opensource">
+                    <span class="tab-icon">💻</span>
+                    <span>Open Source</span>
+                </button>
             </div>
             
             <div class="projects-grid" id="projects-grid">
@@ -617,6 +621,271 @@
                         <div class="project-links">
                             <a href="/projects/aircraft-systems.html" class="project-link">
                                 <span>View Demo</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aero-Messure — Aeronautical Measurements -->
+                <div class="project-card" data-category="research opensource">
+                    <div class="project-badge">Research / Open Source</div>
+                    <div class="project-image project-image--research">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="30" y1="160" x2="170" y2="160" stroke="#00d4ff" stroke-width="2"/>
+                            <line x1="30" y1="160" x2="30" y2="40" stroke="#00d4ff" stroke-width="2"/>
+                            <polyline points="40,140 60,120 80,130 100,90 120,70 140,80 160,50" fill="none" stroke="#00ff88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="40" cy="140" r="4" fill="#00d4ff"/>
+                            <circle cx="80" cy="130" r="4" fill="#00d4ff"/>
+                            <circle cx="120" cy="70" r="4" fill="#00d4ff"/>
+                            <circle cx="160" cy="50" r="4" fill="#00ff88"/>
+                            <path d="M60 100 L80 60 L100 80 L110 50" fill="none" stroke="#7b68ee" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+                            <text x="100" y="185" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">Aeronautical Data · Jupyter</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Aero-Messure</h3>
+                        <p class="project-description">
+                            Open-source repository for aeronautical measurements and data analysis. Jupyter Notebooks for processing and visualizing aeronautical sensor data, flight test measurements, and experimental results from aeronautical research.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Jupyter</span>
+                            <span class="tag">Python</span>
+                            <span class="tag">Data Analysis</span>
+                            <span class="tag">Aeronautics</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/Aero-Messure" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/aero-messure.html" class="project-link">
+                                <span>Details</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ForceWorkbench — Thrust Force Measurement -->
+                <div class="project-card" data-category="industrial control opensource">
+                    <div class="project-badge">Hardware / Open Source</div>
+                    <div class="project-image project-image--industrial">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="70" y="80" width="60" height="60" rx="5" fill="none" stroke="#00d4ff" stroke-width="3"/>
+                            <rect x="80" y="90" width="40" height="40" rx="3" fill="none" stroke="#7b68ee" stroke-width="2"/>
+                            <circle cx="100" cy="110" r="10" fill="none" stroke="#00ff88" stroke-width="2"/>
+                            <line x1="100" y1="80" x2="100" y2="60" stroke="#00d4ff" stroke-width="3"/>
+                            <path d="M85 55 L115 55 L110 45 L90 45 Z" fill="#00d4ff" opacity="0.8"/>
+                            <line x1="70" y1="140" x2="50" y2="155" stroke="#7b68ee" stroke-width="2"/>
+                            <line x1="130" y1="140" x2="150" y2="155" stroke="#7b68ee" stroke-width="2"/>
+                            <line x1="40" y1="155" x2="160" y2="155" stroke="#a0a0a0" stroke-width="2"/>
+                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">C++ · Motor Thrust</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">ForceWorkbench</h3>
+                        <p class="project-description">
+                            Development of a force workbench to measure thrust forces from small aircraft motors. C++ embedded firmware for real-time force data acquisition, calibration routines, and serial data transmission for UAV motor characterization.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">C++</span>
+                            <span class="tag">Embedded</span>
+                            <span class="tag">UAV</span>
+                            <span class="tag">Force Measurement</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/ForceWorkbench" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/force-workbench.html" class="project-link">
+                                <span>Details</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SISELA-Init — Aircraft Electrical Systems -->
+                <div class="project-card" data-category="academic simulation opensource">
+                    <div class="project-badge">Academic / Open Source</div>
+                    <div class="project-image project-image--aero">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="80" r="20" fill="none" stroke="#00d4ff" stroke-width="2"/>
+                            <circle cx="140" cy="80" r="20" fill="none" stroke="#7b68ee" stroke-width="2"/>
+                            <circle cx="100" cy="140" r="20" fill="none" stroke="#00ff88" stroke-width="2"/>
+                            <line x1="80" y1="80" x2="120" y2="80" stroke="#00d4ff" stroke-width="2"/>
+                            <line x1="70" y1="97" x2="90" y2="125" stroke="#00d4ff" stroke-width="2"/>
+                            <line x1="130" y1="97" x2="110" y2="125" stroke="#7b68ee" stroke-width="2"/>
+                            <text x="60" y="85" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="monospace">AC</text>
+                            <text x="140" y="85" text-anchor="middle" fill="#7b68ee" font-size="9" font-family="monospace">DC</text>
+                            <text x="100" y="145" text-anchor="middle" fill="#00ff88" font-size="8" font-family="monospace">BUS</text>
+                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">SISELA · Python</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">SISELA-Init</h3>
+                        <p class="project-description">
+                            Introduction to aircraft electrical systems (Sistemas Eléctricos de Aeronaves). Python-based educational materials and simulations covering AC/DC power systems, bus architecture, and electrical load analysis for aeronautical engineering students.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Aeronautics</span>
+                            <span class="tag">Education</span>
+                            <span class="tag">Electrical Systems</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/SISELA-Init" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/sisela-init.html" class="project-link">
+                                <span>Details</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PSO Optimal — Optimization Algorithm -->
+                <div class="project-card" data-category="simulation opensource">
+                    <div class="project-badge">Algorithm / Open Source</div>
+                    <div class="project-image project-image--sim">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="130" r="5" fill="#00d4ff" opacity="0.7"/>
+                            <circle cx="90" cy="100" r="5" fill="#00d4ff" opacity="0.8"/>
+                            <circle cx="75" cy="115" r="4" fill="#7b68ee" opacity="0.7"/>
+                            <circle cx="110" cy="85" r="5" fill="#7b68ee" opacity="0.9"/>
+                            <circle cx="130" cy="70" r="5" fill="#00ff88"/>
+                            <circle cx="145" cy="60" r="6" fill="#00ff88" opacity="0.9"/>
+                            <circle cx="120" cy="90" r="4" fill="#00d4ff" opacity="0.6"/>
+                            <circle cx="80" cy="140" r="4" fill="#7b68ee" opacity="0.6"/>
+                            <line x1="60" y1="130" x2="90" y2="100" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+                            <line x1="90" y1="100" x2="130" y2="70" stroke="#7b68ee" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+                            <line x1="130" y1="70" x2="145" y2="60" stroke="#00ff88" stroke-width="2" opacity="0.8"/>
+                            <star points="145,53 148,58 154,58 149,62 151,68 145,64 139,68 141,62 136,58 142,58" fill="#00ff88" stroke="#00ff88" stroke-width="1"/>
+                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">PSO · Function Optimization</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">PSO_optimal</h3>
+                        <p class="project-description">
+                            Particle Swarm Optimization (PSO) algorithm implementation in Python for function optimization. Demonstrates swarm intelligence techniques applicable to control parameter tuning, trajectory optimization, and engineering design problems.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Optimization</span>
+                            <span class="tag">Swarm Intelligence</span>
+                            <span class="tag">Algorithms</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/PSO_optimal" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/pso-optimal.html" class="project-link">
+                                <span>Details</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIOMotion — IMU Async Reading -->
+                <div class="project-card" data-category="control opensource">
+                    <div class="project-badge">Embedded / Open Source</div>
+                    <div class="project-image project-image--industrial">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="70" y="70" width="60" height="60" rx="5" fill="none" stroke="#7b68ee" stroke-width="3"/>
+                            <circle cx="100" cy="100" r="15" fill="none" stroke="#00d4ff" stroke-width="2"/>
+                            <circle cx="100" cy="100" r="5" fill="#00d4ff"/>
+                            <line x1="100" y1="85" x2="100" y2="75" stroke="#00d4ff" stroke-width="2.5"/>
+                            <line x1="115" y1="100" x2="130" y2="100" stroke="#00d4ff" stroke-width="2"/>
+                            <path d="M80 120 Q85 135 90 125 Q95 115 100 130 Q105 145 110 130 Q115 115 120 120" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.7"/>
+                            <text x="100" y="160" text-anchor="middle" fill="#7b68ee" font-size="8" font-family="monospace">IMU · ASYNC</text>
+                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">PIOMotion · MicroPython</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">PIOMotion</h3>
+                        <p class="project-description">
+                            Inertial Motion Unit (IMU) asynchronous reading firmware. Efficient embedded solution for concurrent IMU data acquisition, enabling high-frequency attitude and motion sensing for UAV and robotics applications.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Embedded</span>
+                            <span class="tag">IMU</span>
+                            <span class="tag">Async</span>
+                            <span class="tag">UAV Sensing</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/PIOMotion" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/pio-motion.html" class="project-link">
+                                <span>Details</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roughness_Data_Model — Roughness Data Conversion -->
+                <div class="project-card" data-category="industrial opensource">
+                    <div class="project-badge">Industrial / Open Source</div>
+                    <div class="project-image project-image--industrial">
+                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="30" y1="110" x2="170" y2="110" stroke="#a0a0a0" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+                            <polyline points="30,110 45,95 55,118 65,100 75,108 85,90 95,112 105,88 115,105 125,92 135,107 145,95 155,110 165,100" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="30" y1="140" x2="170" y2="140" stroke="#a0a0a0" stroke-width="1.5"/>
+                            <line x1="30" y1="80" x2="170" y2="80" stroke="#7b68ee" stroke-width="1" stroke-dasharray="6,3" opacity="0.6"/>
+                            <text x="22" y="84" fill="#7b68ee" font-size="8" font-family="monospace">Ra</text>
+                            <text x="100" y="175" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">Surface Roughness · Python</text>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Roughness_Data_Model</h3>
+                        <p class="project-description">
+                            Python scripting for surface roughness data conversion and modeling. Automates processing of roughness measurement data from profilometers, computing Ra, Rz, and other ISO surface texture parameters for quality control workflows.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Surface Metrology</span>
+                            <span class="tag">Data Processing</span>
+                            <span class="tag">Quality Control</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EU97/Roughness_Data_Model" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <span>GitHub</span>
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <a href="/projects/roughness-data.html" class="project-link">
+                                <span>Details</span>
                                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
