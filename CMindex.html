@@ -1,20 +1,258 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Ciencia Magica!</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon//apple-touch-icon.png">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ciencia Magica — Plataforma educativa interactiva que explora la intersección entre ciencia y magia. En desarrollo.">
+    <title>Ciencia Mágica — Educación + Entretenimiento</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
     <link rel="manifest" href="/images/favicon/site.webmanifest">
+    <link rel="stylesheet" href="/styles/main.css">
+    <style>
+        .cm-hero {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at center, #1a0a2e 0%, #0a0a1a 60%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .cm-hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(123, 104, 238, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        .cm-stars {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 20% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.3) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .cm-logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+            animation: cmFloat 4s ease-in-out infinite;
+        }
+        @keyframes cmFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .cm-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 40%, #f472b6 80%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -1px;
+        }
+        .cm-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.375rem);
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+        .wip-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.75rem;
+            background: rgba(251, 146, 60, 0.15);
+            border: 1.5px solid rgba(251, 146, 60, 0.5);
+            border-radius: 2rem;
+            color: #fb923c;
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 2.5rem;
+            animation: wipPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes wipPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(251,146,60,0); }
+            50% { box-shadow: 0 0 20px 4px rgba(251,146,60,0.2); }
+        }
+        .cm-phases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            max-width: 960px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .phase-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        .phase-card:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(167,139,250,0.4);
+            transform: translateY(-4px);
+        }
+        .phase-card.active {
+            border-color: rgba(167,139,250,0.6);
+            background: rgba(167,139,250,0.08);
+        }
+        .phase-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .phase-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+        .phase-desc {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            margin: 0;
+        }
+        .phase-status {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .status-done { background: rgba(0,255,136,0.15); color: #00ff88; }
+        .status-wip  { background: rgba(251,146,60,0.15); color: #fb923c; }
+        .status-next { background: rgba(160,160,160,0.15); color: #a0a0a0; }
+        .cm-footer-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cm-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .cm-btn-primary {
+            background: linear-gradient(135deg, #7b68ee, #c084fc);
+            color: #0a0a1a;
+        }
+        .cm-btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+        .cm-btn-secondary {
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            border: 1.5px solid rgba(255,255,255,0.3);
+        }
+        .cm-btn-secondary:hover { border-color: #c084fc; color: #c084fc; }
+    </style>
 </head>
+<body style="background:#000; overflow-x:hidden;">
 
-<body>
-    <h1>Bienvenido a Ciencia Magica!</h1>
-    <img src="/images/LOGO CMWorking.svg" alt="Working..." height="300" width="300" />
-    <!--<p>Aqui es donde empieza todo</p>-->
-    <!--<p>Dominio: 01/01/2023</p>-->
-    <!--<p>Paguina web: 07/01/2023</p>-->
-    <br><br>
+    <nav class="nav" style="position:sticky; background:rgba(10,10,26,0.95);">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">EU97</a>
+            <a href="/#projects" style="color:var(--primary-color); font-weight:600; display:flex; align-items:center; gap:0.5rem;">← Portafolio</a>
+        </div>
+    </nav>
+
+    <section class="cm-hero">
+        <div class="cm-stars"></div>
+
+        <img src="/images/LOGO CMWorking.svg" alt="Ciencia Mágica Logo" class="cm-logo" onerror="this.style.display='none'" />
+
+        <h1 class="cm-title">✨ Ciencia Mágica</h1>
+        <p class="cm-subtitle">Plataforma educativa interactiva que une la ciencia y la magia para hacer el conocimiento accesible, entretenido e inspirador.</p>
+
+        <div class="wip-banner">
+            <span>🔧</span>
+            <span>Fase 2 en desarrollo — CM-Web v2</span>
+        </div>
+
+        <div class="cm-phases">
+            <div class="phase-card active">
+                <div class="phase-icon">🎯</div>
+                <div class="phase-title">Fase 1 — Identidad</div>
+                <p class="phase-desc">Definición de marca, logotipo, paleta de colores y tono editorial. Plataforma base HTML + CSS con navegación funcional.</p>
+                <span class="phase-status status-done">✓ Completada</span>
+            </div>
+
+            <div class="phase-card active" style="border-color:rgba(251,146,60,0.5); background:rgba(251,146,60,0.06);">
+                <div class="phase-icon">⚗️</div>
+                <div class="phase-title">Fase 2 — Contenido Interactivo</div>
+                <p class="phase-desc">Experimentos interactivos en el navegador, artículos con animaciones CSS, y secciones temáticas de física, química y tecnología.</p>
+                <span class="phase-status status-wip">⚡ En progreso</span>
+            </div>
+
+            <div class="phase-card">
+                <div class="phase-icon">🌐</div>
+                <div class="phase-title">Fase 3 — Comunidad</div>
+                <p class="phase-desc">Sistema de usuarios, comentarios, publicación de experimentos por la comunidad y gamificación del aprendizaje.</p>
+                <span class="phase-status status-next">◦ Próxima</span>
+            </div>
+
+            <div class="phase-card">
+                <div class="phase-icon">🚀</div>
+                <div class="phase-title">Fase 4 — Lanzamiento</div>
+                <p class="phase-desc">Dominio propio, SEO, integración con redes sociales y presencia en plataformas educativas latinoamericanas.</p>
+                <span class="phase-status status-next">◦ Próxima</span>
+            </div>
+        </div>
+
+        <div class="cm-footer-links">
+            <a href="https://github.com/EU97" target="_blank" rel="noopener noreferrer" class="cm-btn cm-btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                Ver progreso en GitHub
+            </a>
+            <a href="/" class="cm-btn cm-btn-secondary">
+                ← Volver al portafolio
+            </a>
+        </div>
+    </section>
+
+    <footer class="footer" style="background:#000000;">
+        <div class="section-container">
+            <p style="color:rgba(255,255,255,0.4);">&copy; 2023–2026 Edgar Ulises Rojo Rodriguez · Ciencia Mágica</p>
+        </div>
+    </footer>
+
 </body>
-
 </html>
