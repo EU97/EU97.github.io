@@ -293,8 +293,8 @@
   // ============================================
   // Console Welcome Message
   // ============================================
-  console.log('%c👋 Welcome to EU97 Portfolio!', 'color: #2563eb; font-size: 20px; font-weight: bold;');
-  console.log('%cInterested in the code? Check out the repo!', 'color: #6b7280; font-size: 14px;');
+  console.log('%c👋 Welcome to EU97 Portfolio — Edgar Ulises Rojo Rodriguez!', 'color: #2563eb; font-size: 20px; font-weight: bold;');
+  console.log('%cSystems Engineer | Researcher | Professor | FIME-UANL', 'color: #6b7280; font-size: 14px;');
 
   // ============================================
   // Project Tabs Filtering
@@ -399,7 +399,7 @@
   // ============================================
   // Enhanced Scroll Reveal Animations
   // ============================================
-  const revealElements = document.querySelectorAll('.detail-item, .tool-item, .contact-item');
+  const revealElements = document.querySelectorAll('.tool-item, .contact-item, .timeline-content, .about-bio p');
   
   if (revealElements.length > 0) {
     const revealObserver = new IntersectionObserver((entries) => {
