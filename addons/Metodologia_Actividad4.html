@@ -1,0 +1,534 @@
+<title>Actividad 4 · Experimento Factorial</title>
+<meta name="description" content="Guía interactiva para diseñar y ejecutar un DOE factorial 2² en Minitab sobre una dimensión crítica de una pieza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F5F4F1; --panel:#FBFAF8; --ink:#1C2024; --ink-soft:#4A4F57;
+    --line:#D9D6CF; --line-strong:#B9B5AC;
+    --accent:#C8442E;            /* rojo de acotación crítica */
+    --blue:#2E5A8F;              /* azul de dibujo / datums */
+    --ok:#3E7D5A; --warn:#B07D2B; --bad:#B5482E;
+    --grey:#6B7078;
+    --shadow:0 1px 2px rgba(28,32,36,.06), 0 8px 24px rgba(28,32,36,.06);
+    --stage-max:64rem;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --paper:#15181C; --panel:#1B1F24; --ink:#E8E6E1; --ink-soft:#A9ACB2;
+      --line:#2C3138; --line-strong:#3C424A;
+      --accent:#E15B42; --blue:#6F9BD4;
+      --ok:#5FA87E; --warn:#D2A24C; --bad:#E07257;
+      --grey:#8B9099;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15181C; --panel:#1B1F24; --ink:#E8E6E1; --ink-soft:#A9ACB2;
+    --line:#2C3138; --line-strong:#3C424A;
+    --accent:#E15B42; --blue:#6F9BD4;
+    --ok:#5FA87E; --warn:#D2A24C; --bad:#E07257;
+    --grey:#8B9099;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+    font-weight:700; line-height:1.12; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:.72rem; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--grey);}
+  a{color:var(--blue)}
+
+  /* ---------- shell ---------- */
+  .wrap{display:grid; grid-template-columns:16.5rem 1fr; min-height:100vh;}
+  @media (max-width:880px){ .wrap{grid-template-columns:1fr} }
+
+  .rail{
+    border-right:1px solid var(--line); background:var(--panel);
+    padding:1.6rem 1.15rem; position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  @media (max-width:880px){
+    .rail{position:static; height:auto; border-right:0; border-bottom:1px solid var(--line)}
+  }
+  .brand{display:flex; align-items:baseline; gap:.5rem; margin-bottom:.2rem}
+  .brand .pn{font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--accent);
+    border:1px solid var(--accent); border-radius:2px; padding:.05rem .3rem;}
+  .brand h1{font-size:1.05rem}
+  .rail .sub{font-size:.8rem; color:var(--ink-soft); margin:.15rem 0 1.3rem}
+
+  nav.toc{display:flex; flex-direction:column; gap:.15rem}
+  nav.toc button{
+    all:unset; cursor:pointer; display:flex; gap:.6rem; align-items:flex-start;
+    padding:.5rem .55rem; border-radius:6px; font-size:.9rem; color:var(--ink-soft);
+    border:1px solid transparent;
+  }
+  nav.toc button:hover{background:color-mix(in srgb, var(--blue) 8%, transparent); color:var(--ink)}
+  nav.toc button[aria-current="true"]{
+    background:color-mix(in srgb, var(--accent) 10%, transparent);
+    border-color:color-mix(in srgb, var(--accent) 35%, transparent); color:var(--ink);
+  }
+  nav.toc .n{font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--grey); padding-top:.08rem}
+  nav.toc button[aria-current="true"] .n{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:4px}
+
+  .railfoot{margin-top:1.4rem; padding-top:1rem; border-top:1px solid var(--line);
+    font-size:.74rem; color:var(--grey)}
+
+  /* ---------- stage ---------- */
+  .stage{padding:min(6vw,3.4rem) clamp(1.1rem,5vw,4rem) 5rem; max-width:calc(var(--stage-max) + 8rem)}
+  section.slide{display:none; animation:rise .34s ease both}
+  section.slide.active{display:block}
+  @media (prefers-reduced-motion:reduce){ section.slide{animation:none} }
+  @keyframes rise{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+  .slide > header{margin-bottom:1.8rem; max-width:var(--stage-max)}
+  .slide h2{font-size:clamp(1.7rem,3.6vw,2.5rem); margin:.35rem 0 .5rem;
+    font-optical-sizing:auto;}
+  .slide .lede{font-size:1.05rem; color:var(--ink-soft); max-width:62ch}
+
+  .stack{display:flex; flex-direction:column; gap:1rem; max-width:var(--stage-max)}
+  .grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; max-width:var(--stage-max)}
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:1.15rem 1.25rem}
+  .card h3{font-size:1.06rem; margin-bottom:.4rem}
+  .card p{margin:.35rem 0; color:var(--ink-soft)}
+  .card p strong{color:var(--ink)}
+
+  /* numbered process steps */
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:flex; flex-direction:column; gap:.7rem; max-width:var(--stage-max)}
+  ol.steps li{counter-increment:s; display:grid; grid-template-columns:2.4rem 1fr; gap:.9rem;
+    background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--blue);
+    border-radius:8px; padding:.85rem 1rem}
+  ol.steps li::before{content:counter(s,decimal-leading-zero); font-family:"IBM Plex Mono",monospace;
+    font-weight:600; color:var(--blue); font-size:.95rem; padding-top:.1rem; grid-column:1; grid-row:1}
+  ol.steps li > *{grid-column:2}
+  ol.steps li h4{font-size:.98rem; margin-bottom:.15rem}
+  ol.steps li p{margin:.15rem 0 0; color:var(--ink-soft); font-size:.92rem}
+  ol.steps li .grid2{margin-block:.5rem}
+
+  .path{display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; font-family:"IBM Plex Mono",monospace; font-size:.82rem; margin:.5rem 0}
+  .path span{background:color-mix(in srgb,var(--blue) 12%,transparent); border:1px solid color-mix(in srgb,var(--blue) 30%,transparent);
+    color:var(--ink); padding:.15rem .5rem; border-radius:4px; white-space:nowrap}
+  .path b{color:var(--grey)}
+
+  table.data{border-collapse:collapse; width:100%; font-family:"IBM Plex Mono",monospace; font-size:.82rem}
+  .scroll{overflow-x:auto; border:1px solid var(--line); border-radius:8px; max-width:var(--stage-max)}
+  table.data th,table.data td{padding:.5rem .7rem; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums; white-space:nowrap}
+  table.data th{background:var(--panel); color:var(--ink-soft); font-weight:600; text-align:right; position:sticky; top:0}
+  table.data td:first-child,table.data th:first-child{text-align:left}
+  table.data tr:last-child td{border-bottom:0}
+  .sig{color:var(--accent); font-weight:600}
+  .tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:.7rem; padding:.1rem .45rem; border-radius:3px; border:1px solid var(--line-strong); color:var(--ink-soft)}
+  .tag.ok{color:var(--ok); border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+  .tag.bad{color:var(--bad); border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+
+  /* 2^2 matrix widget */
+  .doe{display:flex; flex-wrap:wrap; gap:1.5rem 3rem; align-items:center; margin:1.2rem 0 .3rem}
+  .doe .square{position:relative; width:15rem; height:10rem; border:1px dashed var(--line-strong);
+    border-radius:6px; margin:1.7rem 1.7rem 2.2rem 3.4rem; flex:none}
+  .doe .corner{position:absolute; transform:translate(-50%,50%); width:3.2rem; height:3.2rem; border-radius:50%;
+    border:2px solid var(--line-strong); background:var(--panel); color:var(--ink-soft); cursor:pointer;
+    font-family:"IBM Plex Mono",monospace; font-size:.76rem; display:grid; place-items:center; line-height:1.05; z-index:1}
+  .doe .corner[aria-pressed="true"]{border-color:var(--accent); color:var(--accent); background:color-mix(in srgb,var(--accent) 14%,transparent); z-index:2}
+  .doe .axis{position:absolute; font-family:"IBM Plex Mono",monospace; font-size:.68rem; color:var(--grey); white-space:nowrap}
+  .doe .axis.bx{left:50%; bottom:-2rem; transform:translateX(-50%)}
+  .doe .axis.by{left:-3rem; top:50%; transform:translateY(-50%) rotate(-90deg)}
+  .doe .read{font-family:"IBM Plex Mono",monospace; font-size:.86rem; color:var(--ink-soft); max-width:20rem}
+  .doe .read b{color:var(--ink)}
+
+  /* rubric accordion */
+  .rubric{display:flex; flex-direction:column; gap:.55rem; max-width:var(--stage-max)}
+  details.crit{background:var(--panel); border:1px solid var(--line); border-radius:9px; overflow:hidden}
+  details.crit>summary{list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.9rem 1.1rem}
+  details.crit>summary::-webkit-details-marker{display:none}
+  details.crit>summary h3{font-size:1rem}
+  details.crit .pts{font-family:"IBM Plex Mono",monospace; font-weight:600; color:var(--accent); font-size:.9rem; white-space:nowrap}
+  details.crit .levels{display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.6rem; padding:0 1.1rem 1.1rem}
+  .lvl{border:1px solid var(--line); border-top:3px solid var(--grey); border-radius:6px; padding:.7rem .8rem; font-size:.86rem; color:var(--ink-soft)}
+  .lvl.hi{border-top-color:var(--ok)} .lvl.mid{border-top-color:var(--warn)} .lvl.lo{border-top-color:var(--bad)}
+  .lvl b{display:block; color:var(--ink); font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.25rem}
+
+  /* checklist */
+  ul.check{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.4rem; max-width:var(--stage-max)}
+  ul.check li{display:flex; gap:.7rem; align-items:flex-start; background:var(--panel); border:1px solid var(--line); border-radius:7px; padding:.6rem .85rem}
+  ul.check input{margin-top:.28rem; accent-color:var(--accent); width:1rem; height:1rem; flex:none}
+  ul.check label{font-size:.93rem; cursor:pointer}
+  ul.check li:has(input:checked) label{color:var(--grey); text-decoration:line-through}
+
+  dl.gloss{max-width:var(--stage-max); margin:0}
+  dl.gloss div{padding:.8rem 0; border-bottom:1px solid var(--line); display:grid; grid-template-columns:11rem 1fr; gap:1rem}
+  @media (max-width:620px){ dl.gloss div{grid-template-columns:1fr; gap:.2rem} }
+  dl.gloss dt{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.88rem}
+  dl.gloss dd{margin:0; color:var(--ink-soft); font-size:.93rem}
+
+  .callout{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+    background:color-mix(in srgb,var(--accent) 7%,transparent); border-radius:9px; padding:.9rem 1.1rem; max-width:var(--stage-max); font-size:.93rem}
+  .callout .eyebrow{color:var(--accent)}
+
+  .pager{display:flex; justify-content:space-between; gap:1rem; margin-top:2.6rem; max-width:var(--stage-max)}
+  .pager button{all:unset; cursor:pointer; font-family:"IBM Plex Mono",monospace; font-size:.82rem;
+    padding:.55rem .9rem; border:1px solid var(--line-strong); border-radius:6px; color:var(--ink-soft)}
+  .pager button:hover{border-color:var(--accent); color:var(--accent)}
+  .pager button[disabled]{opacity:.35; cursor:default; pointer-events:none}
+
+  .fnote{font-size:.8rem; color:var(--grey); max-width:var(--stage-max); margin-top:1.4rem}
+  .kbd{font-family:"IBM Plex Mono",monospace; font-size:.72rem; border:1px solid var(--line-strong); border-bottom-width:2px; border-radius:4px; padding:.05rem .35rem}
+</style>
+
+<div class="wrap">
+  <aside class="rail">
+    <div class="brand">
+      <span class="pn">A4</span>
+      <h1>Experimento Factorial</h1>
+    </div>
+    <p class="sub">Capacidad de proceso, error de medición e interpretación de resultados · Temas 9 y 10</p>
+    <nav class="toc" id="toc" aria-label="Secciones"></nav>
+    <div class="railfoot">
+      Navega con <span class="kbd">←</span> <span class="kbd">→</span> o los números.
+      Tu avance en la lista de entregables se guarda en este navegador.
+    </div>
+  </aside>
+
+  <main class="stage" id="stage">
+
+    <!-- 0 -->
+    <section class="slide active" data-title="Panorama" data-n="00">
+      <header>
+        <p class="eyebrow">Ingeniería de Precisión · Nivel taxonómico: Uso</p>
+        <h2>Diseña un experimento que mejore la precisión dimensional de tu pieza</h2>
+        <p class="lede">Vas a planear, ejecutar y analizar un <b>DOE factorial 2²</b> en Minitab sobre una
+          dimensión crítica definida en CAD. Con los efectos, la interacción y los valores <i>p</i>
+          decidirás qué combinación de parámetros de manufactura da la mejor precisión y propondrás mejoras.</p>
+      </header>
+      <div class="grid2">
+        <div class="card"><h3>Competencia</h3><p>Aplicar herramientas de ingeniería de precisión —GD&amp;T, metrología,
+          análisis estadístico y manufactura avanzada— para optimizar procesos y productos garantizando calidad,
+          eficiencia y competitividad.</p></div>
+        <div class="card"><h3>Resultado esperado</h3><p>Un reporte de <strong>1 a 7 cuartillas</strong> (PDF) con 7 apartados,
+          el archivo de Minitab <span class="mono">.MPJ</span> y tres evidencias: diseño en Minitab, gráficas y el plano CAD.</p></div>
+        <div class="card"><h3>Trabajo por equipo</h3><p>Cada uno de los <strong>17 grupos</strong> recibe una pieza distinta y su
+          propio conjunto de mediciones. Los efectos, la combinación óptima y las conclusiones son diferentes entre equipos.</p></div>
+      </div>
+      <div class="callout" style="margin-top:1rem">
+        <p class="eyebrow">Antes de empezar</p>
+        Abre la carpeta <span class="mono">Grupo_XX/</span> de tu equipo y lee <span class="mono">GXX_ficha_asignacion.md</span>.
+        Ahí están tu número de parte, la dimensión crítica con su nominal y límites, y los dos factores con sus niveles.
+      </div>
+      <div class="pager"><span></span><button data-go="next">Siguiente: qué recibiste →</button></div>
+    </section>
+
+    <!-- 1 -->
+    <section class="slide" data-title="Tu material" data-n="01">
+      <header>
+        <p class="eyebrow">Insumos del grupo</p>
+        <h2>Qué hay en la carpeta de tu equipo</h2>
+        <p class="lede">Siete archivos. Ninguno resuelve la actividad: contienen la pieza, el plano
+          (según <b>ASME&nbsp;Y14.5-2018</b>) con tolerancias y GD&amp;T, y los datos experimentales que analizarás.</p>
+      </header>
+      <div class="scroll">
+        <table class="data">
+          <thead><tr><th>Archivo</th><th>Qué es</th><th>Para qué lo usas</th></tr></thead>
+          <tbody>
+            <tr><td>GXX_&lt;PN&gt;.step</td><td>Modelo 3D CAD (formato neutro)</td><td>Consultar dimensiones de diseño en Solid Edge o equivalente</td></tr>
+            <tr><td>GXX_&lt;PN&gt;.stl</td><td>Malla del mismo modelo</td><td>Vista rápida sin software CAD</td></tr>
+            <tr><td>GXX_&lt;PN&gt;_plano.pdf</td><td>Plano ASME Y14.5: PN, dimensión crítica con tolerancia ±, cotas de localización <b>básicas</b>, FCF con modificadores y datums, tercer diedro</td><td>Leer nominal y límites de especificación; interpretar la GD&amp;T</td></tr>
+            <tr><td>GXX_datos_DOE.xlsx</td><td><b>Recomendado.</b> 2 hojas: <span class="mono">Minitab</span> (400 corridas) y <span class="mono">Mediciones_crudas</span> (400 piezas × 2 lecturas)</td><td>Abrir directo en Minitab o Excel — sin líos de separador decimal</td></tr>
+            <tr><td>GXX_worksheet_Minitab.csv</td><td>Lo mismo en texto: <b>400 corridas</b> (2² × 100 réplicas), factor A, B y <span class="mono">Medicion_mm</span></td><td>Alternativa si prefieres importar el CSV</td></tr>
+            <tr><td>GXX_mediciones_crudas.csv</td><td>Dos lecturas por pieza (<span class="mono">Medicion_1/2_mm</span>), 400 piezas</td><td>Estimar el error de medición y separarlo de la variación del proceso</td></tr>
+            <tr><td>GXX_ficha_asignacion.md</td><td>Instrucciones específicas de tu grupo</td><td>Punto de partida: factores, niveles y pasos sugeridos</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fnote"><span class="mono">Medicion_mm</span> es el promedio de las dos lecturas de cada pieza; su diferencia es la
+        huella del instrumento. Todos los datos usan <b>punto decimal</b> y 4 decimales fijos (p. ej. <span class="mono">19.9930</span>);
+        si el CSV se ve raro en Excel en español, usa el <span class="mono">.xlsx</span>. La muestra grande
+        (100 por combinación) da potencia al DOE y valida el estudio de capacidad.</p>
+      <div class="pager"><button data-go="prev">← Panorama</button><button data-go="next">Fase 1 → definición</button></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide" data-title="Fase 1 · Definición" data-n="02">
+      <header>
+        <p class="eyebrow">Fase 1 — vale 25 puntos</p>
+        <h2>Definición del experimento</h2>
+        <p class="lede">Deja por escrito qué mides, con qué factores y en qué niveles, y genera el diseño 2² en Minitab.</p>
+      </header>
+      <ol class="steps">
+        <li><h4>Identifica la dimensión crítica en el plano CAD</h4><p>Es la cota con tolerancia <b>±</b> del cajetín (un diámetro, una profundidad o una longitud). Anota característica, nominal, LIE y LSE. Ojo: las cotas entre corchetes son <b>básicas</b> (sin tolerancia) y no son la respuesta del experimento.</p></li>
+        <li><h4>Declara los dos factores del proceso</h4><p>Tu ficha ya asigna A y B (de: velocidad de corte, avance, temperatura, presión, tiempo de mecanizado). Explica por qué cada uno puede mover esa dimensión.</p></li>
+        <li><h4>Fija exactamente dos niveles por factor</h4><p>Bajo (−1) y alto (+1), con unidades. Son los valores de la ficha.</p></li>
+        <li><h4>Registra el diseño 2²</h4><p>4 combinaciones × 100 réplicas = 400 corridas. Deja la matriz de diseño (los cuatro pares de niveles) como evidencia — captura o archivo <span class="mono">.MPJ</span>.</p>
+          <p><b>Minitab Web App</b> no tiene <i>Definir diseño factorial personalizado</i>. El análisis se hace directo sobre las columnas (Fase 2) o creando el diseño con <span class="mono">Estadísticas › DOE › Factorial › Crear diseño factorial</span> y pegando las respuestas — ver <b>Guía de Minitab</b>.</p></li>
+      </ol>
+
+      <div class="card" style="margin-top:1.3rem">
+        <h3>El espacio 2²</h3>
+        <p>Cada factor toma dos niveles codificados. El experimento visita las 4 esquinas; cada esquina se repite
+          100 veces (réplicas). Haz clic en una esquina para ver su combinación.</p>
+        <div class="doe">
+          <div class="square" id="sq">
+            <span class="axis bx">Factor A:  bajo (−1)  →  alto (+1)</span>
+            <span class="axis by">Factor B:  bajo (−1)  →  alto (+1)</span>
+            <button class="corner" style="left:0;bottom:100%" data-a="−1" data-b="+1" aria-pressed="false">A−<br>B+</button>
+            <button class="corner" style="left:100%;bottom:100%" data-a="+1" data-b="+1" aria-pressed="false">A+<br>B+</button>
+            <button class="corner" style="left:0;bottom:0" data-a="−1" data-b="−1" aria-pressed="true">A−<br>B−</button>
+            <button class="corner" style="left:100%;bottom:0" data-a="+1" data-b="−1" aria-pressed="false">A+<br>B−</button>
+          </div>
+          <p class="read" id="doeRead">Corrida seleccionada: <b>A = bajo</b>, <b>B = bajo</b> · réplicas 1–100 en el CSV.</p>
+        </div>
+      </div>
+      <div class="pager"><button data-go="prev">← Tu material</button><button data-go="next">Fase 2 → análisis</button></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide" data-title="Fase 2 · Análisis" data-n="03">
+      <header>
+        <p class="eyebrow">Fase 2 — vale 30 puntos</p>
+        <h2>Ejecución y análisis estadístico</h2>
+        <p class="lede">Obtén cuatro salidas: tabla ANOVA, Pareto de efectos, gráfica de efectos
+          principales y gráfica de interacción. En <b>Minitab Web App</b> no existe <i>Definir diseño
+          factorial personalizado</i>; usa la ruta directa (recomendada) o crea el diseño.</p>
+      </header>
+      <ol class="steps">
+        <li><h4>Abre los datos</h4><p><span class="mono">Archivo › Abrir</span> → <span class="mono">GXX_datos_DOE.xlsx</span> (hoja <span class="mono">Minitab</span>). Comprueba que los dos factores y <span class="mono">Medicion_mm</span> son columnas.</p></li>
+        <li><h4>Ruta directa — tabla ANOVA</h4>
+          <div class="path"><span>Estadísticas</span><b>›</b><span>ANOVA</span><b>›</b><span>Modelo lineal general</span><b>›</b><span>Ajustar modelo lineal general</span></div>
+          <p>Respuesta = <span class="mono">Medicion_mm</span>; Factores = A y B; en <b>Modelo</b> pon interacciones de orden 2 (añade <span class="mono">A*B</span>). Da la ANOVA con <b>F</b> y <b>p</b> para A, B y A·B.</p></li>
+        <li><h4>Ruta directa — Pareto y gráficas</h4>
+          <div class="path"><span>Estadísticas</span><b>›</b><span>Regresión</span><b>›</b><span>Ajustar modelo de regresión</span></div>
+          <p>Predictores continuos A y B + interacción; en <b>Gráficas</b> marca <b>Diagrama de Pareto de efectos estandarizados</b>. Los efectos principales y la interacción salen de <span class="mono">Estadísticas › ANOVA › Gráfica de efectos principales</span> y <span class="mono">› Gráfica de interacciones</span>.</p></li>
+        <li><h4>Ruta con diseño (alternativa)</h4>
+          <div class="path"><span>Estadísticas</span><b>›</b><span>DOE</span><b>›</b><span>Factorial</span><b>›</b><span>Crear diseño factorial</span></div>
+          <p>2 factores, pleno factorial, 100 réplicas, <b>sin aleatorizar</b>. Ordena esa hoja por A y B (<span class="mono">Datos › Ordenar</span>), pega la columna <span class="mono">Medicion_mm</span> del xlsx (ya viene en ese orden) y usa <span class="mono">Analizar diseño factorial</span> + <span class="mono">Gráficas factoriales</span>. Habilita también el <b>Optimizador de respuesta</b>.</p></li>
+        <li><h4>Lee la significancia — y la magnitud</h4><p>Marca los términos con <span class="sig">p &lt; 0.05</span> (nómbralos todos). Con 400 datos casi todo sale significativo: usa el <b>Pareto</b> y el <b>tamaño del efecto frente a la tolerancia</b> para separar lo estadísticamente significativo de lo <b>prácticamente</b> relevante.</p></li>
+        <li><h4>Estima el error de medición</h4><p>Hoja <span class="mono">Mediciones_crudas</span>: <span class="mono">Calc › Calculadora</span> → <span class="mono">Rango = ABS(Medicion_1_mm − Medicion_2_mm)</span>; su media R̄ da <span class="mono">s<sub>medición</sub> ≈ R̄ / 1.128</span>. Compáralo con la dispersión pieza a pieza.</p></li>
+      </ol>
+
+      <h3 style="margin:1.6rem 0 .5rem; font-size:1.05rem">Cómo se lee una tabla ANOVA (ejemplo de formato)</h3>
+      <div class="scroll">
+        <table class="data">
+          <thead><tr><th>Fuente</th><th>GL</th><th>SC (Adj)</th><th>MC (Adj)</th><th>F</th><th>p</th><th>efecto (mm)</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>A — factor principal</td><td>1</td><td>0.052400</td><td>0.052400</td><td>1180</td><td class="sig">0.000</td><td>0.0229</td><td><span class="tag bad">domina</span></td></tr>
+            <tr><td>B — factor principal</td><td>1</td><td>0.000210</td><td>0.000210</td><td>4.7</td><td class="sig">0.030</td><td>0.0015</td><td><span class="tag">significativo, pequeño</span></td></tr>
+            <tr><td>A·B — interacción</td><td>1</td><td>0.000030</td><td>0.000030</td><td>0.7</td><td>0.412</td><td>0.0005</td><td><span class="tag ok">no significativo</span></td></tr>
+            <tr><td>Error</td><td>396</td><td>0.017600</td><td>0.000044</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>Total</td><td>399</td><td>0.070240</td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fnote">Ejemplo de formato — tus valores salen de tu propio CSV (GL de error = 400 − 4 = 396).
+        Lectura: <span class="mono">p &lt; 0.05</span> → el término influye; compara el <b>efecto</b> con la tolerancia
+        (aquí B es significativo pero su efecto, 0.0015 mm, es &lt; 8&nbsp;% de una tolerancia de ±0.010 mm).</p>
+      <div class="pager"><button data-go="prev">← Fase 1</button><button data-go="next">Fase 3 → interpretación</button></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide" data-title="Fase 3 · Interpretación" data-n="04">
+      <header>
+        <p class="eyebrow">Fase 3 — vale 25 puntos</p>
+        <h2>Interpretación técnica de resultados</h2>
+        <p class="lede">Regresa al plano: compara con el diseño, elige la mejor combinación, explica de dónde viene
+          la variación y propón mejoras con base en los números.</p>
+      </header>
+      <ol class="steps">
+        <li><h4>Compara contra el CAD</h4><p>Enfrenta cada media por combinación con el <b>nominal</b> y con al menos un <b>límite</b> (LIE o LSE) del plano.</p></li>
+        <li><h4>Identifica la mejor combinación</h4><p>La que produce el valor medio más cercano al nominal (mejor exactitud) con dispersión aceptable. Nómbrala por sus niveles.</p></li>
+        <li><h4>Evalúa la capacidad</h4><p>Para esa combinación (100 piezas): <span class="mono">Estadísticas › Herramientas de calidad › Análisis de capacidad › Normal</span> con LIE/LSE del plano, o a mano <span class="mono">Cp = (LSE−LIE)/6σ</span> y <span class="mono">Cpk</span> con la media real.</p></li>
+        <li><h4>Clasifica las fuentes de variación</h4>
+          <div class="grid2" style="margin:.5rem 0">
+            <div class="card"><h3>Proceso</h3><p>La media cambia con A o B; efectos e interacción significativos. Se corrige con parámetros.</p></div>
+            <div class="card"><h3>Sistema de medición</h3><p>Las dos lecturas de una misma pieza difieren de forma comparable a la variación entre piezas. Se corrige con el instrumento / método.</p></div>
+            <div class="card"><h3>Operación</h3><p>Corridas atípicas, saltos por cambio de turno o de montaje que no siguen el patrón de A/B.</p></div>
+          </div></li>
+        <li><h4>Propón ≥ 2 mejoras</h4><p>Cada una ligada a un resultado: “fijar A en su nivel bajo (efecto −0.02 mm, p&lt;0.001)”, “calibrar el micrómetro: el error de medición explica el 30&nbsp;% de la dispersión”, etc.</p></li>
+      </ol>
+      <div class="callout" style="margin-top:1.2rem">
+        <p class="eyebrow">Distinción clave del Tema 10</p>
+        Un proceso puede ser <b>preciso</b> (σ pequeña, Cp alto) y a la vez <b>inexacto</b> (media lejos del nominal, Cpk bajo)
+        si los factores están mal ajustados. El DOE te dice cómo mover la media sin aumentar la dispersión.
+      </div>
+      <div class="pager"><button data-go="prev">← Fase 2</button><button data-go="next">Rúbrica →</button></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide" data-title="Rúbrica" data-n="05">
+      <header>
+        <p class="eyebrow">Evaluación — 100 puntos · Nivel: Uso</p>
+        <h2>Rúbrica de la actividad</h2>
+        <p class="lede">Abre cada criterio para ver los tres niveles de desempeño. Altamente competente 100–86&nbsp;% ·
+          Competente 85–70&nbsp;% · Aún sin desarrollar 69–0&nbsp;%.</p>
+      </header>
+      <div class="rubric" id="rubric"></div>
+      <div class="pager"><button data-go="prev">← Fase 3</button><button data-go="next">Entregables →</button></div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide" data-title="Entregables" data-n="06">
+      <header>
+        <p class="eyebrow">Cierre</p>
+        <h2>Entregables y lista de verificación</h2>
+        <p class="lede">Marca conforme avances. La lista se guarda en este navegador para tu equipo.</p>
+      </header>
+      <div class="grid2" style="margin-bottom:1.2rem">
+        <div class="card"><h3>Reporte PDF · 1–7 cuartillas</h3><p>Siete apartados: introducción, definición del experimento, diseño factorial,
+          tabla de datos, resultados, comparación con CAD y conclusiones.</p></div>
+        <div class="card"><h3>Archivo de Minitab</h3><p><span class="mono">.MPJ</span> (o equivalente) con el diseño 2² y el análisis completo.</p></div>
+        <div class="card"><h3>Tres evidencias</h3><p>Diseño en Minitab · tablas o gráficas (efectos principales / interacción / Pareto) · plano CAD.</p></div>
+      </div>
+      <ul class="check" id="check"></ul>
+      <div class="pager"><button data-go="prev">← Rúbrica</button><button data-go="next">Glosario →</button></div>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide" data-title="Glosario" data-n="07">
+      <header>
+        <p class="eyebrow">Referencia rápida — Temas 9 y 10</p>
+        <h2>Glosario</h2>
+      </header>
+      <dl class="gloss">
+        <div><dt>Cp</dt><dd>Capacidad potencial: ancho de la tolerancia entre 6σ. Mide solo dispersión, no centrado.</dd></div>
+        <div><dt>Cpk</dt><dd>Capacidad real: considera qué tan centrada está la media respecto a los límites. Cpk ≤ Cp.</dd></div>
+        <div><dt>Efecto principal</dt><dd>Cambio promedio en la respuesta al pasar un factor de su nivel bajo al alto.</dd></div>
+        <div><dt>Interacción (A·B)</dt><dd>El efecto de un factor depende del nivel del otro. En la gráfica, líneas no paralelas.</dd></div>
+        <div><dt>Valor p</dt><dd>Probabilidad de ver un efecto así de grande si el factor no influyera. p &lt; 0.05 → se declara significativo.</dd></div>
+        <div><dt>Error de medición</dt><dd>Variación aportada por el instrumento y el método, no por la pieza. Aquí se estima con dos lecturas por pieza.</dd></div>
+        <div><dt>Réplica</dt><dd>Pieza adicional fabricada y medida en la misma combinación de factores. Permite estimar el error.</dd></div>
+        <div><dt>Dimensión crítica</dt><dd>Cota cuya variación compromete la función del ensamble; es la respuesta del experimento.</dd></div>
+        <div><dt>GD&amp;T</dt><dd>Dimensionado y tolerancias geométricas: controla forma, orientación y ubicación respecto a datums.</dd></div>
+        <div><dt>Datum</dt><dd>Referencia teórica (plano, eje o punto) desde la que se miden las tolerancias geométricas. En el plano lleva un símbolo de triángulo relleno con letra.</dd></div>
+        <div><dt>Cota básica</dt><dd>Valor teórico exacto, sin tolerancia, mostrado entre corchetes. Su variación permitida la fija el marco de control (posición o simetría), no un ±. Regla de ASME Y14.5.</dd></div>
+        <div><dt>ASME Y14.5</dt><dd>Norma de dimensionado y tolerancias geométricas usada en estos planos (edición 2018). Proyección en tercer diedro.</dd></div>
+        <div><dt>LIE / LSE</dt><dd>Límite inferior / superior de especificación: nominal menos y más la tolerancia.</dd></div>
+        <div><dt>Diseño 2²</dt><dd>Factorial completo con 2 factores a 2 niveles: 4 combinaciones que cubren todo el espacio. Aquí con 100 réplicas por combinación (400 corridas).</dd></div>
+      </dl>
+      <div class="pager"><button data-go="prev">← Entregables</button><span></span></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var toc = document.getElementById('toc');
+  var idx = 0;
+
+  slides.forEach(function(s, i){
+    var b = document.createElement('button');
+    b.innerHTML = '<span class="n">'+s.dataset.n+'</span><span>'+s.dataset.title+'</span>';
+    b.addEventListener('click', function(){ go(i); });
+    toc.appendChild(b);
+  });
+  var tocBtns = Array.prototype.slice.call(toc.children);
+
+  function go(i){
+    i = Math.max(0, Math.min(slides.length-1, i));
+    slides[idx].classList.remove('active');
+    tocBtns[idx].removeAttribute('aria-current');
+    idx = i;
+    slides[idx].classList.add('active');
+    tocBtns[idx].setAttribute('aria-current','true');
+    document.getElementById('stage').scrollTo({top:0, behavior:'instant'});
+    window.scrollTo({top:0});
+  }
+  go(0);
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-go]');
+    if(!t) return;
+    go(idx + (t.dataset.go === 'next' ? 1 : -1));
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target.matches('input,textarea,summary')) return;
+    if(e.key === 'ArrowRight') go(idx+1);
+    else if(e.key === 'ArrowLeft') go(idx-1);
+    else if(/^[0-9]$/.test(e.key)) go(parseInt(e.key,10));
+  });
+
+  /* 2^2 widget */
+  var sq = document.getElementById('sq');
+  if(sq){
+    var read = document.getElementById('doeRead');
+    var reps = {'−1|−1':'1–100','−1|+1':'101–200','+1|−1':'201–300','+1|+1':'301–400'};
+    sq.addEventListener('click', function(e){
+      var c = e.target.closest('.corner'); if(!c) return;
+      sq.querySelectorAll('.corner').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      c.setAttribute('aria-pressed','true');
+      var a = c.dataset.a, b = c.dataset.b;
+      var la = a === '+1' ? 'alto' : 'bajo', lb = b === '+1' ? 'alto' : 'bajo';
+      read.innerHTML = 'Corrida seleccionada: <b>A = '+la+'</b>, <b>B = '+lb+'</b> · réplicas '+reps[a+'|'+b]+' en el CSV.';
+    });
+  }
+
+  /* rubric */
+  var CRIT = [
+    {t:'Definición del experimento', p:'25 pts',
+     hi:'Dimensión crítica identificada en el plano CAD. Dos o más factores. Exactamente dos niveles por factor. Evidencia del diseño 2² en Minitab (captura o archivo).',
+     mid:'Dimensión crítica y al menos dos factores con niveles, y evidencia del diseño; falta uno: identificación en el plano, niveles explícitos o evidencia del 2².',
+     lo:'Sin dimensión crítica desde CAD, menos de dos factores, sin dos niveles por factor, o sin evidencia del diseño en Minitab.'},
+    {t:'Ejecución y análisis estadístico', p:'30 pts',
+     hi:'Tabla con las 4 combinaciones y un valor por corrida. ANOVA, efectos principales e interacción. Al menos dos gráficas de Minitab. Valores p con el criterio p < 0.05 y todos los factores asociados.',
+     mid:'Tabla con 4 corridas. ANOVA o dos elementos del análisis (efectos, interacción o gráficas). Reporta p pero sin el criterio p < 0.05 o sin identificar todos los factores.',
+     lo:'Sin las 4 corridas, sin ANOVA ni gráficas, o sin valores p ni análisis de efectos.'},
+    {t:'Interpretación técnica de resultados', p:'25 pts',
+     hi:'Compara con nominal y al menos un límite del plano. Identifica la combinación asociada al valor más cercano al objetivo. Vincula la variación con al menos una fuente (proceso, medición u operación). Propone mínimo dos mejoras derivadas de los resultados.',
+     mid:'Compara con valores del CAD. Identifica una combinación. Menciona una fuente de variación sin vincularla a datos. Propone una mejora.',
+     lo:'No compara con el CAD, no identifica combinación, no describe fuentes de variación o no propone mejoras.'},
+    {t:'Estructura del reporte y evidencias', p:'20 pts',
+     hi:'PDF de 1 a 7 cuartillas con los 7 apartados. Integra tres evidencias: diseño en Minitab, tablas o gráficas, y plano CAD. Adjunta archivo de Minitab .MPJ o equivalente.',
+     mid:'PDF con 4 a 6 apartados. Al menos dos evidencias. El archivo de Minitab puede faltar o estar incompleto.',
+     lo:'Menos de cuatro apartados, menos de dos evidencias, o sin archivo de Minitab.'}
+  ];
+  var rb = document.getElementById('rubric');
+  if(rb) CRIT.forEach(function(c, i){
+    var d = document.createElement('details'); d.className = 'crit'; if(i===0) d.open = true;
+    d.innerHTML = '<summary><h3>'+c.t+'</h3><span class="pts">'+c.p+'</span></summary>'+
+      '<div class="levels">'+
+      '<div class="lvl hi"><b>Altamente competente</b>'+c.hi+'</div>'+
+      '<div class="lvl mid"><b>Competente</b>'+c.mid+'</div>'+
+      '<div class="lvl lo"><b>Aún sin desarrollar</b>'+c.lo+'</div></div>';
+    rb.appendChild(d);
+  });
+
+  /* checklist with localStorage */
+  var ITEMS = [
+    'Leímos GXX_ficha_asignacion.md y abrimos el plano y el modelo CAD',
+    'Anotamos nominal, LIE y LSE de la dimensión crítica desde el plano',
+    'Definimos los dos factores y sus dos niveles con unidades',
+    'Registramos la matriz del diseño 2² como evidencia',
+    'Abrimos GXX_datos_DOE.xlsx y corrimos el análisis (ANOVA + regresión, o creando el diseño)',
+    'Tenemos ANOVA con p, Pareto, efectos principales e interacción',
+    'Identificamos los términos con p < 0.05',
+    'Estimamos el error de medición con las dos lecturas por pieza',
+    'Comparamos las medias por combinación contra nominal y un límite',
+    'Elegimos la mejor combinación y calculamos Cp / Cpk',
+    'Clasificamos las fuentes de variación (proceso / medición / operación)',
+    'Redactamos al menos dos mejoras ligadas a resultados',
+    'Reporte PDF de 1–7 cuartillas con los 7 apartados',
+    'Adjuntamos el archivo .MPJ y las tres evidencias'
+  ];
+  var box = document.getElementById('check');
+  var KEY = 'a4-doe-check-v2';
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){ saved = {}; }
+  if(box) ITEMS.forEach(function(txt, i){
+    var li = document.createElement('li');
+    var id = 'ck'+i;
+    li.innerHTML = '<input type="checkbox" id="'+id+'"'+(saved[i]?' checked':'')+'><label for="'+id+'">'+txt+'</label>';
+    box.appendChild(li);
+    li.querySelector('input').addEventListener('change', function(e){
+      saved[i] = e.target.checked;
+      try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(err){}
+    });
+  });
+})();
+</script>
