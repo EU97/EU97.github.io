@@ -11,7 +11,7 @@ const translations = {
       about: "About",
       timeline: "Timeline",
       projects: "Projects",
-      precision: "Precision Engineering",
+      precision: "Course Resources",
       tools: "Tools",
       contact: "Contact"
     },
@@ -65,13 +65,12 @@ const translations = {
       confidential: "Confidential"
     },
 
-    // Precision Engineering Section
+    // Course Resources Section
     precision: {
-      badge: "Student Space",
-      title: "Precision Engineering",
-      subtitle: "Procedures, working files, selected activities, and instructions for students.",
-      accessNote: "Public-first model: publish only non-sensitive references here and host restricted files in authenticated platforms (LMS/Drive/SharePoint/Notion) using controlled-access links.",
-      courseLabel: "Course",
+      badge: "Course Resources",
+      title: "Course Portfolio",
+      subtitle: "Interactive resources, open tools, and structured activities for courses and professional training.",
+      courseLabel: "Course Category",
       weekLabel: "Week",
       labLabel: "Lab Type",
       statusLabel: "Status",
@@ -87,12 +86,12 @@ const translations = {
       procedure: "Procedure",
       instructions: "Instructions",
       files: "Working Files",
-      templateTitle: "Activity template checklist",
-      templateItem1: "Activity ID (course-week-topic format)",
-      templateItem2: "Title + short description",
-      templateItem3: "Course, week, lab type, and publication status",
-      templateItem4: "Procedure link + instruction link",
-      templateItem5: "Working file links (external managed storage)"
+      templateTitle: "Resource structure",
+      templateItem1: "Course category + activity identifier",
+      templateItem2: "Professional objective and short context",
+      templateItem3: "Learning route and practical status",
+      templateItem4: "Direct route to activity details (example: /curso/IngPre/Act4)",
+      templateItem5: "Editable methodology page for quick content updates"
     },
     
     // Skills Section
@@ -140,7 +139,7 @@ const translations = {
       about: "Acerca de",
       timeline: "Trayectoria",
       projects: "Proyectos",
-      precision: "Ingeniería de Precisión",
+      precision: "Recursos de Cursos",
       tools: "Herramientas",
       contact: "Contacto"
     },
@@ -194,13 +193,12 @@ const translations = {
       confidential: "Confidencial"
     },
 
-    // Precision Engineering Section
+    // Course Resources Section
     precision: {
-      badge: "Espacio para Estudiantes",
-      title: "Ingeniería de Precisión",
-      subtitle: "Procedimientos, archivos de trabajo, actividades seleccionadas e instrucciones para estudiantes.",
-      accessNote: "Modelo público primero: publica aquí solo referencias no sensibles y aloja archivos restringidos en plataformas autenticadas (LMS/Drive/SharePoint/Notion) con enlaces de acceso controlado.",
-      courseLabel: "Curso",
+      badge: "Recursos de Cursos",
+      title: "Portafolio de Cursos",
+      subtitle: "Recursos interactivos, herramientas libres y actividades estructuradas para cursos y formación profesional.",
+      courseLabel: "Categoría del Curso",
       weekLabel: "Semana",
       labLabel: "Tipo de Laboratorio",
       statusLabel: "Estado",
@@ -216,12 +214,12 @@ const translations = {
       procedure: "Procedimiento",
       instructions: "Instrucciones",
       files: "Archivos de Trabajo",
-      templateTitle: "Checklist de plantilla de actividad",
-      templateItem1: "ID de actividad (formato curso-semana-tema)",
-      templateItem2: "Título + descripción corta",
-      templateItem3: "Curso, semana, tipo de laboratorio y estado de publicación",
-      templateItem4: "Enlace de procedimiento + enlace de instrucciones",
-      templateItem5: "Enlaces de archivos de trabajo (almacenamiento externo administrado)"
+      templateTitle: "Estructura del recurso",
+      templateItem1: "Categoría de curso + identificador de actividad",
+      templateItem2: "Objetivo profesional y contexto breve",
+      templateItem3: "Ruta de aprendizaje y estado práctico",
+      templateItem4: "Ruta directa al detalle de actividad (ejemplo: /curso/IngPre/Act4)",
+      templateItem5: "Página de metodología editable para actualizaciones rápidas"
     },
     
     // Skills Section
@@ -372,9 +370,6 @@ function applyTranslations(lang) {
 
   const precisionSubtitle = document.getElementById('precision-subtitle');
   if (precisionSubtitle) precisionSubtitle.textContent = t.precision.subtitle;
-
-  const precisionAccessNote = document.getElementById('precision-access-note');
-  if (precisionAccessNote) precisionAccessNote.textContent = t.precision.accessNote;
 
   const courseLabel = document.getElementById('precision-filter-course-label');
   if (courseLabel) courseLabel.textContent = t.precision.courseLabel;
