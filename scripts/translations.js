@@ -11,6 +11,7 @@ const translations = {
       about: "About",
       timeline: "Timeline",
       projects: "Projects",
+      precision: "Precision Engineering",
       tools: "Tools",
       contact: "Contact"
     },
@@ -55,12 +56,43 @@ const translations = {
       controlTab: "Control & Automation",
       simulationTab: "Simulation & Viz",
       academicTab: "Academic & Leadership",
+      opensourceTab: "Open Source",
       
       viewDemo: "View Demo",
       viewProject: "View Project",
       viewPublications: "Publications",
       visitPlatform: "Visit Platform",
       confidential: "Confidential"
+    },
+
+    // Precision Engineering Section
+    precision: {
+      badge: "Student Space",
+      title: "Precision Engineering",
+      subtitle: "Procedures, working files, selected activities, and instructions for students.",
+      accessNote: "Public-first model: publish only non-sensitive references here and host restricted files in authenticated platforms (LMS/Drive/SharePoint/Notion) using controlled-access links.",
+      courseLabel: "Course",
+      weekLabel: "Week",
+      labLabel: "Lab Type",
+      statusLabel: "Status",
+      searchLabel: "Quick Search",
+      searchPlaceholder: "Search by title, description, or files...",
+      allCourses: "All Courses",
+      allWeeks: "All Weeks",
+      allLabTypes: "All Lab Types",
+      allStatuses: "All Statuses",
+      resultsOne: "activity",
+      resultsMany: "activities",
+      noResults: "No activities match your filters.",
+      procedure: "Procedure",
+      instructions: "Instructions",
+      files: "Working Files",
+      templateTitle: "Activity template checklist",
+      templateItem1: "Activity ID (course-week-topic format)",
+      templateItem2: "Title + short description",
+      templateItem3: "Course, week, lab type, and publication status",
+      templateItem4: "Procedure link + instruction link",
+      templateItem5: "Working file links (external managed storage)"
     },
     
     // Skills Section
@@ -108,6 +140,7 @@ const translations = {
       about: "Acerca de",
       timeline: "Trayectoria",
       projects: "Proyectos",
+      precision: "Ingeniería de Precisión",
       tools: "Herramientas",
       contact: "Contacto"
     },
@@ -152,12 +185,43 @@ const translations = {
       controlTab: "Control y Automatización",
       simulationTab: "Simulación y Visualización",
       academicTab: "Académico y Liderazgo",
+      opensourceTab: "Código Abierto",
       
       viewDemo: "Ver Demo",
       viewProject: "Ver Proyecto",
       viewPublications: "Publicaciones",
       visitPlatform: "Visitar Plataforma",
       confidential: "Confidencial"
+    },
+
+    // Precision Engineering Section
+    precision: {
+      badge: "Espacio para Estudiantes",
+      title: "Ingeniería de Precisión",
+      subtitle: "Procedimientos, archivos de trabajo, actividades seleccionadas e instrucciones para estudiantes.",
+      accessNote: "Modelo público primero: publica aquí solo referencias no sensibles y aloja archivos restringidos en plataformas autenticadas (LMS/Drive/SharePoint/Notion) con enlaces de acceso controlado.",
+      courseLabel: "Curso",
+      weekLabel: "Semana",
+      labLabel: "Tipo de Laboratorio",
+      statusLabel: "Estado",
+      searchLabel: "Búsqueda Rápida",
+      searchPlaceholder: "Buscar por título, descripción o archivos...",
+      allCourses: "Todos los Cursos",
+      allWeeks: "Todas las Semanas",
+      allLabTypes: "Todos los Tipos de Laboratorio",
+      allStatuses: "Todos los Estados",
+      resultsOne: "actividad",
+      resultsMany: "actividades",
+      noResults: "No hay actividades que coincidan con los filtros.",
+      procedure: "Procedimiento",
+      instructions: "Instrucciones",
+      files: "Archivos de Trabajo",
+      templateTitle: "Checklist de plantilla de actividad",
+      templateItem1: "ID de actividad (formato curso-semana-tema)",
+      templateItem2: "Título + descripción corta",
+      templateItem3: "Curso, semana, tipo de laboratorio y estado de publicación",
+      templateItem4: "Enlace de procedimiento + enlace de instrucciones",
+      templateItem5: "Enlaces de archivos de trabajo (almacenamiento externo administrado)"
     },
     
     // Skills Section
@@ -223,8 +287,9 @@ function applyTranslations(lang) {
   if (navLinks[1]) navLinks[1].textContent = t.nav.about;
   if (navLinks[2]) navLinks[2].textContent = t.nav.timeline;
   if (navLinks[3]) navLinks[3].textContent = t.nav.projects;
-  if (navLinks[4]) navLinks[4].textContent = t.nav.tools;
-  if (navLinks[5]) navLinks[5].textContent = t.nav.contact;
+  if (navLinks[4]) navLinks[4].textContent = t.nav.precision;
+  if (navLinks[5]) navLinks[5].textContent = t.nav.tools;
+  if (navLinks[6]) navLinks[6].textContent = t.nav.contact;
   
   // Hero Section
   const heroBadge = document.querySelector('.hero-badge');
@@ -296,6 +361,70 @@ function applyTranslations(lang) {
   if (projectTabSpans[3]) projectTabSpans[3].textContent = t.projects.controlTab;
   if (projectTabSpans[4]) projectTabSpans[4].textContent = t.projects.simulationTab;
   if (projectTabSpans[5]) projectTabSpans[5].textContent = t.projects.academicTab;
+  if (projectTabSpans[6]) projectTabSpans[6].textContent = t.projects.opensourceTab;
+
+  // Precision Engineering Section
+  const precisionBadge = document.querySelector('.precision .section-badge');
+  if (precisionBadge) precisionBadge.textContent = t.precision.badge;
+
+  const precisionTitle = document.querySelector('.precision .section-header h2');
+  if (precisionTitle) precisionTitle.textContent = t.precision.title;
+
+  const precisionSubtitle = document.getElementById('precision-subtitle');
+  if (precisionSubtitle) precisionSubtitle.textContent = t.precision.subtitle;
+
+  const precisionAccessNote = document.getElementById('precision-access-note');
+  if (precisionAccessNote) precisionAccessNote.textContent = t.precision.accessNote;
+
+  const courseLabel = document.getElementById('precision-filter-course-label');
+  if (courseLabel) courseLabel.textContent = t.precision.courseLabel;
+
+  const weekLabel = document.getElementById('precision-filter-week-label');
+  if (weekLabel) weekLabel.textContent = t.precision.weekLabel;
+
+  const labLabel = document.getElementById('precision-filter-lab-label');
+  if (labLabel) labLabel.textContent = t.precision.labLabel;
+
+  const statusLabel = document.getElementById('precision-filter-status-label');
+  if (statusLabel) statusLabel.textContent = t.precision.statusLabel;
+
+  const searchLabel = document.getElementById('precision-search-label');
+  if (searchLabel) searchLabel.textContent = t.precision.searchLabel;
+
+  const precisionSearch = document.getElementById('precision-search');
+  if (precisionSearch) precisionSearch.placeholder = t.precision.searchPlaceholder;
+
+  const courseFilter = document.getElementById('precision-filter-course');
+  if (courseFilter) courseFilter.dataset.allLabel = t.precision.allCourses;
+
+  const weekFilter = document.getElementById('precision-filter-week');
+  if (weekFilter) weekFilter.dataset.allLabel = t.precision.allWeeks;
+
+  const labFilter = document.getElementById('precision-filter-lab');
+  if (labFilter) labFilter.dataset.allLabel = t.precision.allLabTypes;
+
+  const statusFilter = document.getElementById('precision-filter-status');
+  if (statusFilter) statusFilter.dataset.allLabel = t.precision.allStatuses;
+
+  const precisionResults = document.getElementById('precision-results');
+  if (precisionResults) {
+    precisionResults.dataset.oneLabel = t.precision.resultsOne;
+    precisionResults.dataset.manyLabel = t.precision.resultsMany;
+    precisionResults.dataset.noResults = t.precision.noResults;
+    precisionResults.dataset.procedureLabel = t.precision.procedure;
+    precisionResults.dataset.instructionsLabel = t.precision.instructions;
+    precisionResults.dataset.filesLabel = t.precision.files;
+  }
+
+  const precisionTemplateTitle = document.getElementById('precision-template-title');
+  if (precisionTemplateTitle) precisionTemplateTitle.textContent = t.precision.templateTitle;
+
+  const precisionTemplateList = document.querySelectorAll('#precision-template-list li');
+  if (precisionTemplateList[0]) precisionTemplateList[0].textContent = t.precision.templateItem1;
+  if (precisionTemplateList[1]) precisionTemplateList[1].textContent = t.precision.templateItem2;
+  if (precisionTemplateList[2]) precisionTemplateList[2].textContent = t.precision.templateItem3;
+  if (precisionTemplateList[3]) precisionTemplateList[3].textContent = t.precision.templateItem4;
+  if (precisionTemplateList[4]) precisionTemplateList[4].textContent = t.precision.templateItem5;
   
   // Skills Section
   const skillsBadge = document.querySelector('.skills .section-badge');
@@ -345,6 +474,8 @@ function applyTranslations(lang) {
   // Footer
   const footerP = document.querySelector('.footer p');
   if (footerP) footerP.textContent = t.footer.copyright;
+
+  document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
 // Initialize language on page load

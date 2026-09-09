@@ -27,6 +27,7 @@ Currently serving as Associate Professor at [FIME-UANL](https://www.fime.uanl.mx
 | **About** | Background, education, and research focus |
 | **Timeline** | Academic and professional milestones |
 | **Projects** | Engineering and research projects |
+| **Precision Engineering** | Student resources: procedures, activities, and working files |
 | **Tools** | Technical skills and software stack |
 | **Contact** | Get in touch |
 
