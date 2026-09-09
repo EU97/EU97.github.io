@@ -60,6 +60,7 @@
   const scrollThreshold = 100;
 
   function handleNavbarScroll() {
+    if (!navbar) return;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
     // Hide navbar on scroll down, show on scroll up
@@ -84,7 +85,7 @@
       
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        const navHeight = navbar.offsetHeight;
+        const navHeight = navbar ? navbar.offsetHeight : 0;
         const targetPosition = targetElement.offsetTop - navHeight;
         
         window.scrollTo({
@@ -101,6 +102,7 @@
   const sections = document.querySelectorAll('section[id]');
   
   function highlightNavigation() {
+    if (!navbar) return;
     const scrollY = window.pageYOffset;
     
     sections.forEach(section => {
@@ -186,8 +188,11 @@
   // Project Card Tilt Effect (Optional Enhancement)
   // ============================================
   const tiltCards = document.querySelectorAll('.project-card');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasCoarsePointer = window.matchMedia('(hover: none), (pointer: coarse)').matches;
   
-  tiltCards.forEach(card => {
+  if (!prefersReducedMotion && !hasCoarsePointer) {
+    tiltCards.forEach(card => {
     card.addEventListener('mousemove', function(e) {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -205,7 +210,8 @@
     card.addEventListener('mouseleave', function() {
       card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
     });
-  });
+    });
+  }
 
   // ============================================
   // Scroll to Top Button (Optional)
@@ -352,6 +358,8 @@
   function initPrecisionEngineeringSection() {
     const grid = document.getElementById('precision-grid');
     const results = document.getElementById('precision-results');
+    const generalToolsGrid = document.getElementById('general-tools-grid');
+    const generalToolsSubtitle = document.getElementById('general-tools-subtitle');
     const courseFilter = document.getElementById('precision-filter-course');
     const weekFilter = document.getElementById('precision-filter-week');
     const labFilter = document.getElementById('precision-filter-lab');
@@ -363,8 +371,73 @@
     }
 
     const data = window.precisionEngineeringContent;
-    const activities = data && Array.isArray(data.activities) ? data.activities : [];
+    const activitiesInput = data && Array.isArray(data.activities) ? data.activities : [];
+    const generalToolsInput = data && Array.isArray(data.generalTools) ? data.generalTools : [];
     let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+
+    const defaultLabels = {
+      courseLabel: { en: 'General Course', es: 'Curso General' },
+      weekLabel: { en: 'Unscheduled', es: 'Sin Semana' },
+      labTypeLabel: { en: 'Lab Activity', es: 'Actividad de Laboratorio' },
+      statusLabel: { en: 'Published', es: 'Publicado' },
+      title: { en: 'Untitled activity', es: 'Actividad sin título' },
+      description: { en: 'No description available.', es: 'No hay descripción disponible.' }
+    };
+
+    function toLocalizedLabel(value, fallback) {
+      if (value && typeof value === 'object') return value;
+      if (typeof value === 'string' && value.trim()) {
+        return { en: value.trim(), es: value.trim() };
+      }
+      return fallback;
+    }
+
+    const activities = activitiesInput
+      .filter(activity => activity && typeof activity === 'object')
+      .map((activity, index) => {
+        const id = String(activity.id || `activity-${index + 1}`);
+        const status = typeof activity.status === 'string' ? activity.status : 'published';
+        return {
+          ...activity,
+          id,
+          course: String(activity.course || 'general-course'),
+          week: String(activity.week || 'unscheduled'),
+          labType: String(activity.labType || 'lab'),
+          status: status === 'draft' ? 'draft' : 'published',
+          courseLabel: toLocalizedLabel(activity.courseLabel, defaultLabels.courseLabel),
+          weekLabel: toLocalizedLabel(activity.weekLabel, defaultLabels.weekLabel),
+          labTypeLabel: toLocalizedLabel(activity.labTypeLabel, defaultLabels.labTypeLabel),
+          statusLabel: toLocalizedLabel(activity.statusLabel, defaultLabels.statusLabel),
+          title: toLocalizedLabel(activity.title, defaultLabels.title),
+          description: toLocalizedLabel(activity.description, defaultLabels.description),
+          procedureUrl: typeof activity.procedureUrl === 'string' && activity.procedureUrl ? activity.procedureUrl : '#',
+          instructionUrl: typeof activity.instructionUrl === 'string' && activity.instructionUrl ? activity.instructionUrl : '#',
+          workingFiles: Array.isArray(activity.workingFiles) ? activity.workingFiles : []
+        };
+      });
+
+    const generalTools = generalToolsInput
+      .filter(tool => tool && typeof tool === 'object')
+      .map((tool, index) => ({
+        id: String(tool.id || `tool-${index + 1}`),
+        title: toLocalizedLabel(tool.title, { en: 'Interactive Tool', es: 'Herramienta Interactiva' }),
+        description: toLocalizedLabel(tool.description, { en: 'No description available.', es: 'No hay descripción disponible.' }),
+        url: typeof tool.url === 'string' && tool.url ? tool.url : '#'
+      }));
+
+    function renderGeneralTools() {
+      if (!generalToolsGrid) return;
+      if (generalTools.length === 0) {
+        generalToolsGrid.innerHTML = `<div class="precision-empty">${escapeHtml(generalToolsGrid.dataset.emptyLabel || 'No general tools available yet.')}</div>`;
+        return;
+      }
+      generalToolsGrid.innerHTML = generalTools.map(tool => `
+        <a class="general-tool-card" href="${escapeHtml(tool.url)}">
+          <strong>${escapeHtml(getLocalizedText(tool.title, currentLang))}</strong>
+          <span>${escapeHtml(getLocalizedText(tool.description, currentLang))}</span>
+        </a>
+      `).join('');
+    }
 
     function renderFilterOptions() {
       const renderOptionSet = (selectEl, values, allLabel) => {
@@ -450,7 +523,7 @@
             const workingFilesLabel = escapeHtml(results.dataset.filesLabel || 'Working Files');
 
             const workingFiles = (activity.workingFiles || []).map(file => (
-              `<li><a href="${escapeHtml(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(getLocalizedText(file.label, currentLang))}</a></li>`
+              `<li><a href="${escapeHtml(file.url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(getLocalizedText(file.label, currentLang) || 'File')}</a></li>`
             )).join('');
 
             return `
@@ -491,10 +564,16 @@
 
     document.addEventListener('languageChanged', function(event) {
       currentLang = event.detail && event.detail.lang ? event.detail.lang : (localStorage.getItem('preferredLanguage') || 'en');
+      if (generalToolsSubtitle) {
+        generalToolsSubtitle.textContent = generalToolsSubtitle.dataset.label || generalToolsSubtitle.textContent;
+      }
+      renderGeneralTools();
       renderFilterOptions();
       renderActivities();
     });
 
+    grid.innerHTML = `<div class="precision-empty">${escapeHtml(results.dataset.loadingLabel || 'Loading activities...')}</div>`;
+    renderGeneralTools();
     renderFilterOptions();
     renderActivities();
   }

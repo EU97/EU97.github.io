@@ -4,6 +4,45 @@
  */
 
 window.precisionEngineeringContent = {
+  schemaVersion: '2.0',
+  generalTools: [
+    {
+      id: 'flight-instruments-sim',
+      title: { en: 'Flight Instruments Simulator', es: 'Simulador de Instrumentos de Vuelo' },
+      description: {
+        en: 'Interactive analog cockpit panel for navigation and pilot training.',
+        es: 'Panel analógico interactivo para navegación y entrenamiento de pilotos.'
+      },
+      url: '/projects/flight-instruments.html'
+    },
+    {
+      id: 'garmin-g1000-sim',
+      title: { en: 'Garmin G1000 System', es: 'Sistema Garmin G1000' },
+      description: {
+        en: 'Glass cockpit simulation with synchronized PFD and MFD displays.',
+        es: 'Simulación de cabina digital con pantallas PFD y MFD sincronizadas.'
+      },
+      url: '/projects/garmin-g1000.html'
+    },
+    {
+      id: 'fluid-dynamics-simulator',
+      title: { en: 'Fluid Dynamics Simulator', es: 'Simulador de Dinámica de Fluidos' },
+      description: {
+        en: 'Interactive fluid models and parameter exploration for engineering classes.',
+        es: 'Modelos interactivos de fluidos y exploración de parámetros para clases de ingeniería.'
+      },
+      url: '/projects/fluid-dynamics.html'
+    },
+    {
+      id: 'aircraft-systems-visualizer',
+      title: { en: 'Aircraft Systems Visualizer', es: 'Visualizador de Sistemas de Aeronave' },
+      description: {
+        en: 'Interactive overview of key aircraft subsystems and operating states.',
+        es: 'Vista interactiva de subsistemas clave de aeronaves y estados de operación.'
+      },
+      url: '/projects/aircraft-systems.html'
+    }
+  ],
   activities: [
     {
       id: "ingpre-act4-factorial-doe",
