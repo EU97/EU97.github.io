@@ -326,6 +326,174 @@
             card.style.display = 'none';
             card.classList.add('hidden');
           }
+
+          // ============================================
+          // Precision Engineering Section (Dynamic)
+          // ============================================
+          function escapeHtml(value) {
+            return String(value || '')
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+          }
+
+          function getLocalizedText(field, lang) {
+            if (typeof field === 'string') return field;
+            if (!field || typeof field !== 'object') return '';
+            return field[lang] || field.en || Object.values(field)[0] || '';
+          }
+
+          function initPrecisionEngineeringSection() {
+            const grid = document.getElementById('precision-grid');
+            const results = document.getElementById('precision-results');
+            const courseFilter = document.getElementById('precision-filter-course');
+            const weekFilter = document.getElementById('precision-filter-week');
+            const labFilter = document.getElementById('precision-filter-lab');
+            const statusFilter = document.getElementById('precision-filter-status');
+            const searchInput = document.getElementById('precision-search');
+
+            if (!grid || !results || !courseFilter || !weekFilter || !labFilter || !statusFilter || !searchInput) {
+              return;
+            }
+
+            const data = window.precisionEngineeringContent;
+            const activities = data && Array.isArray(data.activities) ? data.activities : [];
+            let currentLang = localStorage.getItem('preferredLanguage') || 'en';
+
+            function renderFilterOptions() {
+              const renderOptionSet = (selectEl, values, allLabel) => {
+                const previousValue = selectEl.value || 'all';
+                const optionsMarkup = values.map(item =>
+                  `<option value="${escapeHtml(item.value)}">${escapeHtml(item.label)}</option>`
+                ).join('');
+                selectEl.innerHTML = `<option value="all">${escapeHtml(allLabel)}</option>${optionsMarkup}`;
+                const stillExists = values.some(item => item.value === previousValue);
+                selectEl.value = stillExists ? previousValue : 'all';
+              };
+
+              const buildUniqueOptions = (valueKey, labelKey) => {
+                const optionMap = new Map();
+                activities.forEach(activity => {
+                  const optionValue = activity[valueKey];
+                  if (!optionValue || optionMap.has(optionValue)) return;
+                  optionMap.set(optionValue, {
+                    value: optionValue,
+                    label: getLocalizedText(activity[labelKey], currentLang) || optionValue
+                  });
+                });
+                return Array.from(optionMap.values());
+              };
+
+              renderOptionSet(
+                courseFilter,
+                buildUniqueOptions('course', 'courseLabel'),
+                courseFilter.dataset.allLabel || 'All Courses'
+              );
+              renderOptionSet(
+                weekFilter,
+                buildUniqueOptions('week', 'weekLabel'),
+                weekFilter.dataset.allLabel || 'All Weeks'
+              );
+              renderOptionSet(
+                labFilter,
+                buildUniqueOptions('labType', 'labTypeLabel'),
+                labFilter.dataset.allLabel || 'All Lab Types'
+              );
+              renderOptionSet(
+                statusFilter,
+                buildUniqueOptions('status', 'statusLabel'),
+                statusFilter.dataset.allLabel || 'All Statuses'
+              );
+            }
+
+            function renderActivities() {
+              const selectedCourse = courseFilter.value;
+              const selectedWeek = weekFilter.value;
+              const selectedLab = labFilter.value;
+              const selectedStatus = statusFilter.value;
+              const searchTerm = searchInput.value.trim().toLowerCase();
+
+              const filtered = activities.filter(activity => {
+                const title = getLocalizedText(activity.title, currentLang);
+                const description = getLocalizedText(activity.description, currentLang);
+                const filesText = (activity.workingFiles || [])
+                  .map(file => getLocalizedText(file.label, currentLang))
+                  .join(' ');
+
+                const matchesCourse = selectedCourse === 'all' || activity.course === selectedCourse;
+                const matchesWeek = selectedWeek === 'all' || activity.week === selectedWeek;
+                const matchesLab = selectedLab === 'all' || activity.labType === selectedLab;
+                const matchesStatus = selectedStatus === 'all' || activity.status === selectedStatus;
+                const matchesSearch = !searchTerm || `${title} ${description} ${filesText}`.toLowerCase().includes(searchTerm);
+
+                return matchesCourse && matchesWeek && matchesLab && matchesStatus && matchesSearch;
+              });
+
+              if (filtered.length === 0) {
+                grid.innerHTML = `<div class="precision-empty">${escapeHtml(results.dataset.noResults || 'No activities match your filters.')}</div>`;
+              } else {
+                grid.innerHTML = filtered.map(activity => {
+                  const courseLabel = getLocalizedText(activity.courseLabel, currentLang);
+                  const weekLabel = getLocalizedText(activity.weekLabel, currentLang);
+                  const labLabel = getLocalizedText(activity.labTypeLabel, currentLang);
+                  const statusLabel = getLocalizedText(activity.statusLabel, currentLang);
+                  const title = getLocalizedText(activity.title, currentLang);
+                  const description = getLocalizedText(activity.description, currentLang);
+                  const procedureLabel = escapeHtml(results.dataset.procedureLabel || 'Procedure');
+                  const instructionsLabel = escapeHtml(results.dataset.instructionsLabel || 'Instructions');
+                  const workingFilesLabel = escapeHtml(results.dataset.filesLabel || 'Working Files');
+
+                  const workingFiles = (activity.workingFiles || []).map(file => (
+                    `<li><a href="${escapeHtml(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(getLocalizedText(file.label, currentLang))}</a></li>`
+                  )).join('');
+
+                  return `
+                    <article class="precision-card">
+                      <div class="precision-card-header">
+                        <h3>${escapeHtml(title)}</h3>
+                        <span class="precision-status precision-status--${escapeHtml(activity.status)}">${escapeHtml(statusLabel)}</span>
+                      </div>
+                      <p class="precision-description">${escapeHtml(description)}</p>
+                      <div class="precision-meta">
+                        <span>${escapeHtml(courseLabel)}</span>
+                        <span>${escapeHtml(weekLabel)}</span>
+                        <span>${escapeHtml(labLabel)}</span>
+                      </div>
+                      <div class="precision-links">
+                        <a href="${escapeHtml(activity.procedureUrl)}" target="_blank" rel="noopener noreferrer">${procedureLabel}</a>
+                        <a href="${escapeHtml(activity.instructionUrl)}" target="_blank" rel="noopener noreferrer">${instructionsLabel}</a>
+                      </div>
+                      <div class="precision-files">
+                        <h4>${workingFilesLabel}</h4>
+                        <ul>${workingFiles}</ul>
+                      </div>
+                    </article>
+                  `;
+                }).join('');
+              }
+
+              const resultSuffix = filtered.length === 1
+                ? (results.dataset.oneLabel || 'activity')
+                : (results.dataset.manyLabel || 'activities');
+              results.textContent = `${filtered.length} ${resultSuffix}`;
+            }
+
+            [courseFilter, weekFilter, labFilter, statusFilter].forEach(filter =>
+              filter.addEventListener('change', renderActivities)
+            );
+            searchInput.addEventListener('input', debounce(renderActivities, 120));
+
+            document.addEventListener('languageChanged', function(event) {
+              currentLang = event.detail && event.detail.lang ? event.detail.lang : (localStorage.getItem('preferredLanguage') || 'en');
+              renderFilterOptions();
+              renderActivities();
+            });
+
+            renderFilterOptions();
+            renderActivities();
+          }
         });
       });
     });
@@ -455,6 +623,7 @@
   // ============================================
   // Initialize
   // ============================================
+  initPrecisionEngineeringSection();
   console.log('Portfolio initialized successfully!');
   console.log('✨ Enhanced features loaded: Project filtering, expandable tools, animated counters');
 })();

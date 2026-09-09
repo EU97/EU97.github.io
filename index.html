@@ -34,6 +34,7 @@
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#timeline" class="nav-link">Timeline</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#precision" class="nav-link">Precision Engineering</a></li>
                 <li><a href="#skills" class="nav-link">Tools</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
                 <li><button id="lang-toggle" class="lang-toggle" aria-label="Toggle language">🇪🇸 ES</button></li>
@@ -1185,6 +1186,70 @@
             </div>
         </div>
     </section>
+    <!-- Precision Engineering Section -->
+    <section id="precision" class="precision">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-badge">Student Space</span>
+                <h2>Precision Engineering</h2>
+                <p id="precision-subtitle">Procedures, working files, selected activities, and instructions for students.</p>
+            </div>
+
+            <div class="precision-access-note" id="precision-access-note">
+                Public-first model: publish only non-sensitive references here and host restricted files in authenticated platforms (LMS/Drive/SharePoint/Notion) using controlled-access links.
+            </div>
+
+            <div class="precision-controls">
+                <label class="precision-control">
+                    <span id="precision-filter-course-label">Course</span>
+                    <select id="precision-filter-course">
+                        <option value="all">All Courses</option>
+                    </select>
+                </label>
+                <label class="precision-control">
+                    <span id="precision-filter-week-label">Week</span>
+                    <select id="precision-filter-week">
+                        <option value="all">All Weeks</option>
+                    </select>
+                </label>
+                <label class="precision-control">
+                    <span id="precision-filter-lab-label">Lab Type</span>
+                    <select id="precision-filter-lab">
+                        <option value="all">All Lab Types</option>
+                    </select>
+                </label>
+                <label class="precision-control">
+                    <span id="precision-filter-status-label">Status</span>
+                    <select id="precision-filter-status">
+                        <option value="all">All Statuses</option>
+                    </select>
+                </label>
+                <label class="precision-control precision-control--search">
+                    <span id="precision-search-label">Quick Search</span>
+                    <input
+                        id="precision-search"
+                        type="search"
+                        placeholder="Search by title, description, or files..."
+                        autocomplete="off"
+                    />
+                </label>
+            </div>
+
+            <p class="precision-results" id="precision-results">0 activities</p>
+            <div class="precision-grid" id="precision-grid"></div>
+
+            <div class="precision-template">
+                <h3 id="precision-template-title">Activity template checklist</h3>
+                <ul id="precision-template-list">
+                    <li>Activity ID (course-week-topic format)</li>
+                    <li>Title + short description</li>
+                    <li>Course, week, lab type, and publication status</li>
+                    <li>Procedure link + instruction link</li>
+                    <li>Working file links (external managed storage)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="section-container">
@@ -1270,6 +1335,7 @@
 
     <!-- JavaScript -->
     <script src="/scripts/translations.js"></script>
+    <script src="/scripts/precision-content.js"></script>
     <script src="/scripts/main.js"></script>
 </body>
 </html>
