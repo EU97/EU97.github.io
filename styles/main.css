@@ -937,17 +937,35 @@ section {
 
 /* === Precision Engineering Section === */
 .precision {
-  background: var(--bg-tertiary);
+  background:
+    radial-gradient(circle at 14% 22%, rgba(0, 212, 255, 0.12), transparent 42%),
+    radial-gradient(circle at 82% 0%, rgba(123, 104, 238, 0.16), transparent 45%),
+    var(--bg-tertiary);
+  position: relative;
+  overflow: hidden;
 }
 
-.precision-access-note {
-  max-width: 900px;
-  margin: 0 auto var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 0.75rem;
-  border: 1px solid var(--border-color);
-  background: rgba(0, 212, 255, 0.08);
-  color: var(--text-primary);
+.precision::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 55%);
+  animation: precisionDrift 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.precision .section-container {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes precisionDrift {
+  from {
+    transform: translate3d(-4%, -2%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 3%, 0) scale(1.06);
+  }
 }
 
 .precision-controls {
@@ -956,6 +974,12 @@ section {
   gap: var(--spacing-sm);
   max-width: 1000px;
   margin: 0 auto;
+  padding: var(--spacing-sm);
+  border-radius: 1rem;
+  background: rgba(20, 24, 36, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(12px);
 }
 
 .precision-control {
@@ -974,12 +998,13 @@ section {
 
 .precision-control select,
 .precision-control input {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(10, 14, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--text-primary);
   border-radius: 0.6rem;
   padding: 0.65rem 0.75rem;
   font-size: 0.95rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .precision-control select:focus,
@@ -987,6 +1012,7 @@ section {
   border-color: var(--primary-color);
   outline: none;
   box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
 }
 
 .precision-control--search {
@@ -1009,18 +1035,20 @@ section {
 }
 
 .precision-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: linear-gradient(165deg, rgba(26, 31, 46, 0.82), rgba(20, 24, 36, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 1rem;
   padding: var(--spacing-md);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(0, 212, 255, 0.1) inset;
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.55s ease both;
 }
 
 .precision-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.01);
   border-color: var(--primary-color);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  box-shadow: var(--shadow-lg), var(--shadow-glow), 0 0 30px rgba(0, 212, 255, 0.14);
 }
 
 .precision-card-header {
@@ -1086,15 +1114,18 @@ section {
 .precision-links a {
   display: block;
   text-align: center;
-  background: var(--primary-color);
-  color: var(--text-light);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--bg-dark);
   padding: 0.45rem 0.6rem;
   border-radius: 0.5rem;
   font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .precision-links a:hover {
-  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  color: var(--bg-dark);
 }
 
 .precision-files h4 {
@@ -1128,10 +1159,11 @@ section {
 .precision-template {
   max-width: 1000px;
   margin: var(--spacing-md) auto 0;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: rgba(20, 24, 36, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.75rem;
   padding: var(--spacing-md);
+  backdrop-filter: blur(10px);
 }
 
 .precision-template h3 {
@@ -1428,6 +1460,13 @@ section {
 
   .precision-links {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .precision::before,
+  .precision-card {
+    animation: none;
   }
 }
 

@@ -1,10 +1,41 @@
 /**
- * Precision Engineering student content
+ * Course resources content
  * Add new activities by appending one object to the activities array.
  */
 
 window.precisionEngineeringContent = {
   activities: [
+    {
+      id: "ingpre-act4-factorial-doe",
+      course: "precision-engineering",
+      courseLabel: { en: "Precision Engineering", es: "Ingeniería de Precisión" },
+      week: "act-04",
+      weekLabel: { en: "Activity 04", es: "Actividad 04" },
+      labType: "methodology",
+      labTypeLabel: { en: "Methodology", es: "Metodología" },
+      status: "published",
+      statusLabel: { en: "Published", es: "Publicado" },
+      title: {
+        en: "Activity 4 — Factorial Experiment (2²) Route",
+        es: "Actividad 4 — Ruta de Experimento Factorial (2²)"
+      },
+      description: {
+        en: "Direct access to /curso/IngPre/Act4 with an editable methodology page powered by the Metodologia_Actividad4.html addon.",
+        es: "Acceso directo a /curso/IngPre/Act4 con metodología editable basada en el addon Metodologia_Actividad4.html."
+      },
+      procedureUrl: "/curso/IngPre/Act4/",
+      instructionUrl: "/addons/Metodologia_Actividad4.html",
+      workingFiles: [
+        {
+          label: { en: "Course route /curso/IngPre/Act4", es: "Ruta del curso /curso/IngPre/Act4" },
+          url: "/curso/IngPre/Act4/"
+        },
+        {
+          label: { en: "Editable methodology source", es: "Fuente editable de metodología" },
+          url: "/addons/Metodologia_Actividad4.html"
+        }
+      ]
+    },
     {
       id: "metrology-i-week-01-dial-indicator",
       course: "metrology-i",
