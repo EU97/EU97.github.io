@@ -37,6 +37,7 @@
                 <li><a href="#precision" class="nav-link">Course Resources</a></li>
                 <li><a href="#skills" class="nav-link">Tools</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">🌙 Dark</button></li>
                 <li><button id="lang-toggle" class="lang-toggle" aria-label="Toggle language">🇪🇸 ES</button></li>
             </ul>
         </div>
@@ -1194,7 +1195,32 @@
                 <h2>Course Portfolio</h2>
                 <p id="precision-subtitle">Interactive resources, open tools, and structured activities for courses and professional training.</p>
             </div>
-
+ 
+            <div class="general-tools" aria-labelledby="general-tools-title">
+                <div class="general-tools__header">
+                    <h3 id="general-tools-title">Interactive Tools for General Use</h3>
+                    <p id="general-tools-subtitle">Reusable simulators and calculators for engineering, instruction, and experimentation.</p>
+                </div>
+                <div class="general-tools__grid" id="general-tools-grid">
+                    <a class="general-tool-card" href="/projects/flight-instruments.html">
+                        <strong>Flight Instruments Simulator</strong>
+                        <span>Interactive analog cockpit instrument suite.</span>
+                    </a>
+                    <a class="general-tool-card" href="/projects/garmin-g1000.html">
+                        <strong>Garmin G1000 System</strong>
+                        <span>Dual-screen PFD/MFD avionics simulation.</span>
+                    </a>
+                    <a class="general-tool-card" href="/projects/fluid-dynamics.html">
+                        <strong>Fluid Dynamics Simulator</strong>
+                        <span>Interactive engineering calculations and flow models.</span>
+                    </a>
+                    <a class="general-tool-card" href="/projects/aircraft-systems.html">
+                        <strong>Aircraft Systems Visualizer</strong>
+                        <span>Interactive aircraft subsystem behavior explorer.</span>
+                    </a>
+                </div>
+            </div>
+ 
             <div class="precision-controls">
                 <label class="precision-control">
                     <span id="precision-filter-course-label">Course</span>
@@ -1330,6 +1356,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="/scripts/theme.js"></script>
     <script src="/scripts/translations.js"></script>
     <script src="/scripts/precision-content.js"></script>
     <script src="/scripts/main.js"></script>

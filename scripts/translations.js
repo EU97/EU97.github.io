@@ -86,6 +86,10 @@ const translations = {
       procedure: "Procedure",
       instructions: "Instructions",
       files: "Working Files",
+      loading: "Loading activities...",
+      generalToolsTitle: "Interactive Tools for General Use",
+      generalToolsSubtitle: "Reusable simulators and calculators for engineering, instruction, and experimentation.",
+      generalToolsEmpty: "No general tools available yet.",
       templateTitle: "Resource structure",
       templateItem1: "Course category + activity identifier",
       templateItem2: "Professional objective and short context",
@@ -214,6 +218,10 @@ const translations = {
       procedure: "Procedimiento",
       instructions: "Instrucciones",
       files: "Archivos de Trabajo",
+      loading: "Cargando actividades...",
+      generalToolsTitle: "Herramientas Interactivas de Uso General",
+      generalToolsSubtitle: "Simuladores y calculadoras reutilizables para ingeniería, docencia y experimentación.",
+      generalToolsEmpty: "Aún no hay herramientas generales disponibles.",
       templateTitle: "Estructura del recurso",
       templateItem1: "Categoría de curso + identificador de actividad",
       templateItem2: "Objetivo profesional y contexto breve",
@@ -406,9 +414,24 @@ function applyTranslations(lang) {
     precisionResults.dataset.oneLabel = t.precision.resultsOne;
     precisionResults.dataset.manyLabel = t.precision.resultsMany;
     precisionResults.dataset.noResults = t.precision.noResults;
+    precisionResults.dataset.loadingLabel = t.precision.loading;
     precisionResults.dataset.procedureLabel = t.precision.procedure;
     precisionResults.dataset.instructionsLabel = t.precision.instructions;
     precisionResults.dataset.filesLabel = t.precision.files;
+  }
+
+  const generalToolsTitle = document.getElementById('general-tools-title');
+  if (generalToolsTitle) generalToolsTitle.textContent = t.precision.generalToolsTitle;
+
+  const generalToolsSubtitle = document.getElementById('general-tools-subtitle');
+  if (generalToolsSubtitle) {
+    generalToolsSubtitle.textContent = t.precision.generalToolsSubtitle;
+    generalToolsSubtitle.dataset.label = t.precision.generalToolsSubtitle;
+  }
+
+  const generalToolsGrid = document.getElementById('general-tools-grid');
+  if (generalToolsGrid) {
+    generalToolsGrid.dataset.emptyLabel = t.precision.generalToolsEmpty;
   }
 
   const precisionTemplateTitle = document.getElementById('precision-template-title');

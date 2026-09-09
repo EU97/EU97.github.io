@@ -185,12 +185,13 @@
         .cm-btn-secondary:hover { border-color: #c084fc; color: #c084fc; }
     </style>
 </head>
-<body style="background:#000; overflow-x:hidden;">
+<body style="background:var(--bg-primary); overflow-x:hidden;">
 
     <nav class="nav" style="position:sticky; background:rgba(10,10,26,0.95);">
         <div class="nav-container">
             <a href="/" class="nav-logo">EU97</a>
             <a href="/#projects" style="color:var(--primary-color); font-weight:600; display:flex; align-items:center; gap:0.5rem;">← Portafolio</a>
+            <button class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar tema">🌙 Dark</button>
         </div>
     </nav>
 
@@ -247,6 +248,7 @@
             </a>
         </div>
     </section>
+    <script src="/scripts/theme.js"></script>
 
     <footer class="footer" style="background:#000000;">
         <div class="section-container">
