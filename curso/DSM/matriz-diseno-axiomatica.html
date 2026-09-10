@@ -1,0 +1,1290 @@
+<title>Matriz de Diseño Axiomático</title>
+<meta name="description" content="Guía interactiva del estudiante para entender el diseño axiomático y construir la matriz de diseño de la celda de manufactura.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper: #f3f4f0;
+    --surface: #fbfbf9;
+    --surface-2: #eceee7;
+    --ink: #1b211e;
+    --ink-soft: #495049;
+    --ink-faint: #7b837c;
+    --line: #d5d8ce;
+    --line-strong: #bcc0b3;
+    --accent: #d6480a;
+    --accent-ink: #a5380a;
+    --accent-soft: #f5ddcd;
+    --blue: #2f5d8a;
+    --blue-soft: #dde6ee;
+    --ok: #3a7a58;
+    --ok-bg: #dfeae1;
+    --warn: #a9760c;
+    --warn-bg: #f1e6cd;
+    --bad: #ad3021;
+    --bad-bg: #f0dbd6;
+    --radius: 4px;
+    --shadow: 0 1px 2px rgba(27,33,30,.05), 0 10px 30px rgba(27,33,30,.07);
+    --maxw: 1180px;
+    --read: 68ch;
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Spectral", Georgia, "Times New Roman", serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #141613;
+      --surface: #1c1f1b;
+      --surface-2: #23271f;
+      --ink: #e9ebe3;
+      --ink-soft: #b1b6ab;
+      --ink-faint: #838a7d;
+      --line: #333831;
+      --line-strong: #474d42;
+      --accent: #ff6a2b;
+      --accent-ink: #ff8a56;
+      --accent-soft: #3a2418;
+      --blue: #85b3da;
+      --blue-soft: #1d2c39;
+      --ok: #74c096;
+      --ok-bg: #1b2a22;
+      --warn: #e0b155;
+      --warn-bg: #2c2617;
+      --bad: #e28571;
+      --bad-bg: #2e1f1a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #141613;
+    --surface: #1c1f1b;
+    --surface-2: #23271f;
+    --ink: #e9ebe3;
+    --ink-soft: #b1b6ab;
+    --ink-faint: #838a7d;
+    --line: #333831;
+    --line-strong: #474d42;
+    --accent: #ff6a2b;
+    --accent-ink: #ff8a56;
+    --accent-soft: #3a2418;
+    --blue: #85b3da;
+    --blue-soft: #1d2c39;
+    --ok: #74c096;
+    --ok-bg: #1b2a22;
+    --warn: #e0b155;
+    --warn-bg: #2c2617;
+    --bad: #e28571;
+    --bad-bg: #2e1f1a;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.12; text-wrap: balance; margin: 0; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+
+  code, .mono { font-family: var(--font-mono); font-size: .92em; }
+
+  a { color: var(--blue); text-underline-offset: 3px; }
+
+  /* ---------- shell ---------- */
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 clamp(18px, 4vw, 40px);
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 64px);
+    align-items: start;
+  }
+
+  /* ---------- rail ---------- */
+  .rail {
+    position: sticky;
+    top: 0;
+    padding: 28px 0;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  .rail-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 14px;
+  }
+  .rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .rail a {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    padding: 7px 8px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-radius: var(--radius);
+    border-left: 2px solid transparent;
+  }
+  .rail a .n { font-family: var(--font-mono); font-weight: 500; color: var(--ink-faint); font-size: 12px; }
+  .rail a:hover { background: var(--surface-2); }
+  .rail a.active { background: var(--surface); border-left-color: var(--accent); color: var(--ink); }
+  .rail a.active .n { color: var(--accent-ink); }
+
+  /* ---------- content ---------- */
+  main { padding: 0 0 120px; min-width: 0; }
+
+  .step {
+    padding: clamp(40px, 7vw, 80px) 0;
+    border-top: 1px solid var(--line);
+  }
+  .step:first-of-type { border-top: none; }
+  .step > * { max-width: var(--read); }
+  .step > .bleed, .step > figure { max-width: none; }
+
+  .step-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .step-head .num { font-family: var(--font-mono); font-size: 13px; color: var(--accent-ink); font-weight: 500; }
+  h2 { font-size: clamp(26px, 4vw, 36px); }
+  h3 { font-size: 20px; margin-top: 34px; }
+  p { margin: 16px 0; }
+  .lead { font-size: 20px; color: var(--ink-soft); }
+
+  ul.plain, ol.tight { padding-left: 1.2em; margin: 16px 0; }
+  ul.plain li, ol.tight li { margin: 8px 0; }
+
+  .callout {
+    border-left: 3px solid var(--blue);
+    background: var(--blue-soft);
+    padding: 14px 18px;
+    margin: 22px 0;
+    font-size: 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .callout .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); display: block; margin-bottom: 4px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(44px, 9vw, 96px) 0 clamp(30px, 6vw, 60px); border-top: none; }
+  .hero h1 { font-size: clamp(38px, 7vw, 68px); font-weight: 800; letter-spacing: -0.015em; margin: 18px 0 0; }
+  .hero .lead { max-width: 60ch; margin-top: 22px; }
+  .equation {
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 34px 0 8px;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .vec, .dm {
+    display: inline-grid;
+    border-left: 2px solid var(--ink-soft);
+    border-right: 2px solid var(--ink-soft);
+    padding: 6px 10px;
+    gap: 3px 12px;
+  }
+  .vec { grid-template-columns: 1fr; text-align: center; }
+  .dm { grid-template-columns: repeat(3, 1fr); }
+  .dm span, .vec span { min-width: 1.2em; text-align: center; }
+  .dm .x { color: var(--accent-ink); font-weight: 600; }
+  .dm .o { color: var(--ink-faint); }
+
+  /* ---------- domain mapper ---------- */
+  .bleed { width: 100%; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(18px, 3vw, 30px);
+    margin: 26px 0;
+  }
+  .panel-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .domains { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .domains .col h4 {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .domains .col { min-width: 0; }
+  .chip {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 8px 9px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    margin-bottom: 7px;
+    line-height: 1.25;
+  }
+  .col.fr .chip, .col.dp .chip { cursor: pointer; }
+  .col.fr .chip:hover, .col.dp .chip:hover { border-color: var(--accent); }
+  .chip.lit { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+  .chip.dim { opacity: .32; }
+  .map-note { margin-top: 14px; font-size: 15px; color: var(--ink-soft); min-height: 3em; }
+  .map-note b { color: var(--ink); font-family: var(--font-display); }
+
+  /* ---------- design type mini matrices ---------- */
+  .types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 24px 0; }
+  .type { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; background: var(--surface); }
+  .type h4 { font-size: 15px; margin-bottom: 4px; }
+  .type .verdict { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  .type.good .verdict { color: var(--ok); }
+  .type.partial .verdict { color: var(--warn); }
+  .type.bad .verdict { color: var(--bad); }
+  .minigrid { display: inline-grid; grid-template-columns: repeat(2, 30px); grid-auto-rows: 30px; gap: 4px; margin: 12px 0 8px; }
+  .minigrid i {
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+    border: 1px solid var(--line-strong); border-radius: 3px; font-style: normal;
+  }
+  .minigrid i.x { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); }
+  .minigrid i.o { color: var(--ink-faint); }
+  .type p { font-size: 13.5px; margin: 8px 0 0; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- station map ---------- */
+  .stations { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 22px 0; }
+  .station {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 14px 15px;
+  }
+  .station .tag { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--accent-ink); letter-spacing: .06em; }
+  .station h4 { font-size: 15px; margin: 3px 0 6px; }
+  .station p { font-size: 13.5px; margin: 0; color: var(--ink-soft); line-height: 1.5; }
+  .station .role { display: block; margin-top: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint); }
+
+  /* ---------- matrix builder ---------- */
+  .builder-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  button.btn {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 13px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  button.btn:hover { border-color: var(--accent); }
+  button.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  :root[data-theme="dark"] button.btn.primary, :root:not([data-theme="light"]) button.btn.primary { color: #17130f; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button.btn.primary { color: #17130f; } }
+  button.btn:focus-visible, .cell:focus-visible, .rail a:focus-visible, .chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  .matrix-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .matrix {
+    display: grid;
+    grid-template-columns: 168px repeat(6, 62px);
+    gap: 4px;
+    align-items: stretch;
+    min-width: max-content;
+  }
+  .matrix .corner { }
+  .matrix .chead, .matrix .rhead {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+  }
+  .matrix .chead { flex-direction: column; justify-content: flex-end; text-align: center; gap: 2px; padding-bottom: 6px; }
+  .matrix .chead b { color: var(--accent-ink); font-size: 12px; }
+  .matrix .rhead { padding-right: 8px; justify-content: flex-end; text-align: right; gap: 6px; }
+  .matrix .rhead b { color: var(--accent-ink); }
+  .cell {
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--surface-2);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 40px;
+    color: var(--ink-faint);
+    transition: background .12s;
+  }
+  .cell.on { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); }
+  .cell.diag { cursor: not-allowed; }
+  .cell.diag.on { background: var(--accent); color: #fff; }
+  :root[data-theme="dark"] .cell.diag.on, :root:not([data-theme="light"]) .cell.diag.on { color: #17130f; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cell.diag.on { color: #17130f; } }
+  .cell.tri-out { box-shadow: inset 0 0 0 2px var(--bad); }
+
+  .verdict-box { margin-top: 20px; display: grid; gap: 10px; }
+  .verdict-main {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .verdict-main.good { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+  .verdict-main.partial { background: var(--warn-bg); color: var(--warn); border-color: var(--warn); }
+  .verdict-main.bad { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
+  .verdict-detail { font-size: 15px; color: var(--ink-soft); }
+  .verdict-detail .mono { color: var(--ink); }
+
+  /* ---------- jacobian ---------- */
+  .jac-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 18px 0; }
+  .slider label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); display: flex; justify-content: space-between; }
+  .slider input[type=range] { width: 100%; accent-color: var(--accent); margin-top: 6px; }
+  .jac-out { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; margin-top: 12px; }
+  .jmatrix {
+    display: inline-grid;
+    grid-template-columns: repeat(2, 84px);
+    gap: 6px;
+    border-left: 2px solid var(--ink-soft);
+    border-right: 2px solid var(--ink-soft);
+    padding: 8px 10px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .jmatrix span { text-align: center; padding: 4px 0; }
+  .jac-read { font-size: 15px; color: var(--ink-soft); }
+  .jac-read b { font-family: var(--font-mono); color: var(--ink); }
+  .jac-read .flag { color: var(--bad); font-family: var(--font-display); font-weight: 700; }
+  .jac-read .flag.ok { color: var(--ok); }
+
+  /* ---------- pausas activas ---------- */
+  .pausa {
+    border: 2px dashed var(--accent);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 18px 18px 16px;
+    margin: 16px 0;
+  }
+  .pausa .ptag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+  .pausa h4 { font-size: 16px; margin: 4px 0 8px; }
+  .pausa .look { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 12px; }
+  .checklist { display: grid; gap: 7px; margin: 10px 0; }
+  .checklist label { display: grid; grid-template-columns: 20px 1fr; gap: 9px; font-size: 14px; align-items: start; cursor: pointer; line-height: 1.4; }
+  .checklist input { margin-top: 3px; accent-color: var(--accent); }
+  .pausa textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    padding: 9px 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    color: var(--ink);
+    resize: vertical;
+    min-height: 62px;
+  }
+  .pausa textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .vartype { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-family: var(--font-mono); font-size: 12px; }
+  .vartype label { display: flex; gap: 5px; align-items: center; cursor: pointer; }
+  .vartype input { accent-color: var(--accent); }
+  .pausa .reg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 2px 0 12px; }
+  .pausa .reg input {
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 8px 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+    color: var(--ink);
+    width: 100%;
+  }
+  .pausa .reg input:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .pausa .reg-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); margin: 8px 0 2px; }
+  @media (max-width: 560px) { .pausa .reg { grid-template-columns: 1fr; } }
+
+  .progress-wrap { margin: 20px 0 4px; }
+  .progress-track { height: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .progress-bar { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
+
+  /* ---------- summary ---------- */
+  #resumen-salida {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-top: 16px;
+    color: var(--ink);
+  }
+
+  footer {
+    max-width: none;
+    border-top: 1px solid var(--line);
+    padding: 30px 0 0;
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; gap: 0; }
+    .rail {
+      position: static;
+      max-height: none;
+      padding: 20px 0 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .rail ol { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+    .rail a { border-left: none; border-bottom: 2px solid transparent; }
+    .rail a.active { border-left: none; border-bottom-color: var(--accent); }
+    .domains { grid-template-columns: repeat(2, 1fr); }
+    .types { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+
+  @media print {
+    .rail, .builder-toolbar, footer { display: none; }
+    .wrap { display: block; }
+    .step { page-break-inside: avoid; border: none; padding: 18px 0; }
+    body { font-size: 12px; background: #fff; color: #000; }
+  }
+</style>
+
+<div class="wrap">
+  <nav class="rail" aria-label="Secciones">
+    <p class="rail-title">Tema 5 · Guía</p>
+    <ol>
+      <li><a href="#s1"><span class="n">01</span><span>De lo heurístico a lo axiomático</span></a></li>
+      <li><a href="#s2"><span class="n">02</span><span>Los cuatro dominios</span></a></li>
+      <li><a href="#s3"><span class="n">03</span><span>Los dos axiomas</span></a></li>
+      <li><a href="#s4"><span class="n">04</span><span>La ecuación y los tipos de diseño</span></a></li>
+      <li><a href="#s5"><span class="n">05</span><span>La celda del campus</span></a></li>
+      <li><a href="#s6"><span class="n">06</span><span>Constructor de la matriz</span></a></li>
+      <li><a href="#s7"><span class="n">07</span><span>Relaciones no lineales: el jacobiano</span></a></li>
+      <li><a href="#s8"><span class="n">08</span><span>Visita a la celda: pausas activas</span></a></li>
+      <li><a href="#s9"><span class="n">09</span><span>Registro y resumen</span></a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="step hero" id="top">
+      <p class="eyebrow">Métodos de diseño aplicados a los sistemas de manufactura</p>
+      <h1>La matriz de diseño axiomático</h1>
+      <p class="lead">Guía interactiva para entender el método de Suh y construir, paso a paso, la matriz de diseño <span class="mono">[DM]</span> del proceso de la celda de manufactura. Avanza por las secciones, prueba el constructor de la matriz y usa la sección de registro cuando visites el laboratorio.</p>
+
+      <div class="equation" aria-hidden="true">
+        <span class="vec"><span>FR<sub>1</sub></span><span>FR<sub>2</sub></span><span>&#8942;</span><span>FR<sub>n</sub></span></span>
+        <span>=</span>
+        <span class="dm">
+          <span class="x">X</span><span class="o">O</span><span class="o">O</span>
+          <span class="x">X</span><span class="x">X</span><span class="o">O</span>
+          <span class="x">O</span><span class="x">X</span><span class="x">X</span>
+        </span>
+        <span class="vec"><span>DP<sub>1</sub></span><span>DP<sub>2</sub></span><span>&#8942;</span><span>DP<sub>n</sub></span></span>
+      </div>
+      <p style="font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin-top:4px;">{FR} = [DM] {DP}</p>
+    </header>
+
+    <!-- 01 -->
+    <section class="step" id="s1">
+      <div class="step-head"><span class="num">01</span><h2>De lo heurístico a lo axiomático</h2></div>
+      <p class="lead">El diseño de un sistema de manufactura suele hacerse de forma heurística: rápida, basada en experiencia y orientada a metas de corto plazo. Funciona, pero deja sistemas que envejecen pronto.</p>
+      <p>El <b>diseño heurístico</b> resuelve una necesidad modificando un proceso conocido o eligiendo la alternativa que parece más viable. Es un método perfectible: suficiente para objetivos inmediatos, sin garantía de ser óptimo. Reconoce tres dimensiones que condicionan la capacidad del sistema:</p>
+      <ul class="plain">
+        <li><b>Tamaño físico</b> &mdash; peso y materiales del producto, y sus variantes.</li>
+        <li><b>Capacidad de procesamiento tecnológico</b> &mdash; el conjunto de procesos disponibles.</li>
+        <li><b>Capacidad de producción</b> &mdash; la cantidad máxima producible en condiciones dadas.</li>
+      </ul>
+      <p>Sus herramientas típicas &mdash; los gráficos variedad&nbsp;vs.&nbsp;volumen que sugieren un <i>layout</i> &mdash; usan solo 2 de las 10 o más variables relevantes, se traslapan y no tienen fronteras claras. Sirven de apoyo, pero no manejan la complejidad real.</p>
+      <div class="callout">
+        <span class="k">Dato del sector</span>
+        Un sistema de ensamble para estructuras automotrices tarda de <b>12 a 24 meses</b> en desarrollarse y vive en promedio de <b>5 a 7 años</b>. Diseñar para la flexibilidad busca estirar esa vida más allá de los 7.
+      </div>
+      <p>El <b>diseño axiomático (AD)</b>, propuesto por Suh en 1978, responde a esto con un marco científico para la etapa conceptual, apoyado en dos axiomas &mdash; verdades que se admiten sin demostración.</p>
+    </section>
+
+    <!-- 02 -->
+    <section class="step" id="s2">
+      <div class="step-head"><span class="num">02</span><h2>Los cuatro dominios</h2></div>
+      <p class="lead">El diseño axiomático ve el mundo como cuatro dominios. El dominio de la izquierda plantea <i>qué</i> se quiere; el de la derecha, <i>cómo</i> lograrlo.</p>
+      <ul class="plain">
+        <li><b>CA</b> &mdash; atributos del cliente: lo que el cliente/mercado pide.</li>
+        <li><b>FR</b> &mdash; requisitos funcionales: qué debe hacer el sistema, sin decir con qué.</li>
+        <li><b>DP</b> &mdash; parámetros de diseño: los elementos físicos que cumplen los FR.</li>
+        <li><b>PV</b> &mdash; variables de proceso: cómo se produce y controla cada DP.</li>
+      </ul>
+      <p>El mapeo <b>FR &rarr; DP</b> obedece los dos axiomas, y la descomposición de nivel superior a inferior avanza en <b>zigzag</b>: se define un FR, se elige su DP, y ese DP genera los sub-FR del siguiente nivel.</p>
+
+      <div class="panel bleed">
+        <p class="panel-label"><span>Mapeo interactivo &mdash; celda del campus</span><span>Toca un FR o un DP</span></p>
+        <div class="domains" id="domainMapper">
+          <div class="col ca">
+            <h4>CA &middot; Cliente</h4>
+            <div class="chip" data-fr="fr1">Producir piezas maquinadas desde materia prima</div>
+            <div class="chip" data-fr="fr4">Ensamblar productos con tornillos</div>
+            <div class="chip" data-fr="fr5">Manejar piezas frágiles o de superficie lisa</div>
+            <div class="chip" data-fr="fr6">Ingresar insumos y clasificar el producto terminado</div>
+          </div>
+          <div class="col fr">
+            <h4>FR &middot; Función</h4>
+            <div class="chip" data-fr="fr1" tabindex="0" role="button">FR1 &mdash; Remover material hasta la geometría objetivo</div>
+            <div class="chip" data-fr="fr2" tabindex="0" role="button">FR2 &mdash; Trasladar piezas entre estaciones</div>
+            <div class="chip" data-fr="fr3" tabindex="0" role="button">FR3 &mdash; Transferir piezas entre la línea y el centro de maquinado</div>
+            <div class="chip" data-fr="fr4" tabindex="0" role="button">FR4 &mdash; Unir componentes por apriete de tornillos</div>
+            <div class="chip" data-fr="fr5" tabindex="0" role="button">FR5 &mdash; Sujetar piezas lisas o frágiles sin marcarlas</div>
+            <div class="chip" data-fr="fr6" tabindex="0" role="button">FR6 &mdash; Ingresar materia prima y separar ensambles por tipo/estado</div>
+          </div>
+          <div class="col dp">
+            <h4>DP &middot; Físico</h4>
+            <div class="chip" data-dp="dp1" tabindex="0" role="button">DP1 &mdash; Centro de maquinado CNC</div>
+            <div class="chip" data-dp="dp2" tabindex="0" role="button">DP2 &mdash; Línea de transporte con pallets</div>
+            <div class="chip" data-dp="dp3" tabindex="0" role="button">DP3 &mdash; Manipulador + cabezal de garra</div>
+            <div class="chip" data-dp="dp4" tabindex="0" role="button">DP4 &mdash; Cabezal de desarmador con control de par</div>
+            <div class="chip" data-dp="dp5" tabindex="0" role="button">DP5 &mdash; Cabezal de ventosa (vacío)</div>
+            <div class="chip" data-dp="dp6" tabindex="0" role="button">DP6 &mdash; Clasificador automático de entrada/salida</div>
+          </div>
+          <div class="col pv">
+            <h4>PV &middot; Proceso</h4>
+            <div class="chip" data-dp="dp1">Programa CNC, velocidad de husillo, avance, profundidad</div>
+            <div class="chip" data-dp="dp2">Velocidad de banda, posición de topes</div>
+            <div class="chip" data-dp="dp3">Pose del TCP, apertura de garra</div>
+            <div class="chip" data-dp="dp4">Par objetivo, revoluciones, sentido de giro</div>
+            <div class="chip" data-dp="dp5">Nivel de vacío, caudal de aire</div>
+            <div class="chip" data-dp="dp6">Umbrales de sensores, lógica de desvío</div>
+          </div>
+        </div>
+        <p class="map-note" id="mapNote">Cada FR debería resolverse con su propio DP. Cuando un DP aparece ligado a varios FR, hay acoplamiento &mdash; y eso es justo lo que la matriz de diseño hace visible.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="step" id="s3">
+      <div class="step-head"><span class="num">03</span><h2>Los dos axiomas</h2></div>
+      <h3>Axioma 1 &mdash; Independencia</h3>
+      <p>Mantener la independencia de los requisitos funcionales: las decisiones de diseño deben tomarse sin romper la independencia de cada FR respecto de los demás. Ajustar un DP para cumplir su FR no debería descomponer otro FR ya satisfecho.</p>
+      <div class="callout">
+        <span class="k">Funcional vs. no funcional</span>
+        Los <b>requisitos funcionales</b> definen el funcionamiento pedido por el cliente. Los <b>no funcionales</b> son limitantes &mdash; lo que el sistema no puede hacer: área de la celda, alcance del robot, presión de aire disponible, par nominal, paro de emergencia.
+      </div>
+      <h3>Axioma 2 &mdash; Información</h3>
+      <p>Entre los diseños que satisfacen el axioma de independencia, el mejor es el que tiene <b>menor contenido de información</b>: el más simple, el de mayor probabilidad de cumplir los FR dentro de tolerancia. Menos información, menos incertidumbre.</p>
+    </section>
+
+    <!-- 04 -->
+    <section class="step" id="s4">
+      <div class="step-head"><span class="num">04</span><h2>La ecuación y los tipos de diseño</h2></div>
+      <p class="lead">La relación entre requisitos y parámetros se escribe como un producto matriz&ndash;vector:</p>
+      <p style="font-family:var(--font-mono); font-size:17px; text-align:center; margin:20px 0;">{FR} = [DM] {DP}</p>
+      <ul class="plain">
+        <li><span class="mono">{FR}</span> &mdash; vector de requisitos funcionales.</li>
+        <li><span class="mono">{DP}</span> &mdash; vector de parámetros de diseño.</li>
+        <li><span class="mono">[DM]</span> &mdash; matriz de diseño. Cada elemento indica el efecto de un DP sobre un FR: <span class="mono">X</span> hay relación, <span class="mono">O</span> no la hay. La diagonal siempre lleva <span class="mono">X</span>, porque cada DP se elige para su propio FR.</li>
+      </ul>
+      <p>La forma de <span class="mono">[DM]</span> define el tipo de diseño:</p>
+
+      <div class="types">
+        <div class="type good">
+          <h4>Desacoplado</h4>
+          <span class="verdict">Cumple el axioma 1</span>
+          <div class="minigrid" aria-hidden="true"><i class="x">X</i><i class="o">O</i><i class="o">O</i><i class="x">X</i></div>
+          <p>Matriz diagonal. Cada FR depende solo de su DP. Se pueden ajustar en cualquier orden.</p>
+        </div>
+        <div class="type partial">
+          <h4>Parcialmente acoplado</h4>
+          <span class="verdict">Cumple el axioma 1 en secuencia</span>
+          <div class="minigrid" aria-hidden="true"><i class="x">X</i><i class="o">O</i><i class="x">X</i><i class="x">X</i></div>
+          <p>Matriz triangular. <span class="mono">DP1</span> afecta a <span class="mono">FR1</span> y <span class="mono">FR2</span>; <span class="mono">DP2</span> solo a <span class="mono">FR2</span>. Fijas <span class="mono">DP1</span>, luego <span class="mono">DP2</span>.</p>
+        </div>
+        <div class="type bad">
+          <h4>Acoplado</h4>
+          <span class="verdict">Viola el axioma 1</span>
+          <div class="minigrid" aria-hidden="true"><i class="x">X</i><i class="x">X</i><i class="x">X</i><i class="x">X</i></div>
+          <p>Hay <span class="mono">X</span> a ambos lados de la diagonal. <span class="mono">FR1</span> y <span class="mono">FR2</span> no se satisfacen por separado; solo por ensayo y error.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="k">Regla práctica</span>
+        Para conservar la independencia, la matriz de diseño debe quedar <b>diagonal</b> (desacoplado) o <b>triangular</b> (parcialmente acoplado). Si es triangular pero en el orden equivocado, a veces basta con <b>reordenar</b> los FR y DP.
+      </div>
+      <p style="font-size:15px; color:var(--ink-soft);">Cuando la matriz no es cuadrada &mdash; como en el problema de producción e inventario, donde producción, compra e inventario alimentan la demanda de cada trimestre &mdash; las variables quedan <i>parcialmente acopladas</i> y se analiza igual, por bloques.</p>
+    </section>
+
+    <!-- 05 -->
+    <section class="step" id="s5">
+      <div class="step-head"><span class="num">05</span><h2>La celda del campus</h2></div>
+      <p class="lead">El proceso recorre seis estaciones. La materia prima entra por el clasificador, el manipulador la lleva al centro de maquinado y de ahí a la línea; al final el ensamble vuelve al clasificador.</p>
+
+      <div class="stations">
+        <div class="station">
+          <span class="tag">DP1</span>
+          <h4>Centro de maquinado CNC</h4>
+          <p>Husillo, ejes controlados y sujeción interna. Transforma la pieza en bruto en la geometría objetivo.</p>
+          <span class="role">Cumple &rarr; FR1</span>
+        </div>
+        <div class="station">
+          <span class="tag">DP2</span>
+          <h4>Línea de transporte</h4>
+          <p>Banda con pallets y topes. Mueve las piezas de una estación a la siguiente a lo largo de la celda.</p>
+          <span class="role">Cumple &rarr; FR2</span>
+        </div>
+        <div class="station">
+          <span class="tag">DP3</span>
+          <h4>Manipulador &mdash; cabezal de garra</h4>
+          <p>Robot con muñeca intercambiable. Con la garra toma piezas rígidas: carga y descarga el centro de maquinado.</p>
+          <span class="role">Cumple &rarr; FR3</span>
+        </div>
+        <div class="station">
+          <span class="tag">DP4</span>
+          <h4>Cabezal de desarmador</h4>
+          <p>Se monta en el manipulador. Aprieta tornillos con par controlado para unir los componentes del ensamble.</p>
+          <span class="role">Cumple &rarr; FR4</span>
+        </div>
+        <div class="station">
+          <span class="tag">DP5</span>
+          <h4>Cabezal de ventosa</h4>
+          <p>Agarre por vacío. Maneja piezas de superficie lisa, plana o frágil que la garra marcaría o no podría sujetar.</p>
+          <span class="role">Cumple &rarr; FR5</span>
+        </div>
+        <div class="station">
+          <span class="tag">DP6</span>
+          <h4>Clasificador automático</h4>
+          <p>Estación de entrada y salida. Introduce materia prima al sistema y separa los ensambles terminados por tipo y estado.</p>
+          <span class="role">Cumple &rarr; FR6</span>
+        </div>
+      </div>
+
+      <h3>Naturaleza de cada variable</h3>
+      <p>Al describir los DP y FR conviene decir si la variable es <b>booleana</b> (presencia/ausencia, pieza conforme/no conforme), <b>entera</b> (número de pasadas, número de tornillos, número de pallets) o <b>real</b> (velocidad de husillo, par de apriete, nivel de vacío, coordenadas del TCP). Lo defines estación por estación en la sección 08, cuando visites la celda.</p>
+    </section>
+
+    <!-- 06 -->
+    <section class="step" id="s6">
+      <div class="step-head"><span class="num">06</span><h2>Constructor de la matriz</h2></div>
+      <p class="lead">Marca con <span class="mono">X</span> cada casilla donde un DP afecta a un FR. La diagonal está fija. La herramienta clasifica el diseño y busca si existe un orden que lo vuelva triangular.</p>
+
+      <div class="panel bleed">
+        <p class="panel-label"><span>[DM] &mdash; filas FR, columnas DP</span><span id="orderNote">Orden actual: FR1&hellip;FR6</span></p>
+        <div class="builder-toolbar">
+          <button class="btn primary" data-preset="inicial">Ejemplo: FR planteados sin depurar</button>
+          <button class="btn" data-preset="depurado">Ejemplo: FR replanteados</button>
+          <button class="btn" data-preset="identidad">Reiniciar a diagonal</button>
+          <button class="btn" id="btnTri">Buscar orden triangular</button>
+        </div>
+        <div class="matrix-scroll">
+          <div class="matrix" id="matrix"></div>
+        </div>
+        <div class="verdict-box">
+          <div class="verdict-main" id="verdictMain">&mdash;</div>
+          <div class="verdict-detail" id="verdictDetail"></div>
+        </div>
+      </div>
+
+      <h3>Cómo leer el resultado</h3>
+      <ul class="plain">
+        <li><b>Diagonal</b> &rarr; diseño desacoplado. Cada estación resuelve su función sin tocar las demás.</li>
+        <li><b>Triangular</b> (o reordenable a triangular) &rarr; parcialmente acoplado. Se cumple la independencia si el proceso se ejecuta en ese orden.</li>
+        <li><b>X a ambos lados</b> sin reordenamiento posible &rarr; acoplado. Aparece cuando el manipulador (DP3) queda ligado a la vez al maquinado y al transporte, y esas funciones se retroalimentan. La salida es <b>replantear los FR</b> para que cada uno quede bien delimitado, como en el segundo ejemplo.</li>
+      </ul>
+      <div class="callout">
+        <span class="k">Con tu propio proceso</span>
+        Cuando configures tu ejecución en la celda, cambia estas relaciones por las que observes entre cada DP y cada FR. El tipo de diseño que muestre la herramienta con tu matriz &mdash; desacoplado, parcialmente acoplado o acoplado &mdash; es tu resultado.
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="step" id="s7">
+      <div class="step-head"><span class="num">07</span><h2>Relaciones no lineales: el jacobiano</h2></div>
+      <p class="lead">Cuando la relación entre FR y DP no es lineal, la matriz de diseño se obtiene linealizando: es la <b>matriz jacobiana</b> de derivadas parciales, evaluada en el punto de operación.</p>
+      <p>El caso más claro en la celda es el propio manipulador (DP3). La posición del punto de agarre depende de los ángulos de las articulaciones a través de senos y cosenos:</p>
+      <p style="font-family:var(--font-mono); font-size:14px; background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:14px;">
+        x = L&#8321;&middot;cos(q&#8321;) + L&#8322;&middot;cos(q&#8321;+q&#8322;)<br>
+        y = L&#8321;&middot;sin(q&#8321;) + L&#8322;&middot;sin(q&#8321;+q&#8322;)
+      </p>
+      <p>Con FR = <span class="mono">(x, y)</span> y DP = <span class="mono">(q&#8321;, q&#8322;)</span>, la matriz de diseño es</p>
+      <p style="font-family:var(--font-mono); font-size:13.5px; color:var(--ink-soft);">
+        &part;x/&part;q&#8321; = &minus;L&#8321;sin q&#8321; &minus; L&#8322;sin(q&#8321;+q&#8322;) &nbsp;&nbsp; &part;x/&part;q&#8322; = &minus;L&#8322;sin(q&#8321;+q&#8322;)<br>
+        &part;y/&part;q&#8321; = &nbsp;L&#8321;cos q&#8321; + L&#8322;cos(q&#8321;+q&#8322;) &nbsp;&nbsp; &part;y/&part;q&#8322; = &nbsp;L&#8322;cos(q&#8321;+q&#8322;)
+      </p>
+
+      <div class="panel bleed">
+        <p class="panel-label"><span>Jacobiano evaluado &mdash; L&#8321; = L&#8322; = 1</span><span>Mueve los ángulos</span></p>
+        <div class="jac-controls">
+          <div class="slider"><label><span>q&#8321;</span><span id="q1v">30&deg;</span></label><input type="range" id="q1" min="-150" max="150" value="30" step="1"></div>
+          <div class="slider"><label><span>q&#8322;</span><span id="q2v">60&deg;</span></label><input type="range" id="q2" min="-150" max="150" value="60" step="1"></div>
+        </div>
+        <div class="jac-out">
+          <div class="jmatrix" aria-hidden="true">
+            <span id="j11">0</span><span id="j12">0</span>
+            <span id="j21">0</span><span id="j22">0</span>
+          </div>
+          <div class="jac-read">
+            Determinante: <b id="jdet">0</b><br>
+            <span id="jflag" class="flag">&mdash;</span>
+          </div>
+        </div>
+      </div>
+      <p>El jacobiano casi siempre tiene términos fuera de la diagonal &rarr; <b>localmente acoplado</b>: mover una articulación cambia las dos coordenadas. Cuando <span class="mono">q&#8322; &rarr; 0&deg;</span> o <span class="mono">&plusmn;180&deg;</span> el determinante se anula: el brazo está <b>estirado o plegado</b>, en una singularidad donde pierde un grado de libertad. Ese es el punto que hay que evitar al elegir la pose de trabajo.</p>
+      <div class="callout">
+        <span class="k">Cuándo aplicarlo</span>
+        Si en tu proceso alguna relación FR&ndash;DP es no lineal (posicionamiento del robot, volumen removido por pasada, apriete vs. ángulo), calcula su jacobiano y evalúalo en el punto de operación. Esa matriz numérica es la <span class="mono">[DM]</span> local del diseño.
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="step" id="s8">
+      <div class="step-head"><span class="num">08</span><h2>Visita a la celda: pausas activas</h2></div>
+      <p class="lead">Cuando estés frente a la celda, recorre las seis estaciones. En cada una, registra el nombre y modelo de la máquina, marca lo que puedas observar y anota los parámetros que encuentres. No todo estará disponible en cada equipo: registra lo que sí veas. Todo se guarda en este navegador.</p>
+
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-bar" id="pbar"></div></div>
+        <div class="progress-label" id="plabel">0 de 6 estaciones registradas</div>
+      </div>
+
+      <div id="pausas"></div>
+
+      <div class="builder-toolbar" style="margin-top:18px;">
+        <button class="btn" id="btnClear">Borrar mi registro</button>
+      </div>
+    </section>
+
+    <!-- 09 -->
+    <section class="step" id="s9">
+      <div class="step-head"><span class="num">09</span><h2>Registro y resumen</h2></div>
+      <p class="lead">Reúne el tipo de diseño, la matriz y tu registro de las estaciones en un bloque de texto que puedes copiar o guardar como PDF.</p>
+      <div class="builder-toolbar">
+        <button class="btn primary" id="btnGen">Generar resumen</button>
+        <button class="btn" id="btnPrint">Imprimir / Guardar PDF</button>
+      </div>
+      <div id="resumen-salida" aria-live="polite">El resumen aparecerá aquí.</div>
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:18px;">Para completar tu trabajo suele pedirse también: la reservación de la celda, el enlace del video del proceso configurado, fotografías del desarrollo, la descripción de cada variable con su significado y tipo, y tus conclusiones.</p>
+    </section>
+
+    <footer>
+      Diseño de sistemas de manufactura &middot; Tema 5 &mdash; diseño axiomático &middot; celda de manufactura.
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var LS = "matriz-axiom-campus-v2";
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+  /* ---------------- scrollspy ---------------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll(".rail a"));
+  var map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        links.forEach(function (l) { l.classList.remove("active"); });
+        if (map[e.target.id]) map[e.target.id].classList.add("active");
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  document.querySelectorAll("section.step, header.hero").forEach(function (s) { if (s.id) spy.observe(s); });
+
+  /* ---------------- domain mapper ---------------- */
+  var links2 = {
+    fr1: ["dp1"], fr2: ["dp2"], fr3: ["dp3", "dp1", "dp2"],
+    fr4: ["dp4"], fr5: ["dp5", "dp3"], fr6: ["dp6"]
+  };
+  var dpToFr = {};
+  Object.keys(links2).forEach(function (fr) {
+    links2[fr].forEach(function (dp) { (dpToFr[dp] = dpToFr[dp] || []).push(fr); });
+  });
+  var frText = {
+    fr1: "FR1 se resuelve solo con DP1, el centro de maquinado. Relación limpia: un FR, un DP.",
+    fr2: "FR2 se resuelve solo con DP2, la línea de transporte. Relación limpia.",
+    fr3: "FR3 usa DP3 (manipulador), pero también depende de DP1 y DP2: el centro debe estar listo y el pallet en posición. Aquí nace el acoplamiento de la celda.",
+    fr4: "FR4 se resuelve solo con DP4, el cabezal de desarmador.",
+    fr5: "FR5 usa DP5 (ventosa) y comparte el DP3: el mismo brazo maneja piezas rígidas y frágiles según el cabezal montado.",
+    fr6: "FR6 se resuelve solo con DP6, el clasificador de entrada y salida."
+  };
+  var dpText = {
+    dp1: "DP1 cumple FR1 y, por la precisión de sujeción, también condiciona FR3.",
+    dp2: "DP2 cumple FR2 y, por la posición de topes, también condiciona FR3.",
+    dp3: "DP3 es compartido: cumple FR3 y participa en FR5. Un DP ligado a varios FR es la señal de acoplamiento.",
+    dp4: "DP4 cumple únicamente FR4. Sin acoplamiento.",
+    dp5: "DP5 cumple FR5 y puede sustituir a la garra en FR3 para piezas planas.",
+    dp6: "DP6 cumple únicamente FR6: alimenta materia prima y clasifica el producto terminado."
+  };
+  var mapper = document.getElementById("domainMapper");
+  var mapNote = document.getElementById("mapNote");
+  function clearMap() {
+    mapper.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("lit", "dim"); });
+  }
+  function litFR(fr) {
+    clearMap();
+    mapper.querySelectorAll(".chip").forEach(function (c) { c.classList.add("dim"); });
+    mapper.querySelectorAll('[data-fr="' + fr + '"]').forEach(function (c) { c.classList.remove("dim"); c.classList.add("lit"); });
+    links2[fr].forEach(function (dp) {
+      mapper.querySelectorAll('[data-dp="' + dp + '"]').forEach(function (c) { c.classList.remove("dim"); c.classList.add("lit"); });
+    });
+    mapNote.innerHTML = frText[fr];
+  }
+  function litDP(dp) {
+    clearMap();
+    mapper.querySelectorAll(".chip").forEach(function (c) { c.classList.add("dim"); });
+    mapper.querySelectorAll('[data-dp="' + dp + '"]').forEach(function (c) { c.classList.remove("dim"); c.classList.add("lit"); });
+    (dpToFr[dp] || []).forEach(function (fr) {
+      mapper.querySelectorAll('[data-fr="' + fr + '"]').forEach(function (c) { c.classList.remove("dim"); c.classList.add("lit"); });
+    });
+    mapNote.innerHTML = dpText[dp];
+  }
+  mapper.addEventListener("click", function (e) {
+    var chip = e.target.closest(".chip");
+    if (!chip) return;
+    if (chip.dataset.fr && chip.closest(".col.fr")) litFR(chip.dataset.fr);
+    else if (chip.dataset.dp && chip.closest(".col.dp")) litDP(chip.dataset.dp);
+  });
+  mapper.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var chip = e.target.closest(".chip");
+    if (!chip) return;
+    e.preventDefault();
+    if (chip.dataset.fr && chip.closest(".col.fr")) litFR(chip.dataset.fr);
+    else if (chip.dataset.dp && chip.closest(".col.dp")) litDP(chip.dataset.dp);
+  });
+
+  /* ---------------- matrix builder ---------------- */
+  var FRlabels = [
+    ["FR1", "Remover material"],
+    ["FR2", "Trasladar piezas"],
+    ["FR3", "Transferir línea–CNC"],
+    ["FR4", "Atornillar"],
+    ["FR5", "Sujetar frágiles"],
+    ["FR6", "Ingresar / clasificar"]
+  ];
+  var DPlabels = [
+    ["DP1", "CNC"], ["DP2", "Línea"], ["DP3", "Garra"],
+    ["DP4", "Desarm."], ["DP5", "Ventosa"], ["DP6", "Clasif."]
+  ];
+  var presets = {
+    identidad: [
+      [1,0,0,0,0,0],
+      [0,1,0,0,0,0],
+      [0,0,1,0,0,0],
+      [0,0,0,1,0,0],
+      [0,0,0,0,1,0],
+      [0,0,0,0,0,1]
+    ],
+    inicial: [
+      [1,0,1,0,0,1],
+      [0,1,1,0,0,0],
+      [1,1,1,0,0,0],
+      [0,0,0,1,0,0],
+      [0,0,1,0,1,0],
+      [0,0,0,0,0,1]
+    ],
+    depurado: [
+      [1,0,0,0,0,1],
+      [0,1,0,0,0,0],
+      [1,1,1,0,0,0],
+      [0,0,0,1,0,0],
+      [0,0,1,0,1,0],
+      [0,0,0,0,0,1]
+    ]
+  };
+  var M = presets.inicial.map(function (r) { return r.slice(); });
+  var order = [0,1,2,3,4,5];
+  var grid = document.getElementById("matrix");
+
+  function permutations(arr) {
+    if (arr.length <= 1) return [arr];
+    var out = [];
+    for (var i = 0; i < arr.length; i++) {
+      var rest = arr.slice(0, i).concat(arr.slice(i + 1));
+      permutations(rest).forEach(function (p) { out.push([arr[i]].concat(p)); });
+    }
+    return out;
+  }
+  function isLowerTri(ord) {
+    for (var i = 0; i < 6; i++)
+      for (var j = i + 1; j < 6; j++)
+        if (M[ord[i]][ord[j]]) return false;
+    return true;
+  }
+  function isUpperTri(ord) {
+    for (var i = 0; i < 6; i++)
+      for (var j = 0; j < i; j++)
+        if (M[ord[i]][ord[j]]) return false;
+    return true;
+  }
+  function findTriangular() {
+    var perms = permutations([0,1,2,3,4,5]);
+    for (var k = 0; k < perms.length; k++) {
+      if (isLowerTri(perms[k])) return perms[k];
+    }
+    return null;
+  }
+  function anyOffDiag(ord) {
+    for (var i = 0; i < 6; i++)
+      for (var j = 0; j < 6; j++)
+        if (i !== j && M[ord[i]][ord[j]]) return true;
+    return false;
+  }
+
+  function render() {
+    grid.innerHTML = "";
+    var corner = document.createElement("div");
+    corner.className = "corner";
+    grid.appendChild(corner);
+    order.forEach(function (c) {
+      var d = document.createElement("div");
+      d.className = "chead";
+      d.innerHTML = "<b>" + DPlabels[c][0] + "</b><span>" + DPlabels[c][1] + "</span>";
+      grid.appendChild(d);
+    });
+    order.forEach(function (r, ri) {
+      var rh = document.createElement("div");
+      rh.className = "rhead";
+      rh.innerHTML = "<span><b>" + FRlabels[r][0] + "</b> " + FRlabels[r][1] + "</span>";
+      grid.appendChild(rh);
+      order.forEach(function (c, ci) {
+        var cell = document.createElement("button");
+        cell.type = "button";
+        cell.className = "cell";
+        var isDiag = (r === c);
+        if (isDiag) cell.classList.add("diag");
+        if (M[r][c]) cell.classList.add("on");
+        cell.textContent = M[r][c] ? "X" : "O";
+        cell.setAttribute("aria-label", FRlabels[r][0] + " / " + DPlabels[c][0] + (M[r][c] ? " : con relación" : " : sin relación"));
+        if (!isDiag && ci > ri && M[r][c]) cell.classList.add("tri-out");
+        if (!isDiag && ci < ri && M[r][c]) cell.classList.add("tri-out");
+        if (!isDiag) {
+          cell.addEventListener("click", function () {
+            M[r][c] = M[r][c] ? 0 : 1;
+            render();
+            save();
+          });
+        }
+        grid.appendChild(cell);
+      });
+    });
+    classify();
+    document.getElementById("orderNote").textContent = "Orden actual: " + order.map(function (i) { return FRlabels[i][0]; }).join(" ");
+  }
+
+  function classify() {
+    var main = document.getElementById("verdictMain");
+    var det = document.getElementById("verdictDetail");
+    var off = anyOffDiag(order);
+    var lower = isLowerTri(order);
+    var upper = isUpperTri(order);
+    var tri = findTriangular();
+
+    main.classList.remove("good", "partial", "bad");
+    // mark cells that break triangularity in current order
+    var cells = grid.querySelectorAll(".cell");
+    var idx = 0;
+    for (var i = 0; i < 6; i++) for (var j = 0; j < 6; j++) {
+      var cell = cells[idx++];
+      cell.classList.remove("tri-out");
+      if (i !== j && j > i && M[order[i]][order[j]]) cell.classList.add("tri-out");
+    }
+
+    if (!off) {
+      main.textContent = "Diseño desacoplado";
+      main.classList.add("good");
+      det.innerHTML = "La matriz es diagonal. Cada FR se satisface con su propio DP y en cualquier orden. Cumple el axioma de independencia.";
+    } else if (lower || upper) {
+      main.textContent = "Diseño parcialmente acoplado";
+      main.classList.add("partial");
+      det.innerHTML = "La matriz es <span class='mono'>" + (lower ? "triangular inferior" : "triangular superior") + "</span> en este orden. Cumple la independencia si los DP se fijan en la secuencia " +
+        "<span class='mono'>" + order.map(function (i) { return FRlabels[i][0]; }).join(" → ") + "</span>.";
+    } else if (tri) {
+      main.textContent = "Parcialmente acoplado — requiere reordenar";
+      main.classList.add("partial");
+      det.innerHTML = "En este orden hay <span class='mono'>X</span> sobre la diagonal, pero existe un orden que la vuelve triangular. Pulsa <b>Buscar orden triangular</b> para aplicarlo: " +
+        "<span class='mono'>" + tri.map(function (i) { return FRlabels[i][0]; }).join(" → ") + "</span>.";
+    } else {
+      main.textContent = "Diseño acoplado";
+      main.classList.add("bad");
+      det.innerHTML = "Hay <span class='mono'>X</span> a ambos lados de la diagonal y ningún reordenamiento la vuelve triangular. Se viola el axioma de independencia: replantea los FR para delimitarlos mejor (mira el ejemplo <i>FR replanteados</i>).";
+    }
+  }
+
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      M = presets[b.dataset.preset].map(function (r) { return r.slice(); });
+      order = [0,1,2,3,4,5];
+      render();
+      save();
+    });
+  });
+  document.getElementById("btnTri").addEventListener("click", function () {
+    var tri = findTriangular();
+    if (tri) { order = tri; render(); save(); }
+    else {
+      var d = document.getElementById("verdictDetail");
+      d.innerHTML = "No existe ningún orden que vuelva esta matriz triangular: el diseño está realmente acoplado.";
+    }
+  });
+
+  /* ---------------- jacobian ---------------- */
+  var q1s = document.getElementById("q1"), q2s = document.getElementById("q2");
+  function jac() {
+    var q1 = +q1s.value * Math.PI / 180, q2 = +q2s.value * Math.PI / 180;
+    document.getElementById("q1v").textContent = q1s.value + "°";
+    document.getElementById("q2v").textContent = q2s.value + "°";
+    var s1 = Math.sin(q1), c1 = Math.cos(q1);
+    var s12 = Math.sin(q1 + q2), c12 = Math.cos(q1 + q2);
+    var j11 = -s1 - s12, j12 = -s12;
+    var j21 = c1 + c12, j22 = c12;
+    document.getElementById("j11").textContent = j11.toFixed(2);
+    document.getElementById("j12").textContent = j12.toFixed(2);
+    document.getElementById("j21").textContent = j21.toFixed(2);
+    document.getElementById("j22").textContent = j22.toFixed(2);
+    var d = j11 * j22 - j12 * j21;
+    document.getElementById("jdet").textContent = d.toFixed(3);
+    var flag = document.getElementById("jflag");
+    if (Math.abs(d) < 0.12) {
+      flag.textContent = "Cerca de una singularidad — brazo estirado o plegado";
+      flag.className = "flag";
+    } else {
+      flag.textContent = "Configuración regular — localmente acoplado (términos fuera de la diagonal ≠ 0)";
+      flag.className = "flag ok";
+    }
+  }
+  q1s.addEventListener("input", jac);
+  q2s.addEventListener("input", jac);
+  jac();
+
+  /* ---------------- pausas activas ---------------- */
+  var pausasData = [
+    {
+      id: "e1", tag: "Pausa 01 · DP1", h: "Centro de maquinado CNC",
+      look: "Observa el husillo, los ejes y la sujeción interna. Identifica qué pieza o programa tiene cargado el control.",
+      checks: [
+        "Anota el programa o la pieza que está cargada en el control",
+        "Si el control lo muestra, registra velocidad de husillo, avance o profundidad",
+        "Observa cómo queda sujeta la pieza dentro de la máquina",
+        "Comprueba si el manipulador alcanza la zona de sujeción"
+      ]
+    },
+    {
+      id: "e2", tag: "Pausa 02 · DP2", h: "Línea de transporte",
+      look: "Sigue un pallet a lo largo de la banda y localiza los topes de cada estación.",
+      checks: [
+        "Cuenta los pallets que hay en la línea",
+        "Si puedes estimarla, anota la velocidad de la banda",
+        "Localiza cada tope y la estación a la que sirve",
+        "Identifica el punto donde el robot deja y recoge la pieza"
+      ]
+    },
+    {
+      id: "e3", tag: "Pausa 03 · DP3", h: "Manipulador — cabezal de garra",
+      look: "Observa al robot mover una pieza rígida entre el clasificador, el centro de maquinado y la línea.",
+      checks: [
+        "Identifica los puntos de recogida y de colocación",
+        "Si el controlador las muestra, anota las coordenadas o poses usadas",
+        "Observa cómo se cambia el cabezal en la muñeca",
+        "Comprueba si el robot entra al centro de maquinado para cargar y descargar"
+      ]
+    },
+    {
+      id: "e4", tag: "Pausa 04 · DP4", h: "Cabezal de desarmador",
+      look: "Observa un apriete de tornillos sobre el ensamble con el cabezal de desarmador montado.",
+      checks: [
+        "Cuenta los tornillos que lleva el ensamble",
+        "Si el equipo lo indica, registra el par de apriete o las revoluciones",
+        "Observa el sentido de giro",
+        "Fíjate si detecta un tornillo pasado o mal colocado"
+      ]
+    },
+    {
+      id: "e5", tag: "Pausa 05 · DP5", h: "Cabezal de ventosa",
+      look: "Observa cómo la ventosa toma una pieza plana o de superficie lisa.",
+      checks: [
+        "Identifica qué piezas se manejan mejor con ventosa que con garra",
+        "Si el sistema lo muestra, anota el nivel de vacío o la presión de succión",
+        "Observa el tiempo de agarre y de liberación",
+        "Localiza la señal de «pieza sujeta», si existe"
+      ]
+    },
+    {
+      id: "e6", tag: "Pausa 06 · DP6", h: "Clasificador automático",
+      look: "Observa el ingreso de materia prima y la salida de un ensamble terminado hacia su clasificación.",
+      checks: [
+        "Identifica los sensores que reconocen el tipo o estado de la pieza",
+        "Observa hacia qué salida se desvía cada pieza",
+        "Distingue la entrada de materia prima de la salida de ensambles",
+        "Anota el criterio de conforme / no conforme, si está definido"
+      ]
+    }
+  ];
+
+  var store = { matrix: null, order: null, pausas: {} };
+  try {
+    var raw = localStorage.getItem(LS);
+    if (raw) store = JSON.parse(raw);
+  } catch (e) {}
+  if (store.matrix && store.matrix.length === 6) { M = store.matrix.map(function (r) { return r.slice(); }); }
+  if (store.order && store.order.length === 6) { order = store.order.slice(); }
+  if (!store.pausas) store.pausas = {};
+
+  function save() {
+    store.matrix = M;
+    store.order = order;
+    try { localStorage.setItem(LS, JSON.stringify(store)); } catch (e) {}
+  }
+
+  var pausasEl = document.getElementById("pausas");
+  pausasData.forEach(function (p) {
+    var saved = store.pausas[p.id] || { machine: "", model: "", checks: [], note: "", type: "" };
+    var wrap = document.createElement("div");
+    wrap.className = "pausa";
+    var checksHtml = p.checks.map(function (txt, i) {
+      var on = saved.checks && saved.checks.indexOf(i) !== -1 ? " checked" : "";
+      return '<label><input type="checkbox" data-check="' + i + '"' + on + '><span>' + txt + '</span></label>';
+    }).join("");
+    var types = ["booleana", "entera", "real"];
+    var typesHtml = types.map(function (t) {
+      var on = saved.type === t ? " checked" : "";
+      return '<label><input type="radio" name="t-' + p.id + '" value="' + t + '"' + on + '>' + t + '</label>';
+    }).join("");
+    wrap.innerHTML =
+      '<span class="ptag">' + p.tag + '</span>' +
+      '<h4>' + p.h + '</h4>' +
+      '<p class="look">' + p.look + '</p>' +
+      '<p class="reg-label">Registro de la máquina</p>' +
+      '<div class="reg">' +
+        '<input type="text" data-machine placeholder="Nombre de la máquina" value="' + esc(saved.machine) + '">' +
+        '<input type="text" data-model placeholder="Modelo / referencia" value="' + esc(saved.model) + '">' +
+      '</div>' +
+      '<div class="checklist">' + checksHtml + '</div>' +
+      '<textarea data-note placeholder="Parámetros que hayas podido observar y qué representan (opcional). Ej.: velocidad de husillo, real, en rpm">' + esc(saved.note) + '</textarea>' +
+      '<div class="vartype">Tipo de variable predominante: ' + typesHtml + '</div>';
+    pausasEl.appendChild(wrap);
+
+    function collect() {
+      var checks = [];
+      wrap.querySelectorAll('input[data-check]').forEach(function (c) {
+        if (c.checked) checks.push(+c.dataset.check);
+      });
+      var typeEl = wrap.querySelector('input[name="t-' + p.id + '"]:checked');
+      store.pausas[p.id] = {
+        machine: wrap.querySelector("[data-machine]").value,
+        model: wrap.querySelector("[data-model]").value,
+        checks: checks,
+        note: wrap.querySelector("[data-note]").value,
+        type: typeEl ? typeEl.value : ""
+      };
+      save();
+      updateProgress();
+    }
+    wrap.addEventListener("change", collect);
+    wrap.addEventListener("input", function (e) {
+      if (e.target.matches("[data-note], [data-machine], [data-model]")) collect();
+    });
+  });
+
+  function updateProgress() {
+    var done = 0;
+    pausasData.forEach(function (p) {
+      var s = store.pausas[p.id];
+      if (s && ((s.machine && s.machine.trim()) || (s.note && s.note.trim().length > 3))) done++;
+    });
+    document.getElementById("pbar").style.width = (done / 6 * 100) + "%";
+    document.getElementById("plabel").textContent = done + " de 6 estaciones registradas";
+  }
+  updateProgress();
+
+  document.getElementById("btnClear").addEventListener("click", function () {
+    if (!confirm("¿Borrar todo tu registro y tus notas de las estaciones?")) return;
+    store.pausas = {};
+    save();
+    location.reload();
+  });
+
+  /* ---------------- resumen ---------------- */
+  document.getElementById("btnGen").addEventListener("click", function () {
+    var out = [];
+    out.push("MATRIZ DE DISEÑO AXIOMÁTICO — CELDA DE MANUFACTURA DEL CAMPUS");
+    out.push("=".repeat(60));
+    out.push("");
+    out.push("1. TIPO DE DISEÑO");
+    out.push("   " + document.getElementById("verdictMain").textContent);
+    out.push("   " + document.getElementById("verdictDetail").textContent.replace(/<[^>]+>/g, ""));
+    out.push("");
+    out.push("2. MATRIZ [DM]  (filas FR / columnas DP, orden " + order.map(function (i) { return FRlabels[i][0]; }).join(" ") + ")");
+    out.push("        " + order.map(function (c) { return DPlabels[c][0]; }).join("  "));
+    order.forEach(function (r) {
+      out.push("   " + FRlabels[r][0] + "  " + order.map(function (c) { return " " + (M[r][c] ? "X" : "O") + "  "; }).join(""));
+    });
+    out.push("");
+    out.push("3. ESTACIONES — REGISTRO DE LABORATORIO");
+    pausasData.forEach(function (p) {
+      var s = store.pausas[p.id] || {};
+      out.push("   [" + p.h + "]");
+      out.push("   Máquina: " + ((s.machine && s.machine.trim()) || "(sin registrar)"));
+      out.push("   Modelo:  " + ((s.model && s.model.trim()) || "(sin registrar)"));
+      out.push("   Parámetros observados: " + ((s.note && s.note.trim()) || "(sin anotar)"));
+      if (s.type) out.push("   Tipo de variable: " + s.type);
+      out.push("");
+    });
+    out.push("4. PARA COMPLETAR TU TRABAJO");
+    out.push("   - Reservación de la celda");
+    out.push("   - Enlace del video del proceso configurado");
+    out.push("   - Fotografías del desarrollo");
+    out.push("   - Jacobiano evaluado, si alguna relación FR-DP es no lineal");
+    out.push("   - Conclusiones");
+    document.getElementById("resumen-salida").textContent = out.join("\n");
+  });
+  document.getElementById("btnPrint").addEventListener("click", function () { window.print(); });
+
+  render();
+})();
+</script>
