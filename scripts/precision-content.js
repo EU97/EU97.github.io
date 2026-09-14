@@ -107,6 +107,33 @@ window.precisionEngineeringContent = {
       ]
     },
     {
+      id: "taller-mecatronica-course",
+      course: "taller-mecatronica",
+      courseLabel: { en: "Mechatronics Workshop", es: "Taller Mecatrónica" },
+      week: "course-module",
+      weekLabel: { en: "Course Module", es: "Módulo del Curso" },
+      labType: "simulation",
+      labTypeLabel: { en: "Simulation", es: "Simulación" },
+      status: "published",
+      statusLabel: { en: "Published", es: "Publicado" },
+      title: {
+        en: "Taller Mecatrónica — Autonomous Rover Workshop",
+        es: "Taller Mecatrónica — Taller de Rover Autónomo"
+      },
+      description: {
+        en: "Direct access to the Taller Mecatrónica interactive course page.",
+        es: "Acceso directo a la página interactiva del curso Taller Mecatrónica."
+      },
+      procedureUrl: "/curso/Taller%20Mecatronica/Taller_mecatronica.html",
+      instructionUrl: "/curso/Taller%20Mecatronica/Taller_mecatronica.html",
+      workingFiles: [
+        {
+          label: { en: "Course page", es: "Página del curso" },
+          url: "/curso/Taller%20Mecatronica/Taller_mecatronica.html"
+        }
+      ]
+    },
+    {
       id: "metrology-i-week-01-dial-indicator",
       course: "metrology-i",
       courseLabel: { en: "Precision Metrology I", es: "Metrología de Precisión I" },
