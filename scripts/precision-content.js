@@ -76,6 +76,37 @@ window.precisionEngineeringContent = {
       ]
     },
     {
+      id: "dsm-axiomatic-design-matrix",
+      course: "dsm",
+      courseLabel: { en: "DSM", es: "DSM" },
+      week: "course-module",
+      weekLabel: { en: "Course Module", es: "Módulo del Curso" },
+      labType: "methodology",
+      labTypeLabel: { en: "Methodology", es: "Metodología" },
+      status: "published",
+      statusLabel: { en: "Published", es: "Publicado" },
+      title: {
+        en: "DSM Course — Axiomatic Design Matrix",
+        es: "Curso DSM — Matriz de Diseño Axiomático"
+      },
+      description: {
+        en: "Direct access to /curso/DSM with the interactive Axiomatic Design Matrix HTML resource.",
+        es: "Acceso directo a /curso/DSM con el recurso HTML interactivo de Matriz de Diseño Axiomático."
+      },
+      procedureUrl: "/curso/DSM/",
+      instructionUrl: "/curso/DSM/matriz-diseno-axiomatica.html",
+      workingFiles: [
+        {
+          label: { en: "Course route /curso/DSM", es: "Ruta del curso /curso/DSM" },
+          url: "/curso/DSM/"
+        },
+        {
+          label: { en: "Axiomatic design matrix HTML", es: "HTML de matriz de diseño axiomático" },
+          url: "/curso/DSM/matriz-diseno-axiomatica.html"
+        }
+      ]
+    },
+    {
       id: "metrology-i-week-01-dial-indicator",
       course: "metrology-i",
       courseLabel: { en: "Precision Metrology I", es: "Metrología de Precisión I" },

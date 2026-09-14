@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ruta del curso DSM · Matriz de Diseño Axiomático">
+  <title>Curso · DSM · Matriz de Diseño Axiomático</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.2), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(123, 104, 238, 0.22), transparent 45%),
+                  var(--bg-primary);
+    }
+
+    .course-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 1rem 2rem;
+    }
+
+    .course-panel {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.1rem;
+      background: rgba(20, 24, 36, 0.72);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 212, 255, 0.15) inset;
+      overflow: hidden;
+    }
+
+    .course-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .course-header h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3.2vw, 2rem);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .course-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .course-links a {
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 0.45rem 0.95rem;
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+      font-weight: 600;
+    }
+
+    .course-frame {
+      width: 100%;
+      height: min(75vh, 900px);
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    @media (max-width: 640px) {
+      .course-shell { padding-top: 5rem; }
+      .course-frame { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <main class="course-shell">
+    <section class="course-panel">
+      <header class="course-header">
+        <div>
+          <p class="section-badge">Curso / DSM</p>
+          <h1>DSM · Matriz de Diseño Axiomático</h1>
+        </div>
+        <nav class="course-links" aria-label="Enlaces del curso">
+          <a href="/curso/DSM/matriz-diseno-axiomatica.html" target="_blank" rel="noopener noreferrer">Abrir HTML del curso</a>
+          <a href="/index.html#precision">Volver a actividades</a>
+          <button class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar tema">🌙 Dark</button>
+        </nav>
+      </header>
+      <iframe
+        class="course-frame"
+        src="/curso/DSM/matriz-diseno-axiomatica.html"
+        title="Matriz de Diseño Axiomático"
+        loading="lazy"
+      ></iframe>
+    </section>
+  </main>
+  <script src="/scripts/theme.js"></script>
+</body>
+</html>
