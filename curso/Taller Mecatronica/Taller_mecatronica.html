@@ -318,6 +318,29 @@ select,input[type=number]{font-family:inherit;font-size:14px;padding:7px 9px;bor
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
 .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
 
+/* ---------- module 07 : prueba física ---------- */
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field-grid .full{grid-column:1/-1}
+.field-grid textarea,.field-grid input[type=text],.field-grid input[type=date],.field-grid select{
+  width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--surface);color:var(--ink)
+}
+.field-grid textarea{min-height:110px;resize:vertical}
+.savebadge{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status-bars{display:grid;gap:10px}
+.timeline-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.timeline-step{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--surface)}
+.timeline-step .mono{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.timeline-step strong{display:block;font-size:14px;margin-bottom:4px}
+.upload-graphic{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.mini-chart{display:grid;gap:10px}
+.mini-chart .barline{display:grid;grid-template-columns:120px 1fr 48px;gap:10px;align-items:center;font-size:13px}
+.mini-chart .barline .rail{height:10px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.mini-chart .barline .rail span{display:block;height:100%;background:linear-gradient(90deg,var(--mech),var(--elec),var(--soft))}
+@media(max-width:820px){
+  .upload-graphic,.field-grid,.timeline-steps{grid-template-columns:1fr}
+}
+
 /* ---------- module map : carrera ---------- */
 .sem{margin-bottom:16px}
 .sem h4{font-size:13px;font-family:"IBM Plex Mono";letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
@@ -375,6 +398,7 @@ const MODULES=[
   {id:"bloques", n:"04", label:"Programación"},
   {id:"pista", n:"05", label:"Pista + Telemetría"},
   {id:"checklist", n:"06", label:"Checklist"},
+  {id:"pruebafisica", n:"07", label:"Prueba física"},
   {id:"carrera", n:"★", label:"Mapa de la carrera"},
 ];
 const main=document.getElementById("main"), tabsEl=document.getElementById("tabs");
@@ -1430,6 +1454,182 @@ BUILDERS.checklist={build(p){
     const pct=totalAll?Math.round(doneAll/totalAll*100):0;
     $("#clbarAll",p).style.width=pct+"%"; $("#clpctAll",p).textContent=pct+"%";
   }
+  render();
+}};
+
+/* ---------- 07 · PRUEBA FÍSICA PRÓXIMA ---------- */
+BUILDERS.pruebafisica={build(p){
+  const KEY="tm-physical-test";
+  const defaults={
+    date:"",
+    stage:"planeacion",
+    owner:"Equipo integrador",
+    objective:"Subir la evidencia de la prueba física del sistema desarrollado por los alumnos.",
+    mech:78,
+    elec:74,
+    soft:81,
+    integ:69,
+    notes:"Pendiente capturar video, telemetría final y observaciones de desempeño del rover físico."
+  };
+  let state={...defaults};
+  try{
+    const saved=JSON.parse(localStorage.getItem(KEY));
+    if(saved&&typeof saved==="object") state={...state,...saved};
+  }catch(e){}
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 07 · Evidencia</span><h2>Próxima subida de la prueba física</h2></div>
+   <p class="mlede">En los próximos días <b>se subirá la prueba física del sistema que estuvieron desarrollando los alumnos</b>. Este módulo deja preparada la información clave para esa publicación: evidencia pendiente, estado de cada subsistema y datos que deben conservarse antes de compartir el resultado final.</p>
+   <div class="grid two">
+     <div class="card">
+       <h3>Aviso de publicación</h3>
+       <p style="font-size:14px">La corrida física todavía está en preparación, pero ya puede documentarse qué falta grabar, quién coordina la entrega y cuáles son los indicadores que deberán acompañar la subida final del sistema.</p>
+       <div class="savebadge">
+         <span class="pill warn">Próximamente</span>
+         <span class="note" style="margin-top:0">La evidencia se actualizará con la prueba física completa y sus datos consolidados.</span>
+       </div>
+     </div>
+     <div class="card">
+       <h3>Resumen rápido</h3>
+       <div class="dash dash-mini" style="grid-template-columns:repeat(4,1fr);margin-top:0">
+         <div class="tile"><div class="k">Promedio</div><div class="v tnum" id="phAvg">0%</div><div class="u">avance global</div></div>
+         <div class="tile"><div class="k">Fecha meta</div><div class="v" id="phDateCard" style="font-size:19px">—</div><div class="u">prueba física</div></div>
+         <div class="tile state"><div class="k">Estado</div><div class="v" id="phStageCard">Planeación</div><div class="u">momento actual</div></div>
+         <div class="tile"><div class="k">Responsable</div><div class="v" id="phOwnerCard" style="font-size:18px">—</div><div class="u">coordinación</div></div>
+       </div>
+     </div>
+   </div>
+   <div class="grid two" style="margin-top:18px">
+     <div class="card">
+       <h3>Bitácora de subida</h3>
+       <div class="field-grid">
+         <label class="full">Objetivo
+           <input type="text" id="ph_objective" maxlength="140">
+         </label>
+         <label>Fecha estimada
+           <input type="date" id="ph_date">
+         </label>
+         <label>Etapa
+           <select id="ph_stage">
+             <option value="planeacion">Planeación</option>
+             <option value="captura">Captura de evidencia</option>
+             <option value="edicion">Edición / revisión</option>
+             <option value="publicacion">Lista para publicarse</option>
+           </select>
+         </label>
+         <label>Responsable
+           <input type="text" id="ph_owner" maxlength="60">
+         </label>
+         <label class="full">Notas de la prueba
+           <textarea id="ph_notes" placeholder="Anota hallazgos del sistema físico, ajustes del rover y datos a publicar."></textarea>
+         </label>
+       </div>
+       <div class="btnrow">
+         <button class="btn primary" id="ph_save">Guardar datos</button>
+         <button class="btn" id="ph_reset">Restablecer</button>
+       </div>
+       <p class="note" id="ph_saved">Los cambios se guardan localmente en este navegador para continuar la planeación de la publicación.</p>
+     </div>
+     <div class="card">
+       <h3>Representación gráfica por subsistema</h3>
+       <p class="note" style="margin-top:0">Las barras permiten visualizar qué tan listo está cada frente antes de subir la prueba física y la evidencia del sistema.</p>
+       <div class="status-bars" style="margin-top:12px">
+         <label class="field">Mecánica <span class="val" id="ph_mech_v">0%</span></label>
+         <input type="range" id="ph_mech" min="0" max="100" step="1">
+         <label class="field">Electrónica <span class="val" id="ph_elec_v">0%</span></label>
+         <input type="range" id="ph_elec" min="0" max="100" step="1">
+         <label class="field">Software <span class="val" id="ph_soft_v">0%</span></label>
+         <input type="range" id="ph_soft" min="0" max="100" step="1">
+         <label class="field">Integración <span class="val" id="ph_integ_v">0%</span></label>
+         <input type="range" id="ph_integ" min="0" max="100" step="1">
+       </div>
+       <div class="mini-chart" id="ph_chart" style="margin-top:14px"></div>
+     </div>
+   </div>
+   <div class="diagram-shell" style="margin-top:18px">
+     <h3>Ruta de evidencia hacia la prueba física</h3>
+     <div class="upload-graphic">
+       <div>
+         <svg class="diagram" viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg">
+           <defs><marker id="tm-arrow3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker></defs>
+           <rect class="box sense" x="20" y="70" width="150" height="44" rx="10"/>
+           <text class="lbl" x="95" y="96" text-anchor="middle">Simulación validada</text>
+           <path class="arrow" d="M170,92 H250" marker-end="url(#tm-arrow3)"/>
+           <rect class="box act" x="250" y="70" width="150" height="44" rx="10"/>
+           <text class="lbl" x="325" y="96" text-anchor="middle">Montaje físico</text>
+           <path class="arrow" d="M400,92 H485" marker-end="url(#tm-arrow3)"/>
+           <rect class="box ctrl" x="485" y="70" width="140" height="44" rx="10"/>
+           <text class="lbl" x="555" y="96" text-anchor="middle">Captura de datos</text>
+           <path class="arrow" d="M625,92 H710" marker-end="url(#tm-arrow3)"/>
+           <rect class="box shared" x="590" y="130" width="150" height="40" rx="10"/>
+           <text class="lbl" x="665" y="154" text-anchor="middle">Subida próxima</text>
+           <path class="arrow" d="M555,114 V130" marker-end="url(#tm-arrow3)"/>
+           <text class="small" x="665" y="181" text-anchor="middle">video · telemetría · conclusiones</text>
+         </svg>
+       </div>
+       <div class="timeline-steps">
+         <div class="timeline-step"><span class="mono">Paso 1</span><strong>Preparar</strong><p>Definir fecha, responsable y objetivo de la evidencia física.</p></div>
+         <div class="timeline-step"><span class="mono">Paso 2</span><strong>Medir</strong><p>Conservar tiempos, choques, ajustes y observaciones del sistema real.</p></div>
+         <div class="timeline-step"><span class="mono">Paso 3</span><strong>Documentar</strong><p>Reunir capturas, video y la configuración final usada por el grupo.</p></div>
+         <div class="timeline-step"><span class="mono">Paso 4</span><strong>Publicar</strong><p>Subir en los próximos días la prueba física completa del proyecto.</p></div>
+       </div>
+     </div>
+   </div>
+   <div class="route"><b>Siguiente entrega:</b> este módulo deja lista la información necesaria para publicar la prueba física del rover y cerrar el ciclo completo entre simulación, integración y validación del sistema construido por los alumnos.</div>`;
+  const els={
+    objective:$("#ph_objective",p),
+    date:$("#ph_date",p),
+    stage:$("#ph_stage",p),
+    owner:$("#ph_owner",p),
+    notes:$("#ph_notes",p),
+    mech:$("#ph_mech",p),
+    elec:$("#ph_elec",p),
+    soft:$("#ph_soft",p),
+    integ:$("#ph_integ",p),
+  };
+  Object.entries(els).forEach(([k,node])=>{ node.value=state[k] ?? ""; });
+  const stageLabel=v=>({
+    planeacion:"Planeación",
+    captura:"Captura de evidencia",
+    edicion:"Edición / revisión",
+    publicacion:"Lista para publicarse",
+  }[v]||"Planeación");
+  const prettyDate=v=>v?new Date(v+"T00:00:00").toLocaleDateString("es-MX",{day:"2-digit",month:"short"}):"—";
+  function persist(msg){
+    state.objective=els.objective.value.trim();
+    state.date=els.date.value;
+    state.stage=els.stage.value;
+    state.owner=els.owner.value.trim();
+    state.notes=els.notes.value.trim();
+    state.mech=+els.mech.value;
+    state.elec=+els.elec.value;
+    state.soft=+els.soft.value;
+    state.integ=+els.integ.value;
+    try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
+    $("#ph_saved",p).textContent=msg||"Datos guardados localmente para continuar con la preparación de la prueba física.";
+  }
+  function render(){
+    ["mech","elec","soft","integ"].forEach(id=>$("#ph_"+id+"_v",p).textContent=state[id]+"%");
+    const avg=Math.round((state.mech+state.elec+state.soft+state.integ)/4);
+    $("#phAvg",p).textContent=avg+"%";
+    $("#phDateCard",p).textContent=prettyDate(state.date);
+    $("#phStageCard",p).textContent=stageLabel(state.stage);
+    $("#phOwnerCard",p).textContent=state.owner||"—";
+    $("#ph_chart",p).innerHTML=[
+      ["Mecánica",state.mech],
+      ["Electrónica",state.elec],
+      ["Software",state.soft],
+      ["Integración",state.integ],
+    ].map(([label,val])=>`<div class="barline"><span>${label}</span><div class="rail"><span style="width:${val}%"></span></div><strong class="tnum">${val}%</strong></div>`).join("");
+  }
+  Object.values(els).forEach(node=>node.addEventListener("input",()=>{persist("Cambios guardados automáticamente."); render();}));
+  $("#ph_save",p).onclick=()=>persist("Datos guardados manualmente.");
+  $("#ph_reset",p).onclick=()=>{
+    state={...defaults};
+    Object.entries(els).forEach(([k,node])=>{ node.value=state[k] ?? ""; });
+    persist("Se restableció la planeación base.");
+    render();
+  };
+  persist("Planeación cargada. Puedes actualizar los datos antes de subir la prueba física.");
   render();
 }};
 
