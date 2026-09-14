@@ -1,0 +1,1513 @@
+<title>Taller Mecatrónica</title>
+<meta name="description" content="Simuladores interactivos para descubrir la ingeniería en mecatrónica construyendo un rover autónomo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ============================================================
+   TALLER MECATRÓNICA — sistema de tokens
+   El color codifica los 3 dominios de la mecatrónica:
+   MECÁNICA (músculos) · ELECTRÓNICA (señal) · SOFTWARE (cerebro)
+   ============================================================ */
+:root{
+  --bg:#e7ebf0;
+  --surface:#f6f8fb;
+  --surface-2:#eef1f5;
+  --ink:#151d27;
+  --muted:#586675;
+  --line:#cfd7e0;
+  --line-strong:#aab6c3;
+
+  --mech:#d1495b;   /* mecánica  — rojo */
+  --elec:#1690a0;   /* electrónica — teal */
+  --soft:#3f57ba;   /* software  — indigo */
+  --mech-soft:#f7e6e9;
+  --elec-soft:#dcf0f2;
+  --soft-soft:#e3e7f8;
+
+  --ok:#2e9e5b;
+  --warn:#dd9a00;
+  --bad:#cf3a3a;
+
+  --accent:var(--elec);
+  --shadow:0 1px 2px rgba(20,29,39,.06),0 6px 18px rgba(20,29,39,.08);
+  --radius:14px;
+  --radius-sm:9px;
+  --maxw:1180px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161d;
+    --surface:#1a212b;
+    --surface-2:#212a35;
+    --ink:#e8edf2;
+    --muted:#93a1b0;
+    --line:#2c3742;
+    --line-strong:#3d4a57;
+
+    --mech:#f0697a;
+    --elec:#3fc0d0;
+    --soft:#7d90e8;
+    --mech-soft:#331c22;
+    --elec-soft:#12333a;
+    --soft-soft:#20263f;
+
+    --ok:#43c07a;
+    --warn:#f0b62e;
+    --bad:#f0697a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161d;
+  --surface:#1a212b;
+  --surface-2:#212a35;
+  --ink:#e8edf2;
+  --muted:#93a1b0;
+  --line:#2c3742;
+  --line-strong:#3d4a57;
+
+  --mech:#f0697a;
+  --elec:#3fc0d0;
+  --soft:#7d90e8;
+  --mech-soft:#331c22;
+  --elec-soft:#12333a;
+  --soft-soft:#20263f;
+
+  --ok:#43c07a;
+  --warn:#f0b62e;
+  --bad:#f0697a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  line-height:1.55;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:32px 32px;
+  background-position:-1px -1px;
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+h1,h2,h3,h4{font-family:"Chakra Petch","IBM Plex Sans",sans-serif;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+button{font-family:inherit}
+code,kbd,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+.tnum{font-variant-numeric:tabular-nums}
+
+a{color:var(--soft)}
+
+/* ---------- layout shell ---------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.top .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Chakra Petch";font-weight:700;letter-spacing:.02em;font-size:16px;white-space:nowrap}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:conic-gradient(var(--mech) 0 33%,var(--elec) 0 66%,var(--soft) 0);flex:none}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;margin-left:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:0;background:transparent;color:var(--muted);
+  padding:8px 11px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;transition:background .15s,color .15s;
+}
+.tab .n{font-family:"IBM Plex Mono";font-size:11px;opacity:.7}
+.tab:hover{background:var(--surface-2);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--surface)}
+.tab:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--elec);outline-offset:2px}
+.themebtn{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;width:34px;height:34px;cursor:pointer;flex:none;font-size:15px}
+
+main{padding:28px 0 80px}
+.module{display:none;animation:fade .25s ease}
+.module.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.mhead{display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin-bottom:8px}
+.mhead .kicker{font-family:"IBM Plex Mono";font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.mhead h2{font-size:clamp(22px,3.4vw,32px)}
+.mlede{color:var(--muted);max-width:70ch;margin-bottom:22px}
+
+/* ---------- generic panels ---------- */
+.grid{display:grid;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card h3 .tag{font-family:"IBM Plex Mono";font-size:10px;font-weight:600;padding:2px 6px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase}
+.tag.mech{background:var(--mech-soft);color:var(--mech)}
+.tag.elec{background:var(--elec-soft);color:var(--elec)}
+.tag.soft{background:var(--soft-soft);color:var(--soft)}
+
+.canvas-shell{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow)}
+canvas{display:block;width:100%;height:auto;border-radius:var(--radius-sm);background:var(--surface-2);touch-action:none}
+
+label.field{display:block;font-size:13px;font-weight:600;margin:14px 0 4px}
+label.field .val{float:right;font-family:"IBM Plex Mono";font-weight:500;color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent);height:22px}
+select,input[type=number]{font-family:inherit;font-size:14px;padding:7px 9px;border-radius:8px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);width:100%}
+
+.btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:9px 14px;border-radius:9px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:transform .1s,background .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.btn.go{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.stop{background:var(--bad);border-color:var(--bad);color:#fff}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+
+.readout{font-family:"IBM Plex Mono";font-variant-numeric:tabular-nums}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono";font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--ok);border-color:transparent}
+.pill.warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn);border-color:transparent}
+.pill.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad);border-color:transparent}
+
+.note{font-size:13px;color:var(--muted);border-left:2px solid var(--line-strong);padding-left:10px;margin-top:12px}
+.route{font-size:12.5px;background:var(--surface-2);border:1px dashed var(--line-strong);border-radius:9px;padding:10px 12px;margin-top:14px}
+.route b{font-family:"Chakra Petch"}
+
+/* puente simulador <-> kit */
+.simkit{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:0 0 22px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.simkit>div{padding:14px 16px}
+.simkit .sk-sim{background:var(--elec-soft)}
+.simkit .sk-kit{background:var(--mech-soft)}
+.simkit .sk-arrow{display:flex;align-items:center;justify-content:center;background:var(--surface);color:var(--muted);font-size:20px;padding:0 10px}
+.simkit .sk-h{font-family:"IBM Plex Mono";font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+.simkit .sk-sim .sk-h{color:var(--elec)}
+.simkit .sk-kit .sk-h{color:var(--mech)}
+.simkit p{font-size:13px;line-height:1.5}
+.simkit .sk-min{display:inline-block;margin-top:7px;font-family:"IBM Plex Mono";font-size:11px;font-weight:600;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+@media(max-width:620px){.simkit{grid-template-columns:1fr}.simkit .sk-arrow{padding:6px;transform:rotate(90deg)}}
+
+/* ---------- module 0 : inicio ---------- */
+.hero{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(22px,4vw,44px);box-shadow:var(--shadow);overflow:hidden;position:relative
+}
+.hero h2{font-size:clamp(26px,5vw,44px);letter-spacing:-.01em}
+.hero .big{color:var(--muted);font-size:clamp(15px,2vw,18px);max-width:60ch;margin-top:14px}
+.domains{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+.domain{
+  border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;cursor:pointer;background:var(--surface-2);
+  transition:transform .15s,border-color .15s;text-align:left
+}
+.domain:hover{transform:translateY(-3px)}
+.domain[data-on="true"]{border-color:currentColor;box-shadow:inset 0 0 0 1px currentColor}
+.domain.m{color:var(--mech)}.domain.e{color:var(--elec)}.domain.s{color:var(--soft)}
+.domain .ico{font-size:22px}
+.domain h4{color:var(--ink);font-size:15px;margin:8px 0 4px}
+.domain p{font-size:12.5px;color:var(--muted)}
+.domain .anat{font-family:"IBM Plex Mono";font-size:11px;font-weight:600;margin-top:8px;color:currentColor}
+.assembled{margin-top:16px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--ink);color:var(--surface);font-size:14px;display:none}
+.assembled.show{display:block}
+.assembled b{font-family:"Chakra Petch"}
+
+/* ---------- module 1 : caja negra ---------- */
+.bn-layout{display:grid;grid-template-columns:1fr;gap:18px}
+.systems{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.syschip{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.syschip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.part{border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;background:var(--surface);font-size:13px}
+.part .pn{font-weight:600;display:block;margin-bottom:8px}
+.part .opts{display:flex;gap:4px}
+.part .opts button{flex:1;border:1px solid var(--line-strong);background:var(--surface-2);border-radius:6px;padding:5px 0;font-size:11px;font-weight:700;cursor:pointer;font-family:"IBM Plex Mono"}
+.part.correct{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--surface))}
+.part.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--surface))}
+.part .opts button[data-sel="true"].m{background:var(--mech);color:#fff;border-color:var(--mech)}
+.part .opts button[data-sel="true"].e{background:var(--elec);color:#fff;border-color:var(--elec)}
+.part .opts button[data-sel="true"].s{background:var(--soft);color:#fff;border-color:var(--soft)}
+.scorebar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.scorebar .big{font-family:"Chakra Petch";font-size:26px;font-weight:700}
+
+/* ---------- module 3 : puente H ---------- */
+.truth{border-collapse:collapse;width:100%;font-family:"IBM Plex Mono";font-size:13px;margin-top:8px}
+.truth th,.truth td{border:1px solid var(--line);padding:7px 8px;text-align:center}
+.truth th{background:var(--surface-2);font-weight:600}
+.truth tr[data-live="true"] td{background:color-mix(in srgb,var(--elec) 16%,transparent)}
+.toggles{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tgl{border:1px solid var(--line-strong);background:var(--surface-2);border-radius:8px;padding:8px 12px;font-family:"IBM Plex Mono";font-weight:600;font-size:13px;cursor:pointer}
+.tgl[data-on="true"]{background:var(--soft);color:#fff;border-color:var(--soft)}
+.wirelist{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.wirelist li{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.wirelist li .st{margin-left:auto;font-family:"IBM Plex Mono";font-size:11px;font-weight:700}
+.wirelist li.done{border-color:var(--ok)}
+.wirelist li.done .st{color:var(--ok)}
+.wirelist li.bad{border-color:var(--bad)}
+.wirelist li.bad .st{color:var(--bad)}
+.bankgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.bankcol .bh{font-family:"IBM Plex Mono";font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.bankcol .bh.mech{color:var(--mech)}.bankcol .bh.elec{color:var(--elec)}
+.bankcol .pill{margin-top:10px;width:100%;justify-content:center;box-sizing:border-box}
+.combo{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 14px;border-radius:var(--radius-sm);background:var(--surface-2);border:1px solid var(--line);font-family:"Chakra Petch";font-weight:700;font-size:14px}
+.combo .ic{font-size:20px;line-height:1}
+@media(max-width:520px){.bankgrid{grid-template-columns:1fr}}
+
+/* ---------- module 4 : bloques ---------- */
+.blocks{display:grid;gap:8px}
+.block{
+  border:1px solid var(--line-strong);border-left:5px solid var(--soft);border-radius:8px;
+  background:var(--surface);padding:10px 12px;font-size:13px
+}
+.block.sense{border-left-color:var(--elec)}
+.block.act{border-left-color:var(--mech)}
+.block.ctrl{border-left-color:var(--soft)}
+.block .bh{display:flex;align-items:center;gap:8px;font-weight:600}
+.block .bh input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+.block .params{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;padding-left:24px}
+.block .params label{font-size:12px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.block .params input,.block .params select{width:auto;min-width:88px;padding:4px 6px;font-size:12px}
+.codebox{background:#0d1117;color:#c9d1d9;border-radius:var(--radius-sm);padding:14px;font-family:"IBM Plex Mono";font-size:12px;line-height:1.5;overflow-x:auto;white-space:pre;border:1px solid var(--line)}
+.codebox .kw{color:#ff7b72}.codebox .fn{color:#d2a8ff}.codebox .nu{color:#79c0ff}.codebox .cm{color:#8b949e}
+
+/* ---------- diagrams (árbol de decisión / flujo de datos) ---------- */
+.diagram{width:100%;height:auto;margin-top:10px;overflow:visible}
+.diagram text{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--ink)}
+.diagram .lbl{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:12px}
+.diagram .small{font-size:10px;fill:var(--muted)}
+.diagram .arrow{stroke:var(--muted);stroke-width:1.6;fill:none;marker-end:url(#tm-arrow)}
+.diagram .box{stroke-width:1.6;fill:var(--surface)}
+.diagram .box.sense{stroke:var(--elec)}
+.diagram .box.ctrl{stroke:var(--soft)}
+.diagram .box.act{stroke:var(--mech)}
+.diagram .box.core0{stroke:var(--elec);fill:var(--elec-soft)}
+.diagram .box.core1{stroke:var(--mech);fill:var(--mech-soft)}
+.diagram .box.shared{stroke:var(--soft);fill:var(--soft-soft)}
+.diagram-shell{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-top:14px}
+.diagram-shell h3{font-size:14px;margin-bottom:2px}
+.diagram-shell .cap{font-size:12px;color:var(--muted);margin-top:8px}
+
+/* ---------- module 06 : checklist ---------- */
+.cl-progress{display:flex;align-items:center;gap:10px;margin:4px 0 22px}
+.cl-bar{flex:1;height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.cl-bar span{display:block;height:100%;background:var(--ok);border-radius:999px;transition:width .2s}
+.cl-pct{font-family:"IBM Plex Mono";font-size:13px;font-weight:700;color:var(--ok);min-width:42px;text-align:right}
+.cl-sec{margin-bottom:18px}
+.cl-sec .sh{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.cl-sec .sh h4{font-size:14.5px;font-family:"Chakra Petch"}
+.cl-sec .sh .when{font-family:"IBM Plex Mono";font-size:10.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.cl-sec .sh .mini{margin-left:auto;font-family:"IBM Plex Mono";font-size:11.5px;font-weight:700;color:var(--muted)}
+.cl-items{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cl-items li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface);cursor:pointer}
+.cl-items li input{margin-top:3px;width:16px;height:16px;accent-color:var(--ok);flex:none;pointer-events:none}
+.cl-items li.done{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 6%,var(--surface))}
+.cl-items li.done .cl-txt{text-decoration:line-through;opacity:.6}
+.cl-items li small{display:block;color:var(--muted);font-size:12px;margin-top:2px;font-weight:400;text-decoration:none!important;opacity:1!important}
+
+/* ---------- telemetry dashboard ---------- */
+.dash{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 13px;box-shadow:var(--shadow)}
+.tile .k{font-family:"IBM Plex Mono";font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:"Chakra Petch";font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1;margin-top:3px}
+.tile .u{font-size:12px;color:var(--muted);font-family:"IBM Plex Sans"}
+.tile.state .v{font-size:18px}
+.bars{display:flex;gap:10px;align-items:flex-end;height:44px;margin-top:6px}
+.bars .b{flex:1;background:var(--surface-2);border-radius:4px 4px 0 0;position:relative;overflow:hidden}
+.bars .b span{position:absolute;left:0;right:0;bottom:0;background:var(--mech)}
+.bars .b.r span{background:var(--elec)}
+.spark{width:100%;height:44px;display:block;margin-top:4px}
+.compass{display:block;margin:2px auto 0}
+
+.dash-mini{grid-template-columns:repeat(4,1fr);margin-top:12px}
+.dash-mini .tile{padding:9px 10px}
+.dash-mini .tile .v{font-size:19px}
+.dash-mini .bars{height:30px}
+@media(max-width:640px){.dash-mini{grid-template-columns:repeat(2,1fr)}}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+
+/* ---------- module map : carrera ---------- */
+.sem{margin-bottom:16px}
+.sem h4{font-size:13px;font-family:"IBM Plex Mono";letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.cert{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--surface);cursor:pointer;font-size:13px;transition:transform .12s}
+.cert:hover{transform:translateY(-2px)}
+.cert .cn{font-weight:600}
+.cert .cd{font-size:11.5px;color:var(--muted);margin-top:2px}
+.cert[data-area="mech"]{border-left:4px solid var(--mech)}
+.cert[data-area="elec"]{border-left:4px solid var(--elec)}
+.cert[data-area="soft"]{border-left:4px solid var(--soft)}
+.cert[data-area="int"]{border-left:4px solid var(--ink)}
+.cert[data-area="core"]{border-left:4px solid var(--line-strong)}
+.certdetail{margin-top:10px;padding:14px 16px;border-radius:var(--radius-sm);background:var(--surface-2);border:1px solid var(--line);font-size:13.5px;display:none}
+.certdetail.show{display:block}
+.certdetail b{font-family:"Chakra Petch"}
+
+.two{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:900px){
+  .two{grid-template-columns:minmax(300px,380px) 1fr}
+  .bn-layout{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .domains{grid-template-columns:1fr}
+  .dash{grid-template-columns:repeat(2,1fr)}
+}
+
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12.5px}
+.hidden{display:none}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="dot" aria-hidden="true"></span>Taller Mecatrónica</div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Módulos del taller"></nav>
+    <button class="themebtn" id="themebtn" title="Cambiar tema" aria-label="Cambiar tema claro / oscuro">◐</button>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<footer class="wrap">
+  Taller vocacional de Ingeniería en Mecatrónica · modelo Tecmilenio MAPS. Simuladores para preparatoria — construye e integra un rover autónomo.
+</footer>
+
+<script>
+/* ============================================================
+   Router de módulos
+   ============================================================ */
+const MODULES=[
+  {id:"inicio", n:"00", label:"Inicio"},
+  {id:"cajanegra", n:"01", label:"Caja negra"},
+  {id:"chasis", n:"02", label:"Chasis"},
+  {id:"puenteh", n:"03", label:"Puente H"},
+  {id:"bloques", n:"04", label:"Programación"},
+  {id:"pista", n:"05", label:"Pista + Telemetría"},
+  {id:"checklist", n:"06", label:"Checklist"},
+  {id:"carrera", n:"★", label:"Mapa de la carrera"},
+];
+const main=document.getElementById("main"), tabsEl=document.getElementById("tabs");
+const panels={};
+MODULES.forEach((m,i)=>{
+  const t=document.createElement("button");
+  t.className="tab";t.role="tab";t.id="tab-"+m.id;
+  t.setAttribute("aria-selected", i===0?"true":"false");
+  t.innerHTML=`<span class="n">${m.n}</span>${m.label}`;
+  t.onclick=()=>select(m.id);
+  tabsEl.appendChild(t);
+  const p=document.createElement("section");
+  p.className="module"+(i===0?" active":"");
+  p.id="mod-"+m.id;p.setAttribute("role","tabpanel");
+  main.appendChild(p);
+  panels[m.id]=p;
+});
+let current=null;
+function select(id){
+  MODULES.forEach(m=>{
+    const on=m.id===id;
+    document.getElementById("tab-"+m.id).setAttribute("aria-selected",on);
+    panels[m.id].classList.toggle("active",on);
+  });
+  if(current&&BUILDERS[current]&&BUILDERS[current].stop) BUILDERS[current].stop();
+  current=id;
+  if(!panels[id].dataset.built){ BUILDERS[id].build(panels[id]); panels[id].dataset.built="1"; }
+  else if(BUILDERS[id].resume) BUILDERS[id].resume();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* theme toggle */
+const tb=document.getElementById("themebtn");
+tb.onclick=()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const mq=matchMedia("(prefers-color-scheme:dark)").matches;
+  const next=cur? (cur==="dark"?"light":"dark") : (mq?"light":"dark");
+  document.documentElement.setAttribute("data-theme",next);
+  try{localStorage.setItem("tm-theme",next)}catch(e){}
+};
+try{const s=localStorage.getItem("tm-theme"); if(s)document.documentElement.setAttribute("data-theme",s);}catch(e){}
+
+const $=(s,r=document)=>r.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+
+/* puente: lo que practicas en el simulador  ->  lo que tu celda entrega al grupo / al kit */
+function simKitHTML(sim,deliver,cell){
+  return `<div class="simkit">
+    <div class="sk-sim"><div class="sk-h">▶ En el simulador</div><p>${sim}</p></div>
+    <div class="sk-arrow" aria-hidden="true">→</div>
+    <div class="sk-kit"><div class="sk-h">🎯 Lo que entrega la celda ${cell}</div><p>${deliver}</p></div>
+  </div>`;
+}
+
+/* ============================================================
+   MOTOR compartido: física simple de rover diferencial
+   ============================================================ */
+const MOTORS={ // rpm sin carga @ voltaje nominal
+  "tt-200":{rpm:200,label:"TT amarillo (200 rpm)"},
+  "tt-90":{rpm:90,label:"TT con reductora (90 rpm)"},
+  "n20-320":{rpm:320,label:"N20 rápido (320 rpm)"},
+};
+function pwmToSpeed(pwm, wheelDiamCm, motorRpm){
+  // cm/s ideal; se aplica ~65% de eficiencia bajo carga
+  const rps=(pwm/255)*(motorRpm/60);
+  return rps*Math.PI*wheelDiamCm*0.65;
+}
+class RoverSim{
+  constructor(){this.reset();}
+  reset(x=40,y=40,h=0){
+    this.x=x;this.y=y;this.h=h;         // cm, cm, rad
+    this.pwmL=0;this.pwmR=0;this.dir=1; // dir: 1 fwd, -1 rev per side handled via signed pwm
+    this.sL=0;this.sR=0;               // cm/s
+    this.trackCm=11; this.wheelDiam=6.5; this.motorRpm=200;
+    this.collisions=0; this.t=0; this.dist=200; this.state="—";
+    this.trail=[];
+  }
+  step(dt, obstacles, arenaW, arenaH){
+    this.sL=pwmToSpeed(Math.abs(this.pwmL),this.wheelDiam,this.motorRpm)*Math.sign(this.pwmL);
+    this.sR=pwmToSpeed(Math.abs(this.pwmR),this.wheelDiam,this.motorRpm)*Math.sign(this.pwmR);
+    const v=(this.sL+this.sR)/2, w=(this.sR-this.sL)/this.trackCm;
+    const nx=this.x+Math.cos(this.h)*v*dt, ny=this.y+Math.sin(this.h)*v*dt;
+    this.h+=w*dt;
+    // colisión: radio del rover ~9 cm
+    let hit=false;
+    for(const o of obstacles){
+      const d=Math.hypot(nx-o.x,ny-o.y);
+      if(d<o.r+9){hit=true;break;}
+    }
+    if(nx<9||ny<9||nx>arenaW-9||ny>arenaH-9) hit=true;
+    if(hit){ this.collisions++; this.x-=Math.cos(this.h)*6; this.y-=Math.sin(this.h)*6; }
+    else { this.x=nx; this.y=ny; }
+    this.t+=dt;
+    this.trail.push([this.x,this.y]); if(this.trail.length>400)this.trail.shift();
+  }
+  readUltrasonic(obstacles, arenaW, arenaH){
+    // raycast frontal, tope 200 cm, + ruido
+    let best=200;
+    for(let d=6; d<200; d+=2){
+      const px=this.x+Math.cos(this.h)*d, py=this.y+Math.sin(this.h)*d;
+      if(px<0||py<0||px>arenaW||py>arenaH){best=d;break;}
+      let blocked=false;
+      for(const o of obstacles){ if(Math.hypot(px-o.x,py-o.y)<o.r){blocked=true;break;} }
+      if(blocked){best=d;break;}
+    }
+    best+=(Math.random()-0.5)*1.4;
+    this.dist=Math.max(2,best);
+    return this.dist;
+  }
+}
+
+/* dibujar arena + rover en un canvas (escala cm->px) */
+function drawArena(ctx,cv,sim,obstacles,arenaW,arenaH,opts={}){
+  const s=cv.width/arenaW;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  const css=getComputedStyle(document.documentElement);
+  const ink=css.getPropertyValue('--ink').trim();
+  const line=css.getPropertyValue('--line').trim();
+  const surf2=css.getPropertyValue('--surface-2').trim();
+  const mech=css.getPropertyValue('--mech').trim();
+  const elec=css.getPropertyValue('--elec').trim();
+  const soft=css.getPropertyValue('--soft').trim();
+  ctx.fillStyle=surf2;ctx.fillRect(0,0,cv.width,cv.height);
+  // grid
+  ctx.strokeStyle=line;ctx.lineWidth=1;
+  for(let g=0;g<=arenaW;g+=20){ctx.beginPath();ctx.moveTo(g*s,0);ctx.lineTo(g*s,cv.height);ctx.stroke();}
+  for(let g=0;g<=arenaH;g+=20){ctx.beginPath();ctx.moveTo(0,g*s);ctx.lineTo(cv.width,g*s);ctx.stroke();}
+  // finish
+  if(opts.finish){
+    ctx.fillStyle=soft;ctx.globalAlpha=.18;
+    ctx.fillRect(opts.finish.x*s,opts.finish.y*s,opts.finish.w*s,opts.finish.h*s);
+    ctx.globalAlpha=1;
+    ctx.strokeStyle=soft;ctx.setLineDash([6,4]);
+    ctx.strokeRect(opts.finish.x*s,opts.finish.y*s,opts.finish.w*s,opts.finish.h*s);
+    ctx.setLineDash([]);
+  }
+  // obstacles
+  obstacles.forEach(o=>{
+    ctx.beginPath();ctx.arc(o.x*s,o.y*s,o.r*s,0,7);
+    ctx.fillStyle=mech;ctx.globalAlpha=.85;ctx.fill();ctx.globalAlpha=1;
+  });
+  // trail
+  if(sim.trail.length>1){
+    ctx.beginPath();ctx.moveTo(sim.trail[0][0]*s,sim.trail[0][1]*s);
+    sim.trail.forEach(p=>ctx.lineTo(p[0]*s,p[1]*s));
+    ctx.strokeStyle=soft;ctx.globalAlpha=.5;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;
+  }
+  // ultrasonic cone
+  ctx.save();ctx.translate(sim.x*s,sim.y*s);ctx.rotate(sim.h);
+  ctx.beginPath();ctx.moveTo(9*s,0);
+  ctx.arc(0,0,Math.min(sim.dist,200)*s,-0.18,0.18);
+  ctx.closePath();ctx.fillStyle=elec;ctx.globalAlpha=.16;ctx.fill();ctx.globalAlpha=1;
+  // body
+  ctx.fillStyle=ink;ctx.strokeStyle=ink;
+  ctx.beginPath();ctx.roundRect(-9*s,-7*s,18*s,14*s,3);ctx.fill();
+  ctx.fillStyle=elec;ctx.fillRect(7*s,-3*s,3*s,6*s); // sensor
+  // wheels
+  ctx.fillStyle=mech;
+  ctx.fillRect(-8*s,-8.5*s,7*s,2.4*s);ctx.fillRect(1*s,-8.5*s,7*s,2.4*s);
+  ctx.fillRect(-8*s,6.1*s,7*s,2.4*s);ctx.fillRect(1*s,6.1*s,7*s,2.4*s);
+  ctx.restore();
+}
+
+/* ============================================================
+   BUILDERS por módulo
+   ============================================================ */
+const BUILDERS={};
+
+/* ---------- 00 · INICIO ---------- */
+BUILDERS.inicio={build(p){
+  p.innerHTML=`
+   <div class="hero">
+     <div class="mhead"><span class="kicker">Módulo 00 · El ADN de la mecatrónica</span></div>
+     <h2>Darle cerebro, sentidos y músculos a la materia inerte</h2>
+     <p class="big">La mecatrónica no es una materia: es lo que pasa cuando la <b>mecánica</b>, la <b>electrónica</b> y la <b>programación</b> dejan de trabajar por separado. Toca cada dominio para ver qué aporta — y actívalos los tres.</p>
+     <div class="domains" id="domains">
+       <button class="domain m" data-d="m" data-on="false">
+         <div class="ico">🦾</div><h4>Mecánica</h4>
+         <p>Chasis, engranajes, estructura, movimiento. Aguanta el peso y transmite la fuerza al piso.</p>
+         <div class="anat">= esqueleto + músculos</div>
+       </button>
+       <button class="domain e" data-d="e" data-on="false">
+         <div class="ico">📡</div><h4>Electrónica</h4>
+         <p>Cables, sensores, batería, potencia. Lleva energía a los músculos y trae datos del entorno.</p>
+         <div class="anat">= sistema nervioso + circulatorio</div>
+       </button>
+       <button class="domain s" data-d="s" data-on="false">
+         <div class="ico">🧠</div><h4>Programación y control</h4>
+         <p>El microcontrolador lee los sensores, decide y ordena a los motores. Miles de veces por segundo.</p>
+         <div class="anat">= cerebro</div>
+       </button>
+     </div>
+     <div class="assembled" id="assembled"></div>
+   </div>
+
+   <div class="grid two" style="margin-top:18px">
+     <div class="card">
+       <h3>La pregunta detonadora</h3>
+       <p style="font-size:14px">Si un auto eléctrico <b>frena solo</b> ante un peatón, ¿quién lo diseñó: el mecánico, el electrónico o el programador?</p>
+       <button class="btn primary" id="revealBtn" style="margin-top:12px">Ver la respuesta</button>
+       <p class="note hidden" id="revealTxt"><b>Ninguno por separado.</b> Lo diseñó un ingeniero mecatrónico que entiende cómo <i>dialogan</i> las tres áreas: el sensor detecta (electrónica), el algoritmo decide la fuerza de frenado (software) y los actuadores la aplican sin derrapar (mecánica).</p>
+     </div>
+     <div class="card">
+       <h3>Cómo van a trabajar hoy</h3>
+       <p style="font-size:14px">Tu grupo es una <b>empresa de ingeniería</b> con 3 celdas que se coordinan: <b style="color:var(--mech)">⚙️ Mecánica</b> (simulador 02), <b style="color:var(--elec)">⚡ Electrónica</b> (03) y <b style="color:var(--soft)">💻 Software</b> (04) — más un <b>integrador</b> que junta las 3 entregas.</p>
+       <div class="route"><b>Meta:</b> cada celda resuelve su parte en su simulador y entrega 2–3 datos. El integrador los une en la <b>Hoja de integración</b> y esos valores se cargan en el <b>rover físico compartido</b>, que corre la pista (simulador 05) con el panel de telemetría proyectado.</div>
+     </div>
+   </div>`;
+  const asm=$("#assembled",p);
+  const state={m:false,e:false,s:false};
+  $("#domains",p).querySelectorAll(".domain").forEach(b=>{
+    b.onclick=()=>{
+      const d=b.dataset.d; state[d]=!state[d];
+      b.dataset.on=state[d];
+      const all=state.m&&state.e&&state.s;
+      const cnt=[state.m,state.e,state.s].filter(Boolean).length;
+      if(cnt===0){asm.classList.remove("show");return;}
+      asm.classList.add("show");
+      if(all) asm.innerHTML="<b>Sistema mecatrónico ✓</b> — los tres dominios integrados: un organismo que sensa, decide y actúa por sí solo. Eso es un rover autónomo, un cobot o un dron.";
+      else if(cnt===1) asm.innerHTML="Con un solo dominio tienes una pieza inerte. Un motor sin control es solo un motor. Activa los demás.";
+      else asm.innerHTML="Dos de tres: te falta un dominio. Sin él, el sistema no se mueve solo. Falta "+
+        (!state.m?"la <b>mecánica</b> (nada que mover)":!state.e?"la <b>electrónica</b> (sin energía ni sentidos)":"el <b>software</b> (sin quién decida)")+".";
+    };
+  });
+  $("#revealBtn",p).onclick=e=>{ $("#revealTxt",p).classList.remove("hidden"); e.target.remove(); };
+}};
+
+/* ---------- 01 · CAJA NEGRA ---------- */
+const SYSTEMS={
+  dron:{name:"Dron de reparto",parts:[
+    {n:"Hélices y motores brushless",a:"m"},{n:"Estructura de fibra de carbono",a:"m"},
+    {n:"Batería LiPo",a:"e"},{n:"Giroscopio / acelerómetro (IMU)",a:"e"},{n:"GPS",a:"e"},
+    {n:"Controlador de vuelo (firmware PID)",a:"s"},{n:"Algoritmo de estabilización",a:"s"},
+    {n:"Tren de aterrizaje",a:"m"},{n:"Cámara y sensor de distancia",a:"e"},
+    {n:"Planificador de ruta",a:"s"},
+  ]},
+  dispensador:{name:"Dispensador inteligente de gel",parts:[
+    {n:"Bomba peristáltica",a:"m"},{n:"Resorte y boquilla",a:"m"},{n:"Carcasa y soporte",a:"m"},
+    {n:"Sensor infrarrojo de proximidad",a:"e"},{n:"Pilas / fuente",a:"e"},{n:"LED indicador",a:"e"},
+    {n:"Rutina: si hay mano → activar bomba 0.5 s",a:"s"},{n:"Contador de dosis",a:"s"},
+  ]},
+  brazo:{name:"Brazo robótico industrial",parts:[
+    {n:"Eslabones y articulaciones",a:"m"},{n:"Servomotores / motores paso a paso",a:"m"},
+    {n:"Reductores armónicos",a:"m"},{n:"Gripper (pinza)",a:"m"},
+    {n:"Encoders de posición",a:"e"},{n:"Drivers de potencia",a:"e"},{n:"Paro de emergencia",a:"e"},
+    {n:"Cinemática inversa",a:"s"},{n:"Trayectoria punto a punto",a:"s"},{n:"Interfaz de operador (HMI)",a:"s"},
+  ]},
+};
+BUILDERS.cajanegra={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 01</span><h2>Desglose de caja negra</h2></div>
+   <p class="mlede">Elige un sistema real y clasifica cada componente en su dominio: <b style="color:var(--mech)">Mecánica</b>, <b style="color:var(--elec)">Electrónica</b> o <b style="color:var(--soft)">Software</b>. Es el mismo reto relámpago que harás en equipo.</p>
+   ${simKitHTML(
+     "Clasificas los componentes de un dron, un dispensador o un brazo robótico y el simulador te dice si acertaste.",
+     "Cada rol del grupo (mecánica / electrónica / software) nombra en voz alta lo que ve en el objeto real. Sirve para decidir qué celda hace qué.",
+     "de arranque")}
+   <div class="systems" id="sys"></div>
+   <div class="card">
+     <div class="parts" id="parts"></div>
+     <div class="scorebar">
+       <button class="btn primary" id="check">Revisar clasificación</button>
+       <span class="big readout" id="score">0 / 0</span>
+       <span class="pill" id="verdict">Sin revisar</span>
+     </div>
+     <p class="note" id="fb"></p>
+   </div>
+   <div class="route"><b>En la carrera:</b> este pensamiento de "descomponer un sistema en subsistemas" es la base de <b>Diseño Mecatrónico</b> (4º sem) y <b>Ciencias de la Ingeniería</b> (1er sem).</div>`;
+  const sysEl=$("#sys",p), partsEl=$("#parts",p);
+  let curSys="dron";
+  Object.entries(SYSTEMS).forEach(([k,v])=>{
+    const c=el("button","syschip",v.name);
+    c.setAttribute("aria-pressed",k===curSys);
+    c.onclick=()=>{curSys=k; sysEl.querySelectorAll(".syschip").forEach(x=>x.setAttribute("aria-pressed","false")); c.setAttribute("aria-pressed","true"); render();};
+    sysEl.appendChild(c);
+  });
+  let sel={};
+  function render(){
+    sel={}; partsEl.innerHTML="";
+    $("#score",p).textContent="0 / "+SYSTEMS[curSys].parts.length;
+    $("#verdict",p).textContent="Sin revisar";$("#verdict",p).className="pill";
+    $("#fb",p).textContent="";
+    SYSTEMS[curSys].parts.forEach((pt,i)=>{
+      const d=el("div","part");
+      d.innerHTML=`<span class="pn">${pt.n}</span>
+        <div class="opts">
+          <button class="m" data-a="m" data-sel="false">MEC</button>
+          <button class="e" data-a="e" data-sel="false">ELE</button>
+          <button class="s" data-a="s" data-sel="false">SOF</button>
+        </div>`;
+      d.querySelectorAll(".opts button").forEach(b=>{
+        b.onclick=()=>{
+          sel[i]=b.dataset.a;
+          d.querySelectorAll(".opts button").forEach(x=>x.dataset.sel="false");
+          b.dataset.sel="true";
+        };
+      });
+      partsEl.appendChild(d);
+    });
+  }
+  $("#check",p).onclick=()=>{
+    const parts=SYSTEMS[curSys].parts; let ok=0;
+    partsEl.querySelectorAll(".part").forEach((d,i)=>{
+      d.classList.remove("correct","wrong");
+      if(sel[i]==null) return;
+      if(sel[i]===parts[i].a){d.classList.add("correct");ok++;}
+      else d.classList.add("wrong");
+    });
+    $("#score",p).textContent=ok+" / "+parts.length;
+    const v=$("#verdict",p);
+    if(ok===parts.length){v.textContent="¡Sistema entendido!";v.className="pill ok";}
+    else if(ok>=parts.length*0.6){v.textContent="Vas bien";v.className="pill warn";}
+    else {v.textContent="Revísalo en equipo";v.className="pill bad";}
+    $("#fb",p).innerHTML="Pista: los <b>motores y estructuras</b> son mecánica aunque lleven electricidad; los <b>sensores y drivers</b> son electrónica; todo lo que sea <b>una regla, un algoritmo o una decisión</b> es software.";
+  };
+  render();
+}};
+
+/* ---------- 02 · CHASIS ---------- */
+BUILDERS.chasis={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 02 · Mecánica</span><h2>Suspensión Rocker-Bogie</h2></div>
+   <p class="mlede">El mismo mecanismo que usa la NASA en sus rovers de Marte (<i>Sojourner, Curiosity, Perseverance</i>): 6 ruedas sin resortes que se acomodan solas al terreno. Mueve la piedra o arrastra la pista para ver por qué el cuerpo casi no se inclina — y compáralo contra un eje rígido.</p>
+   ${simKitHTML(
+     "Arrastras la pista bajo el rover y comparas rocker-bogie contra un eje rígido sobre la misma piedra. Entiendes <b>por qué</b> se arma así antes de armarlo.",
+     "Suspensión armada (2 rockers + 2 bogies + barra + 6 ruedas), articulando libre, <b>probada a mano</b> empujándola sobre una piedra real.",
+     "⚙️ Mecánica")}
+   <div class="grid two">
+     <div class="card">
+       <label class="field">Posición en la pista <span class="val" id="vpos">70%</span></label>
+       <input type="range" id="pos" min="0" max="100" step="1" value="70">
+       <div class="btnrow" style="margin-top:4px">
+         <button class="btn go" id="play">▶ Avanzar solo</button>
+         <button class="btn" id="reset">Reiniciar</button>
+       </div>
+       <label class="field" style="margin-top:16px">Altura de la piedra <span class="val" id="vh">4 cm</span></label>
+       <input type="range" id="h" min="0" max="6" step="0.5" value="4">
+       <div class="btnrow">
+         <button class="btn" data-h="0">Llano</button>
+         <button class="btn" data-h="2.5">Piedra chica</button>
+         <button class="btn" data-h="5">Piedra grande</button>
+       </div>
+       <label class="field" style="margin-top:16px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="rigid" style="width:16px;height:16px" checked> Comparar con eje rígido (sin suspensión)</label>
+       <p class="note">Vista lateral esquemática, no a escala. El cuerpo real pivota sobre <b>2 rockers</b> unidos por una <b>barra diferencial</b>: esta vista de un solo lado sobreestima un poco la inclinación — la barra la reparte entre los dos lados.</p>
+     </div>
+     <div>
+       <div class="canvas-shell"><canvas id="cv" width="720" height="380"></canvas></div>
+       <div class="dash" style="grid-template-columns:repeat(3,1fr)">
+         <div class="tile"><div class="k">Cuerpo · rocker-bogie</div><div class="v tnum" id="oPitchRB">0°</div><div class="u">inclinación</div></div>
+         <div class="tile"><div class="k">Cuerpo · eje rígido</div><div class="v tnum" id="oPitchRig">0°</div><div class="u">inclinación</div></div>
+         <div class="tile"><div class="k">Eje rígido</div><div class="v" id="oFloat" style="font-size:15px">—</div><div class="u">rueda central</div></div>
+       </div>
+       <p class="note" id="advice"></p>
+     </div>
+   </div>
+   <div class="route"><b>En la carrera:</b> este mecanismo se calcula con <b>Mecánica de Materiales</b> y <b>Matemáticas Avanzadas</b> (3er sem), se integra en <b>Diseño Mecatrónico</b> (4º) y las piezas se diseñan en 3D en <b>Dibujo Computarizado</b> (1er sem) — exactamente lo que vas a armar hoy.</div>`;
+  const cv=$("#cv",p), ctx=cv.getContext("2d");
+  const get=id=>$("#"+id,p);
+  // geometría del esquema (cm, no a escala real del STL)
+  const dxFrontMid=24, dxMidRear=18, wheelR=6.2, bodyRatio=0.42, track=140;
+  function groundH(x,hMax){ const c=track*0.62, w=11; const d=Math.abs(x-c); return d>w?0:hMax*0.5*(1+Math.cos(Math.PI*d/w)); }
+  let raf=null, playing=false;
+  function upd(){
+    const posPct=+get("pos").value, hMax=+get("h").value, showRigid=get("rigid").checked;
+    get("vpos").textContent=posPct+"%";
+    get("vh").textContent=hMax.toFixed(1)+" cm";
+    const xFront=20+posPct/100*(track-40);
+    const xMid=xFront-dxFrontMid, xRear=xFront-dxFrontMid-dxMidRear;
+    const yFront=groundH(xFront,hMax), yMid=groundH(xMid,hMax), yRear=groundH(xRear,hMax);
+    // rocker-bogie
+    const bogiePX=(xMid+xRear)/2, bogiePY=(yMid+yRear)/2;
+    const rockerAngRad=Math.atan2(yFront-bogiePY, xFront-bogiePX);
+    const rockerAngDeg=rockerAngRad*180/Math.PI;
+    const bodyPitchRB=rockerAngDeg/2; // la barra diferencial promedia con el otro lado
+    // eje rígido: línea directa front-rear; la rueda de en medio puede flotar o atorarse
+    const rigidAngRad=Math.atan2(yFront-yRear, xFront-xRear);
+    const rigidAngDeg=rigidAngRad*180/Math.PI;
+    const t=(xMid-xRear)/(xFront-xRear);
+    const rigidYatMid=yRear+(yFront-yRear)*t;
+    const midGap=rigidYatMid-yMid; // + = la rueda del medio queda en el aire
+    get("oPitchRB").textContent=bodyPitchRB.toFixed(1)+"°";
+    get("oPitchRig").textContent=(showRigid?rigidAngDeg:0).toFixed(1)+"°";
+    const fl=get("oFloat");
+    if(!showRigid){fl.textContent="—";fl.style.color="var(--muted)";}
+    else if(midGap>0.5){fl.textContent="en el aire";fl.style.color="var(--bad)";}
+    else if(midGap<-0.5){fl.textContent="se atora";fl.style.color="var(--warn)";}
+    else {fl.textContent="toca el piso";fl.style.color="var(--ok)";}
+    let a=[];
+    if(Math.abs(bodyPitchRB)<0.5) a.push("Terreno llano o las 3 ruedas ya se acomodaron: el cuerpo va casi nivelado.");
+    else a.push("La rueda delantera está subiendo la piedra; el rocker pivota y absorbe la mayor parte — el cuerpo apenas se nota.");
+    if(showRigid && Math.abs(rigidAngDeg)>Math.abs(bodyPitchRB)+1) a.push("El eje rígido, en cambio, transmite casi toda la altura de la piedra directo al cuerpo.");
+    if(showRigid && midGap>0.5) a.push("Con eje rígido, la rueda del medio se queda sin tocar el piso — pierde tracción justo ahí.");
+    get("advice").innerHTML=a.join(" ");
+    draw(xFront,xMid,xRear,yFront,yMid,yRear,bogiePX,bogiePY,hMax,showRigid,rigidYatMid,midGap);
+  }
+  function wheel(ctx,x,y,r,color){
+    ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(x,y,2.2,0,7);ctx.fillStyle="rgba(255,255,255,.85)";ctx.fill(); // eje
+  }
+  function armTo(ctx,x1,y1,x2,y2,rTrim,color,w){
+    const dx=x2-x1,dy=y2-y1,d=Math.hypot(dx,dy)||1, ux=dx/d,uy=dy/d;
+    ctx.strokeStyle=color;ctx.lineWidth=w;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(x1+ux*rTrim,y1+uy*rTrim);ctx.lineTo(x2-ux*rTrim,y2-uy*rTrim);ctx.stroke();
+  }
+  function draw(xFront,xMid,xRear,yFront,yMid,yRear,bogiePX,bogiePY,hMax,showRigid,rigidYatMid,midGap){
+    const css=getComputedStyle(document.documentElement);
+    const ink=css.getPropertyValue('--ink').trim(), line=css.getPropertyValue('--line').trim();
+    const surf2=css.getPropertyValue('--surface-2').trim(), mech=css.getPropertyValue('--mech').trim();
+    const soft=css.getPropertyValue('--soft').trim(), warn=css.getPropertyValue('--warn').trim(), bad=css.getPropertyValue('--bad').trim();
+    ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle=surf2;ctx.fillRect(0,0,cv.width,cv.height);
+    const S=4.6, ox=40, drawR=wheelR*S*0.62;
+    function panel(oy,label,x1,y1,x2,y2,x3,y3,bpX,bpY,color,rigid){
+      ctx.save();ctx.translate(ox,oy);
+      ctx.fillStyle=ink;ctx.font="600 12px 'Chakra Petch'";ctx.fillText(label,0,-64);
+      // terreno
+      ctx.strokeStyle=line;ctx.lineWidth=1.5;
+      ctx.beginPath();
+      for(let xx=0;xx<=track;xx+=2){ const yy=groundH(xx,hMax); const px=xx*S, py=-yy*S; if(xx===0)ctx.moveTo(px,py); else ctx.lineTo(px,py); }
+      ctx.stroke();
+      ctx.beginPath();
+      for(let xx=0;xx<=track;xx+=2){ const yy=groundH(xx,hMax); const px=xx*S, py=-yy*S; if(xx===0)ctx.moveTo(px,20); ctx.lineTo(px,py); }
+      ctx.lineTo(track*S,20);ctx.closePath();ctx.fillStyle="rgba(0,0,0,.05)";ctx.fill();
+      const P=(x,y)=>[x*S,-y*S-wheelR*S];
+      const [fx,fy]=P(x1,y1), [mx,my]=P(x2,y2), [rx,ry]=P(x3,y3);
+      if(!rigid){
+        const [bpx,bpy]=P(bpX,bpY);
+        const bodyPX=bpx+(fx-bpx)*bodyRatio, bodyPY=bpy+(fy-bpy)*bodyRatio;
+        wheel(ctx,fx,fy,drawR,color);wheel(ctx,mx,my,drawR,color);wheel(ctx,rx,ry,drawR,color);
+        armTo(ctx,mx,my,rx,ry,drawR*0.9,mech,7);            // bogie: rueda media <-> rueda trasera
+        armTo(ctx,bpx,bpy,fx,fy,drawR*0.9,soft,7);          // rocker: pivote bogie <-> rueda delantera
+        ctx.save();ctx.translate(bodyPX,bodyPY);ctx.rotate(Math.atan2(fy-bpy,fx-bpx));
+        ctx.fillStyle=ink;ctx.beginPath();ctx.roundRect(-42,-14,84,14,4);ctx.fill();
+        ctx.restore();
+        [[bpx,bpy],[bodyPX,bodyPY]].forEach(([px,py])=>{ ctx.beginPath();ctx.arc(px,py,4.5,0,7);ctx.fillStyle=warn;ctx.fill();ctx.strokeStyle=ink;ctx.lineWidth=1;ctx.stroke(); });
+      } else {
+        wheel(ctx,fx,fy,drawR,color);wheel(ctx,mx,my,drawR,color);wheel(ctx,rx,ry,drawR,color);
+        armTo(ctx,rx,ry,fx,fy,drawR*0.9,ink,11);            // cuerpo rígido: rueda trasera <-> delantera
+        const [mrx,mry]=P(x2,rigidYatMid);
+        ctx.strokeStyle=Math.abs(midGap)>0.5?bad:line;ctx.setLineDash([3,3]);ctx.lineWidth=2;
+        ctx.beginPath();ctx.moveTo(mrx,mry);ctx.lineTo(mx,my);ctx.stroke();ctx.setLineDash([]);
+      }
+      ctx.restore();
+    }
+    panel(120,"Rocker-Bogie",xFront,yFront,xMid,yMid,xRear,yRear,bogiePX,bogiePY,soft,false);
+    if(showRigid) panel(300,"Eje rígido (sin suspensión)",xFront,yFront,xMid,yMid,xRear,yRear,bogiePX,bogiePY,mech,true);
+  }
+  get("h").addEventListener("input",upd);
+  get("pos").addEventListener("input",upd);
+  get("rigid").addEventListener("change",upd);
+  p.querySelectorAll("[data-h]").forEach(b=>b.onclick=()=>{get("h").value=b.dataset.h;upd();});
+  get("play").onclick=()=>{
+    if(playing){playing=false;cancelAnimationFrame(raf);get("play").textContent="▶ Avanzar solo";return;}
+    playing=true;get("play").textContent="⏸ Pausar";
+    const step=()=>{
+      let v=+get("pos").value+0.6; if(v>100)v=0;
+      get("pos").value=v; upd();
+      if(playing) raf=requestAnimationFrame(step);
+    };
+    raf=requestAnimationFrame(step);
+  };
+  get("reset").onclick=()=>{playing=false;cancelAnimationFrame(raf);get("play").textContent="▶ Avanzar solo";get("pos").value=70;get("h").value=4;get("rigid").checked=true;upd();};
+  upd();
+  BUILDERS.chasis.stop=()=>{playing=false;cancelAnimationFrame(raf);};
+}};
+
+/* ---------- 03 · PUENTE H ---------- */
+const WIRES=[
+  {id:"pwr+", from:"Power bank 5 V (+) vía interruptor", to:"L298N · VMS / +12V", ok:true, why:"la potencia de los 2 bancos de motores entra por aquí (misma fuente que todo el rover)"},
+  {id:"gnd",  from:"L298N · GND", to:"ESP32 · GND", ok:true, why:"TIERRA COMÚN: sin esto, el driver no entiende las señales"},
+  {id:"log5v", from:"L298N · +5V (sin jumper del regulador)", to:"ESP32 · 5V", ok:true, why:"a 5V de entrada el regulador interno del L298N no funciona: se puentea directo a la misma línea de 5V"},
+  {id:"m1",   from:"Banco izq. (3 motores en paralelo)", to:"L298N · OUT1 / OUT2", ok:true, why:"salida de potencia al banco de motores"},
+  {id:"m2",   from:"Banco der. (3 motores en paralelo)", to:"L298N · OUT3 / OUT4", ok:true, why:"salida de potencia al banco de motores"},
+  {id:"in",   from:"ESP32 GPIO 26/27 · 14/12", to:"L298N · IN1/IN2 · IN3/IN4", ok:true, why:"dirección de cada banco (adelante/atrás)"},
+  {id:"pwm",  from:"ESP32 GPIO 25/33 (PWM)", to:"L298N · ENA / ENB", ok:true, why:"velocidad de cada banco — hay que quitar los jumpers de ENA/ENB del módulo"},
+  {id:"trig", from:"ESP32 GPIO 5", to:"HC-SR04 · TRIG", ok:true, why:"disparo del pulso ultrasónico"},
+  {id:"echo", from:"ESP32 GPIO 18 ← divisor 1k/2k", to:"HC-SR04 · ECHO", ok:true, why:"el eco llega a 5 V; el divisor lo baja a 3.3 V para el ESP32"},
+];
+const TRAPS=[
+  {id:"trap1", from:"ESP32 · pin 3V3", to:"Motores (directo)", ok:false, why:"❌ NUNCA: la corriente de los motores quema el pin del microcontrolador. Para eso existe el puente H L298N."},
+  {id:"trap2", from:"HC-SR04 · ECHO (5 V)", to:"ESP32 GPIO 18 (directo)", ok:false, why:"❌ El ESP32 es de 3.3 V: 5 V directo al GPIO lo daña. El ECHO debe pasar por el divisor de voltaje 1 kΩ / 2 kΩ."},
+];
+BUILDERS.puenteh={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 03 · Electrónica</span><h2>Cableado y puente H</h2></div>
+   <p class="mlede">Arma el circuito hasta que todo esté en <b style="color:var(--ok)">verde</b> antes de tocar el kit físico. Una sola fuente de <b>5 V</b> alimenta el L298N y el ESP32 — ojo: el L298N cae ~2 V, así que los motores reciben ~3 V (poca fuerza; se compensa con PWM alto). Luego juega con la <b>tabla de verdad</b>: cambia IN1/IN2 y el PWM de ENA, y mira girar el banco de motores.</p>
+   ${simKitHTML(
+     "Conectas cada cable (power bank, L298N, bancos de motores, tierra común, sensor) y evitas las trampas ⚡ hasta obtener <b>verde total</b>. Practicas la tabla de verdad IN1/IN2/PWM.",
+     "El <b>mini-diagrama de pines</b> (GPIO 26/27+ENA25 → banco izq. · 14/12+ENB33 → banco der. · 5 TRIG · 18 ECHO por divisor) y una frase de qué hace el puente H. En el reto conectas las 3 líneas que faltan del rover.",
+     "⚡ Electrónica")}
+   <div class="grid two">
+     <div class="card">
+       <h3><span class="tag elec">conexiones</span> Circuito del rover</h3>
+       <p style="font-size:13px;color:var(--muted)">Marca cada conexión como la harías. Las trampas ⚡ son errores clásicos: déjalas <b>sin marcar</b>.</p>
+       <ul class="wirelist" id="wl"></ul>
+       <div class="btnrow">
+         <button class="btn primary" id="verify">Verificar circuito</button>
+         <span class="pill" id="wverdict">0 / ${WIRES.length}</span>
+       </div>
+     </div>
+     <div>
+       <div class="card">
+         <h3><span class="tag soft">control</span> Control de los 2 bancos — el L298N completo</h3>
+         <p style="font-size:12.5px;color:var(--muted);margin-bottom:2px">El rover no tiene 1 motor: tiene <b>2 bancos de 3</b>. Muévelos por separado y mira qué hace el rover completo.</p>
+         <div class="bankgrid">
+           <div class="bankcol">
+             <div class="bh mech">BANCO IZQUIERDO · canal A</div>
+             <div class="toggles"><button class="tgl" data-k="in1" data-on="false">IN1</button><button class="tgl" data-k="in2" data-on="false">IN2</button></div>
+             <label class="field" style="margin-top:10px">ENA · PWM <span class="val" id="vpwmL">180</span></label>
+             <input type="range" id="pwmL" min="0" max="255" value="180">
+             <div class="pill" id="stL">—</div>
+           </div>
+           <div class="bankcol">
+             <div class="bh elec">BANCO DERECHO · canal B</div>
+             <div class="toggles"><button class="tgl" data-k="in3" data-on="false">IN3</button><button class="tgl" data-k="in4" data-on="false">IN4</button></div>
+             <label class="field" style="margin-top:10px">ENB · PWM <span class="val" id="vpwmR">180</span></label>
+             <input type="range" id="pwmR" min="0" max="255" value="180">
+             <div class="pill" id="stR">—</div>
+           </div>
+         </div>
+         <div class="combo" id="combo"><span class="ic" id="comboIcon">○</span><span id="comboLabel">Apagado</span></div>
+         <table class="truth" id="truth" style="margin-top:14px">
+           <tr><th>EN_</th><th>IN_1</th><th>IN_2</th><th>Resultado</th></tr>
+           <tr data-r="off"><td>0</td><td>X</td><td>X</td><td>Apagado</td></tr>
+           <tr data-r="coast"><td>PWM</td><td>0</td><td>0</td><td>Libre (inercia)</td></tr>
+           <tr data-r="fwd"><td>PWM</td><td>1</td><td>0</td><td>Adelante</td></tr>
+           <tr data-r="rev"><td>PWM</td><td>0</td><td>1</td><td>Atrás</td></tr>
+           <tr data-r="brake"><td>PWM</td><td>1</td><td>1</td><td>Freno</td></tr>
+         </table>
+         <p class="note">La misma tabla aplica a los 2 canales (ENA/IN1/IN2 = izq. · ENB/IN3/IN4 = der.). Quitar los jumpers de ENA/ENB del módulo para que el PWM del ESP32 controle la velocidad.</p>
+       </div>
+       <div class="canvas-shell" style="margin-top:14px"><canvas id="motcv" width="560" height="260"></canvas></div>
+     </div>
+   </div>
+   <div class="route"><b>En la carrera:</b> <b>Circuitos Eléctricos y Electrónicos</b> (3er sem) y <b>Automatización Industrial</b> (4º). El mismo principio de puente H mueve bandas transportadoras y ejes de robots industriales.</div>`;
+  const wl=$("#wl",p);
+  const allW=[...WIRES.slice(0,3),TRAPS[0],...WIRES.slice(3,6),TRAPS[1],...WIRES.slice(6)];
+  const marked={};
+  allW.forEach(w=>{
+    const li=el("li");
+    li.innerHTML=`<input type="checkbox" aria-label="conectar ${w.from} a ${w.to}"> <span>${w.ok?"":"⚡ "}<b>${w.from}</b> → ${w.to}</span><span class="st">—</span>`;
+    li.querySelector("input").onchange=e=>{marked[w.id]=e.target.checked;};
+    wl.appendChild(li);
+    w._li=li;
+  });
+  $("#verify",p).onclick=()=>{
+    let good=0,bad=0;
+    allW.forEach(w=>{
+      w._li.classList.remove("done","bad");
+      const m=!!marked[w.id];
+      if(w.ok && m){w._li.classList.add("done");w._li.querySelector(".st").textContent="OK";good++;}
+      else if(w.ok && !m){w._li.querySelector(".st").textContent="FALTA";}
+      else if(!w.ok && m){w._li.classList.add("bad");w._li.querySelector(".st").textContent="⚡ ERROR";bad++;}
+      else {w._li.classList.add("done");w._li.querySelector(".st").textContent="evitado ✓";}
+    });
+    const v=$("#wverdict",p);
+    v.textContent=good+" / "+WIRES.length+(bad?"  · "+bad+" error(es)":"");
+    v.className="pill "+(good===WIRES.length&&!bad?"ok":bad?"bad":"warn");
+    if(bad){ $("#fbwire",p)?.remove();
+      const n=el("p","note",TRAPS.find(t=>marked[t.id]).why); n.id="fbwire";
+      $(".card",p).appendChild(n);
+    }
+  };
+  // motor sim — 2 bancos independientes (izq = canal A, der = canal B)
+  const on=k=>$('[data-k='+k+']',p).dataset.on==="true";
+  p.querySelectorAll(".tgl").forEach(b=>b.onclick=()=>{b.dataset.on=b.dataset.on==="true"?"false":"true";});
+  $("#pwmL",p).addEventListener("input",e=>$("#vpwmL",p).textContent=e.target.value);
+  $("#pwmR",p).addEventListener("input",e=>$("#vpwmR",p).textContent=e.target.value);
+  const mcv=$("#motcv",p), mx=mcv.getContext("2d");
+  let angL=0, angR=0;
+  function bankState(pwmId,i1k,i2k){
+    const pwm=+$(pwmId,p).value; const i1=on(i1k), i2=on(i2k);
+    if(pwm===0) return {mode:"off",pwm,w:0,label:"Apagado"};
+    if(!i1&&!i2) return {mode:"coast",pwm,w:0,label:"Libre"};
+    if(i1&&i2) return {mode:"brake",pwm,w:0,label:"Freno"};
+    if(i1) return {mode:"fwd",pwm,w:(pwm/255)*0.28,label:"Adelante"};
+    return {mode:"rev",pwm,w:-(pwm/255)*0.28,label:"Atrás"};
+  }
+  function combinar(L,R){
+    const near=Math.abs(L.pwm-R.pwm)<15;
+    if(L.mode==="brake"&&R.mode==="brake") return {label:"Frenado total (los 2 bancos)",icon:"■"};
+    if((L.mode==="off"||L.mode==="coast")&&(R.mode==="off"||R.mode==="coast")) return {label:"Libre / detenido",icon:"○"};
+    if(L.mode==="fwd"&&R.mode==="fwd") return near?{label:"Avanza recto",icon:"▲"}:{label:"Avanza en curva hacia "+(L.pwm<R.pwm?"la izquierda":"la derecha"),icon:L.pwm<R.pwm?"↰":"↱"};
+    if(L.mode==="rev"&&R.mode==="rev") return near?{label:"Retrocede recto",icon:"▼"}:{label:"Retrocede en curva",icon:"▼"};
+    if(L.mode==="fwd"&&R.mode==="rev") return {label:"Gira sobre su eje → a la derecha",icon:"↻"};
+    if(L.mode==="rev"&&R.mode==="fwd") return {label:"Gira sobre su eje → a la izquierda",icon:"↺"};
+    if(L.mode==="fwd"&&(R.mode==="off"||R.mode==="coast")) return {label:"Curva amplia hacia la derecha",icon:"↱"};
+    if(R.mode==="fwd"&&(L.mode==="off"||L.mode==="coast")) return {label:"Curva amplia hacia la izquierda",icon:"↰"};
+    return {label:"Combinación mixta — revisa la tabla",icon:"?"};
+  }
+  function pillClass(mode){return mode==="fwd"?"ok":mode==="brake"?"bad":mode==="rev"?"warn":"";}
+  function frame(){
+    const css=getComputedStyle(document.documentElement);
+    const ink=css.getPropertyValue('--ink').trim(),surf2=css.getPropertyValue('--surface-2').trim();
+    const mech=css.getPropertyValue('--mech').trim(),elec=css.getPropertyValue('--elec').trim();
+    const line=css.getPropertyValue('--line').trim(),muted=css.getPropertyValue('--muted').trim();
+    const L=bankState("#pwmL","in1","in2"), R=bankState("#pwmR","in3","in4");
+    angL+=L.w; angR+=R.w;
+    $("#truth",p).querySelectorAll("tr[data-r]").forEach(tr=>tr.dataset.live=(tr.dataset.r===L.mode||tr.dataset.r===R.mode));
+    const stL=$("#stL",p); stL.textContent=L.label+" · PWM "+L.pwm; stL.className="pill "+pillClass(L.mode);
+    const stR=$("#stR",p); stR.textContent=R.label+" · PWM "+R.pwm; stR.className="pill "+pillClass(R.mode);
+    const c=combinar(L,R);
+    $("#comboIcon",p).textContent=c.icon; $("#comboLabel",p).textContent="El rover: "+c.label;
+
+    mx.clearRect(0,0,mcv.width,mcv.height);mx.fillStyle=surf2;mx.fillRect(0,0,mcv.width,mcv.height);
+    // vista superior del rover: cuerpo + 3 ruedas por banco, giran según su banco
+    const cx=mcv.width/2, cy=mcv.height/2-10;
+    mx.save();mx.translate(cx,cy);
+    mx.fillStyle=ink; mx.fillRect(-46,-70,92,140);
+    mx.strokeStyle=line; mx.lineWidth=2; mx.strokeRect(-46,-70,92,140);
+    // sensor (frente)
+    mx.fillStyle=elec; mx.fillRect(-10,-78,20,10);
+    const wheelCol=(side,ang,col)=>{
+      const x=side*72;
+      for(let i=0;i<3;i++){
+        const y=-46+i*46;
+        mx.save(); mx.translate(x,y); mx.rotate(ang);
+        mx.fillStyle=col; mx.fillRect(-11,-20,22,40);
+        mx.strokeStyle=surf2; mx.lineWidth=2;
+        for(let k=0;k<3;k++){mx.beginPath();mx.moveTo(0,0);mx.rotate(Math.PI/1.5);mx.lineTo(0,-16);mx.stroke();}
+        mx.restore();
+      }
+    };
+    wheelCol(-1,angL,mech); wheelCol(1,angR,elec);
+    mx.restore();
+    mx.fillStyle=mech; mx.font="600 12px 'IBM Plex Mono'"; mx.textAlign="center";
+    mx.fillText("IZQ",cx-72,cy-92);
+    mx.fillStyle=elec; mx.fillText("DER",cx+72,cy-92);
+    mx.textAlign="left";
+    // flecha de resultado combinado, abajo
+    mx.font="600 22px 'Chakra Petch'"; mx.fillStyle=ink; mx.textAlign="center";
+    mx.fillText(c.icon, cx, mcv.height-30);
+    mx.font="600 13px 'Chakra Petch'";
+    mx.fillText(c.label, cx, mcv.height-10);
+    mx.textAlign="left"; mx.font="10.5px 'IBM Plex Mono'"; mx.fillStyle=muted;
+    mx.fillText("IZQ: IN1="+(on("in1")?1:0)+" IN2="+(on("in2")?1:0)+" ENA="+L.pwm, 10, 18);
+    mx.fillText("DER: IN3="+(on("in3")?1:0)+" IN4="+(on("in4")?1:0)+" ENB="+R.pwm, 10, 32);
+    raf=requestAnimationFrame(frame);
+  }
+  let raf=requestAnimationFrame(frame);
+  BUILDERS.puenteh.stop=()=>cancelAnimationFrame(raf);
+  BUILDERS.puenteh.resume=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);};
+}};
+
+/* ---------- 04 · BLOQUES ---------- */
+const ALGO={ threshold:20, cruise:70, revMs:400, turnMs:500, turnDir:"der", alternate:false, sweep:false };
+function algoCode(a){
+  const kw=s=>`<span class="kw">${s}</span>`, fn=s=>`<span class="fn">${s}</span>`, nu=s=>`<span class="nu">${s}</span>`, cm=s=>`<span class="cm">${s}</span>`;
+  return (
+`${cm("// Algoritmo de evasión — generado desde los bloques")}
+${cm("// ESP32 · cárgalo tal cual (PWM con LEDC, ver Anexo E).")}
+${kw("const")} ${kw("int")} ${nu("UMBRAL_CM")}   = ${nu(a.threshold)};
+${kw("const")} ${kw("int")} ${nu("VEL_CRUCERO")} = ${nu(Math.round(a.cruise*2.55))};  ${cm("// "+a.cruise+"% de 255")}
+${kw("const")} ${kw("int")} ${nu("T_REVERSA")}   = ${nu(a.revMs)};
+${kw("const")} ${kw("int")} ${nu("T_GIRO")}      = ${nu(a.turnMs)};
+${kw("bool")} girarDerecha = ${a.turnDir==="der"?"true":"false"};
+
+${kw("void")} ${fn("loop")}() {
+  ${kw("long")} d = ${fn("leerDistanciaCm")}();  ${cm("// GPIO5 TRIG / GPIO18 ECHO (divisor)")}${a.sweep?`
+  d = ${fn("min")}(d, ${fn("mirarIzq")}(), ${fn("mirarDer")}());  ${cm("// barrido del servo")}`:""}
+
+  ${kw("if")} (d < UMBRAL_CM) {
+    ${fn("frenar")}();        ${fn("delay")}(${nu(120)});
+    ${fn("atras")}(${nu(150)});   ${fn("delay")}(T_REVERSA);
+    ${a.alternate?fn("girar")+"(girarDerecha); girarDerecha = !girarDerecha;":fn("girar")+"("+(a.turnDir==="der"?"true":"false")+");"}
+    ${fn("delay")}(T_GIRO);
+  } ${kw("else")} {
+    ${fn("adelante")}(VEL_CRUCERO);  ${cm("// ledcWrite en GPIO25 / GPIO33")}
+  }
+}`);
+}
+BUILDERS.bloques={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 04 · Software</span><h2>Programación por bloques</h2></div>
+   <p class="mlede">Arma el lazo <b>sensa → decide → actúa</b>. Activa cada bloque, ajusta sus parámetros y pruébalo en el rover virtual. El código para ESP32 se genera solo — es el mismo que cargarás al kit.</p>
+   ${simKitHTML(
+     "Armas el algoritmo por bloques, ajustas umbral / velocidad / tiempo de giro y lo corres en el rover virtual hasta recorrer <b>sin chocar</b>.",
+     "Umbral + velocidad + tiempo de giro + el <b>código generado</b> (copiado). Cuida que la velocidad no supere la de Mecánica y que uses los GPIO de Electrónica. En el reto se carga al rover.",
+     "💻 Software")}
+   <div class="grid two">
+     <div>
+       <div class="card">
+         <h3>Bloques del algoritmo</h3>
+         <div class="blocks" id="blocks">
+           <div class="block ctrl"><div class="bh"><input type="checkbox" checked disabled> repetir por siempre</div></div>
+           <div class="block sense"><div class="bh"><input type="checkbox" checked disabled> d ← leer distancia (HC-SR04)</div>
+             <div class="params"><label>barrer servo antes de decidir <input type="checkbox" id="b_sweep"></label></div></div>
+           <div class="block ctrl"><div class="bh"><input type="checkbox" checked disabled> si  d &lt; umbral</div>
+             <div class="params"><label>umbral (cm)<input type="number" id="b_thr" value="20" min="8" max="60"></label></div></div>
+           <div class="block act"><div class="bh"><input type="checkbox" id="b_rev" checked> retroceder</div>
+             <div class="params"><label>tiempo (ms)<input type="number" id="b_revms" value="400" min="0" max="1200" step="50"></label></div></div>
+           <div class="block act"><div class="bh"><input type="checkbox" id="b_turn" checked> girar</div>
+             <div class="params">
+               <label>lado<select id="b_turndir"><option value="der">derecha</option><option value="izq">izquierda</option></select></label>
+               <label>tiempo (ms)<input type="number" id="b_turnms" value="500" min="100" max="1500" step="50"></label>
+               <label>alternar lado <input type="checkbox" id="b_alt"></label>
+             </div></div>
+           <div class="block act"><div class="bh"><input type="checkbox" checked disabled> si no: avanzar</div>
+             <div class="params"><label>velocidad (%)<input type="number" id="b_cru" value="70" min="30" max="100" step="5"></label></div></div>
+         </div>
+         <div class="btnrow">
+           <button class="btn go" id="run">▶ Probar en el rover virtual</button>
+           <button class="btn" id="reset">Reiniciar</button>
+         </div>
+         <p class="note" id="result">Arena de práctica: 3 obstáculos. Meta = recorrer sin chocar.</p>
+       </div>
+     </div>
+     <div>
+       <div class="canvas-shell"><canvas id="acv" width="600" height="440"></canvas></div>
+       <div class="dash dash-mini">
+         <div class="tile"><div class="k">Distancia</div><div class="v tnum" id="hD">200</div><div class="u">cm</div></div>
+         <div class="tile state"><div class="k">Estado</div><div class="v" id="hS">EN ESPERA</div></div>
+         <div class="tile"><div class="k">PWM izq/der</div>
+           <div class="bars"><div class="b l"><span id="hBL" style="height:0%"></span></div><div class="b r"><span id="hBR" style="height:0%"></span></div></div></div>
+         <div class="tile"><div class="k">Tiempo</div><div class="v tnum" id="hT">0.0</div><div class="u">s</div></div>
+       </div>
+       <div class="card" style="margin-top:14px">
+         <h3><span class="tag soft">salida</span> Código ESP32 generado</h3>
+         <pre class="codebox" id="code"></pre>
+       </div>
+     </div>
+   </div>
+   <div class="diagram-shell">
+     <h3>Árbol de decisión del lazo (lo que corre en el ESP32, ~20 veces/seg.)</h3>
+     <svg class="diagram" viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg">
+       <defs><marker id="tm-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker></defs>
+       <rect class="box sense" x="10" y="70" width="150" height="50" rx="9"/>
+       <text class="lbl" x="85" y="91" text-anchor="middle">SENSA</text>
+       <text x="85" y="107" text-anchor="middle">d ← HC-SR04</text>
+       <path class="arrow" d="M160,95 H210"/>
+       <polygon class="box ctrl" points="290,55 380,95 290,135 200,95" />
+       <text class="lbl" x="290" y="91" text-anchor="middle">DECIDE</text>
+       <text x="290" y="107" text-anchor="middle">d &lt; umbral?</text>
+       <path class="arrow" d="M290,135 V165 H460 V145"/>
+       <text class="small" x="380" y="158" text-anchor="middle">NO</text>
+       <rect class="box act" x="420" y="105" width="150" height="40" rx="9"/>
+       <text class="lbl" x="495" y="130" text-anchor="middle">AVANZAR</text>
+       <path class="arrow" d="M380,95 H610"/>
+       <text class="small" x="480" y="88" text-anchor="middle">SÍ</text>
+       <rect class="box act" x="610" y="10" width="140" height="40" rx="9"/>
+       <text class="lbl" x="680" y="35" text-anchor="middle">FRENAR</text>
+       <path class="arrow" d="M680,50 V70"/>
+       <rect class="box act" x="610" y="70" width="140" height="40" rx="9"/>
+       <text class="lbl" x="680" y="95" text-anchor="middle">RETROCEDER</text>
+       <path class="arrow" d="M680,110 V130"/>
+       <rect class="box act" x="610" y="130" width="140" height="40" rx="9"/>
+       <text class="lbl" x="680" y="155" text-anchor="middle">GIRAR</text>
+       <path class="arrow" d="M610,150 C520,180 340,180 165,140 C120,128 95,118 88,120"/>
+       <text class="small" x="360" y="182" text-anchor="middle">vuelve a SENSA — repetir por siempre</text>
+     </svg>
+     <p class="cap">Este mismo árbol es el que después se traduce, línea por línea, en el <code>if (d &lt; UMBRAL_CM)</code> del archivo <code>rover_L298N_ESP32.ino</code>.</p>
+   </div>
+   <div class="route"><b>En la carrera:</b> <b>Fundamentos de Programación</b> (1er sem), <b>Ingeniería de Control</b> (4º) y <b>Control Digital</b> (5º). Este mismo lazo estabiliza drones y coordina robots industriales — tunearlo bien es literalmente el trabajo.</div>`;
+  const acv=$("#acv",p), ax=acv.getContext("2d");
+  const AW=150, AH=110;
+  const obstacles=[{x:75,y:45,r:11},{x:55,y:80,r:10},{x:110,y:70,r:12}];
+  const sim=new RoverSim(); sim.reset(20,20,0.6);
+  function readAlgo(){
+    ALGO.threshold=+$("#b_thr",p).value; ALGO.cruise=+$("#b_cru",p).value;
+    ALGO.revMs=$("#b_rev",p).checked?+$("#b_revms",p).value:0;
+    ALGO.turnMs=$("#b_turn",p).checked?+$("#b_turnms",p).value:0;
+    ALGO.turnDir=$("#b_turndir",p).value; ALGO.alternate=$("#b_alt",p).checked;
+    ALGO.sweep=$("#b_sweep",p).checked;
+    try{localStorage.setItem("tm-algo",JSON.stringify(ALGO));}catch(e){}
+    $("#code",p).innerHTML=algoCode(ALGO);
+  }
+  p.querySelectorAll("input,select").forEach(i=>i.addEventListener("input",readAlgo));
+  readAlgo();
+  let raf=null, running=false, phase="cruise", phaseT=0, turnRight=true, elapsed=0;
+  function stopRun(){running=false;cancelAnimationFrame(raf);raf=null;}
+  function loop(){
+    const dt=0.05; elapsed+=dt;
+    const d=sim.readUltrasonic(obstacles,AW,AH);
+    if(phase==="cruise"){
+      sim.state="AVANZA";
+      const pw=Math.round(ALGO.cruise*2.55);
+      sim.pwmL=pw;sim.pwmR=pw;
+      if(d<ALGO.threshold){phase="rev";phaseT=0;}
+    } else if(phase==="rev"){
+      sim.state="RETROCEDE";
+      sim.pwmL=-150;sim.pwmR=-150;phaseT+=dt*1000;
+      if(phaseT>=ALGO.revMs){phase="turn";phaseT=0; if(ALGO.alternate)turnRight=!turnRight; else turnRight=ALGO.turnDir==="der";}
+    } else if(phase==="turn"){
+      sim.state=turnRight?"GIRA DER":"GIRA IZQ";
+      const tp=170; sim.pwmL=turnRight?tp:-tp; sim.pwmR=turnRight?-tp:tp; phaseT+=dt*1000;
+      if(phaseT>=ALGO.turnMs){phase="cruise";phaseT=0;}
+    }
+    sim.step(dt,obstacles,AW,AH);
+    drawArena(ax,acv,sim,obstacles,AW,AH);
+    // HUD (tiles reales, no solo texto en el canvas)
+    $("#hD",p).textContent=d.toFixed(0);
+    const hs=$("#hS",p); hs.textContent=sim.state;
+    hs.style.color=sim.state==="AVANZA"?"var(--ok)":sim.state==="EN ESPERA"?"var(--muted)":"var(--warn)";
+    $("#hBL",p).style.height=Math.abs(sim.pwmL)/255*100+"%";
+    $("#hBR",p).style.height=Math.abs(sim.pwmR)/255*100+"%";
+    $("#hT",p).textContent=elapsed.toFixed(1);
+    if(elapsed>22 || (sim.x>AW-16 && sim.y>AH-16)){
+      stopRun();
+      const ok=sim.collisions===0;
+      $("#result",p).innerHTML=ok
+        ?`<b style="color:var(--ok)">✓ Sin choques en ${elapsed.toFixed(1)} s.</b> Este algoritmo está listo para la pista del módulo 05.`
+        :`<b style="color:var(--warn)">${sim.collisions} choque(s).</b> Sube el umbral (más margen de reacción) o baja la velocidad de crucero y vuelve a probar.`;
+      return;
+    }
+    raf=requestAnimationFrame(loop);
+  }
+  $("#run",p).onclick=()=>{
+    if(running)return; readAlgo();
+    sim.reset(20,20,0.6); phase="cruise";phaseT=0;elapsed=0;running=true;
+    $("#result",p).textContent="Corriendo…";
+    raf=requestAnimationFrame(loop);
+  };
+  function resetHUD(){$("#hD",p).textContent="200";$("#hS",p).textContent="EN ESPERA";$("#hS",p).style.color="var(--muted)";$("#hBL",p).style.height="0%";$("#hBR",p).style.height="0%";$("#hT",p).textContent="0.0";}
+  $("#reset",p).onclick=()=>{stopRun();sim.reset(20,20,0.6);drawArena(ax,acv,sim,obstacles,AW,AH);resetHUD();$("#result",p).textContent="Arena de práctica: 3 obstáculos. Meta = recorrer sin chocar.";};
+  drawArena(ax,acv,sim,obstacles,AW,AH); resetHUD();
+  BUILDERS.bloques.stop=stopRun;
+}};
+
+/* ---------- 05 · PISTA + TELEMETRÍA ---------- */
+BUILDERS.pista={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 05 · Integración</span><h2>Pista de obstáculos + panel de telemetría</h2></div>
+   <p class="mlede">El reto final: el rover corre tu algoritmo del módulo 04 por la pista cronometrada. El <b>panel de telemetría</b> deja "ver pensar" al rover — proyéctalo para el público.</p>
+   ${simKitHTML(
+     "El integrador junta las 3 entregas, prueba la config completa del grupo y usa el deslizador de <b>calibración de marcha recta</b> para hallar el valor.",
+     "Un <b>único juego de valores + un código</b> por grupo (Hoja de integración). Se carga al rover físico compartido y corre la pista con el panel de telemetría proyectado: 1–2 intentos, +5 s por obstáculo.",
+     "🧩 Integración")}
+   <div class="grid two">
+     <div>
+       <div class="card">
+         <h3>Control de carrera</h3>
+         <label class="field">Umbral de disparo <span class="val" id="tv1">20 cm</span></label>
+         <input type="range" id="t_thr" min="8" max="45" value="20">
+         <label class="field">Velocidad de crucero <span class="val" id="tv2">70 %</span></label>
+         <input type="range" id="t_cru" min="30" max="100" step="5" value="70">
+         <label class="field">Tiempo de giro <span class="val" id="tv3">500 ms</span></label>
+         <input type="range" id="t_turn" min="150" max="1200" step="50" value="500">
+         <label class="field">Calibración de marcha recta <span class="val" id="tv4">0</span></label>
+         <input type="range" id="t_trim" min="-40" max="40" value="0">
+         <div class="btnrow">
+           <button class="btn go" id="start">▶ Iniciar intento</button>
+           <button class="btn stop" id="stopb">■ Detener</button>
+           <button class="btn" id="course">Cambiar pista</button>
+         </div>
+         <p class="note" id="verdict2">Carga los valores que anotaste en los módulos 02 y 04.</p>
+       </div>
+     </div>
+     <div>
+       <div class="canvas-shell"><canvas id="pcv" width="640" height="460"></canvas></div>
+     </div>
+   </div>
+
+   <h3 style="font-family:'Chakra Petch';margin:22px 0 0">Panel de telemetría</h3>
+   <div class="dash">
+     <div class="tile"><div class="k">Distancia frontal</div><div class="v tnum" id="dDist">200</div><div class="u">cm · HC-SR04</div>
+        <svg class="spark" id="spark" viewBox="0 0 200 44" preserveAspectRatio="none"><polyline id="sparkline" fill="none" stroke="currentColor" stroke-width="1.5" points=""/></svg>
+     </div>
+     <div class="tile state"><div class="k">Estado de decisión</div><div class="v" id="dState">EN ESPERA</div><div class="u" id="dStateU">lazo de control</div></div>
+     <div class="tile"><div class="k">PWM motores  <span style="color:var(--mech)">▉</span>izq <span style="color:var(--elec)">▉</span>der</div>
+        <div class="bars"><div class="b l"><span id="barL" style="height:0%"></span></div><div class="b r"><span id="barR" style="height:0%"></span></div></div>
+        <div class="u"><span class="tnum" id="dPwm">0 / 0</span> de 255</div></div>
+     <div class="tile"><div class="k">Rumbo</div>
+        <svg width="64" height="52" class="compass" id="compass" viewBox="-32 -26 64 52">
+          <circle r="22" cx="0" cy="0" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <line id="needle" x1="0" y1="0" x2="0" y2="-20" stroke="var(--soft)" stroke-width="3"/>
+        </svg>
+        <div class="u tnum" id="dHead">0°</div></div>
+     <div class="tile"><div class="k">Cronómetro</div><div class="v tnum" id="dTime">0.0</div><div class="u">segundos</div></div>
+     <div class="tile"><div class="k">Choques</div><div class="v tnum" id="dHits" style="color:var(--ok)">0</div><div class="u">penalización 5 s c/u</div></div>
+     <div class="tile"><div class="k">Distancia recorrida</div><div class="v tnum" id="dOdo">0</div><div class="u">cm</div></div>
+     <div class="tile"><div class="k">Tiempo neto</div><div class="v tnum" id="dNet">—</div><div class="u">con penalización</div></div>
+   </div>
+   <p class="legend"><span><i style="background:var(--mech)"></i>obstáculo</span><span><i style="background:var(--elec)"></i>cono del sensor</span><span><i style="background:var(--soft)"></i>traza / meta</span></p>
+   <div class="route"><b>En la carrera:</b> integrar y calibrar subsistemas es <b>Diseño Mecatrónico</b> (4º) y <b>Robótica Industrial</b> (5º). Calibrar antes de una corrida es exactamente lo que se hace con un robot industrial antes de producir.</div>`;
+
+  const pcv=$("#pcv",p), px=pcv.getContext("2d");
+  const AW=200, AH=145;
+  const COURSES=[
+    [{x:60,y:40,r:12},{x:120,y:70,r:13},{x:70,y:110,r:11},{x:150,y:115,r:12},{x:100,y:35,r:9}],
+    [{x:50,y:60,r:14},{x:95,y:100,r:12},{x:140,y:55,r:13},{x:120,y:120,r:10},{x:170,y:95,r:11},{x:75,y:30,r:9}],
+    [{x:80,y:50,r:16},{x:130,y:95,r:15},{x:55,y:110,r:12}],
+  ];
+  let ci=0, obstacles=COURSES[0];
+  const finish={x:AW-30,y:AH-30,w:26,h:26};
+  const sim=new RoverSim();
+  let saved=null; try{saved=JSON.parse(localStorage.getItem("tm-algo"));}catch(e){}
+  const cfg={threshold:20,cruise:70,turnMs:500,revMs:400,turnDir:"der",alternate:false,trim:0};
+  if(saved){cfg.threshold=saved.threshold;cfg.cruise=saved.cruise;cfg.turnMs=saved.turnMs||500;cfg.revMs=saved.revMs||400;cfg.turnDir=saved.turnDir||"der";cfg.alternate=!!saved.alternate;
+    $("#t_thr",p).value=cfg.threshold;$("#t_cru",p).value=cfg.cruise;$("#t_turn",p).value=cfg.turnMs;
+    $("#verdict2",p).innerHTML="Cargados tus valores del módulo 04: umbral "+cfg.threshold+" cm, crucero "+cfg.cruise+" %.";
+  }
+  const sync=()=>{
+    cfg.threshold=+$("#t_thr",p).value; cfg.cruise=+$("#t_cru",p).value;
+    cfg.turnMs=+$("#t_turn",p).value; cfg.trim=+$("#t_trim",p).value;
+    $("#tv1",p).textContent=cfg.threshold+" cm";$("#tv2",p).textContent=cfg.cruise+" %";
+    $("#tv3",p).textContent=cfg.turnMs+" ms";$("#tv4",p).textContent=(cfg.trim>0?"+":"")+cfg.trim;
+  };
+  p.querySelectorAll("input[type=range]").forEach(i=>i.addEventListener("input",sync)); sync();
+
+  let raf=null,running=false,phase="cruise",phaseT=0,turnRight=true,spark=[],finished=false;
+  function resetRun(){
+    sim.reset(20,20,0.5); phase="cruise";phaseT=0;spark=[];finished=false;
+    $("#dNet",p).textContent="—";$("#verdict2",p).textContent="Intento en curso…";
+  }
+  function stop(){running=false;cancelAnimationFrame(raf);raf=null;}
+  function tel(){
+    $("#dDist",p).textContent=sim.dist.toFixed(0);
+    const st=$("#dState",p); st.textContent=sim.state;
+    st.style.color = sim.state==="AVANZA"?"var(--ok)":sim.state==="EN ESPERA"?"var(--muted)":"var(--warn)";
+    $("#barL",p).style.height=Math.abs(sim.pwmL)/255*100+"%";
+    $("#barR",p).style.height=Math.abs(sim.pwmR)/255*100+"%";
+    $("#dPwm",p).textContent=Math.round(Math.abs(sim.pwmL))+" / "+Math.round(Math.abs(sim.pwmR));
+    const deg=((sim.h*180/Math.PI)%360+360)%360;
+    $("#needle",p).setAttribute("transform","rotate("+deg+")");
+    $("#dHead",p).textContent=deg.toFixed(0)+"°";
+    $("#dTime",p).textContent=sim.t.toFixed(1);
+    const hits=$("#dHits",p); hits.textContent=sim.collisions;
+    hits.style.color=sim.collisions?"var(--bad)":"var(--ok)";
+    let odo=0; for(let i=1;i<sim.trail.length;i++) odo+=Math.hypot(sim.trail[i][0]-sim.trail[i-1][0],sim.trail[i][1]-sim.trail[i-1][1]);
+    $("#dOdo",p).textContent=odo.toFixed(0);
+    spark.push(Math.min(sim.dist,120)); if(spark.length>60)spark.shift();
+    const pts=spark.map((v,i)=>(i/59*200)+","+(44-v/120*40)).join(" ");
+    $("#sparkline",p).setAttribute("points",pts);
+  }
+  function loop(){
+    const dt=0.05;
+    const d=sim.readUltrasonic(obstacles,AW,AH);
+    const trimL=cfg.trim<0?1+cfg.trim/100:1, trimR=cfg.trim>0?1-cfg.trim/100:1;
+    if(phase==="cruise"){
+      sim.state="AVANZA"; const pw=Math.round(cfg.cruise*2.55);
+      sim.pwmL=pw*trimL;sim.pwmR=pw*trimR;
+      if(d<cfg.threshold){phase="rev";phaseT=0;}
+    }else if(phase==="rev"){
+      sim.state="RETROCEDE"; sim.pwmL=-150;sim.pwmR=-150;phaseT+=dt*1000;
+      if(phaseT>=cfg.revMs){phase="turn";phaseT=0; turnRight = cfg.alternate ? !turnRight : (cfg.turnDir==="der");}
+    }else if(phase==="turn"){
+      sim.state=turnRight?"GIRA DER":"GIRA IZQ";
+      sim.pwmL=turnRight?175:-175; sim.pwmR=turnRight?-175:175; phaseT+=dt*1000;
+      if(phaseT>=cfg.turnMs){phase="cruise";phaseT=0;}
+    }
+    sim.step(dt,obstacles,AW,AH);
+    drawArena(px,pcv,sim,obstacles,AW,AH,{finish});
+    tel();
+    if(sim.x>finish.x&&sim.y>finish.y && !finished){
+      finished=true; stop();
+      const net=sim.t+sim.collisions*5;
+      $("#dNet",p).textContent=net.toFixed(1);
+      $("#verdict2",p).innerHTML=`<b style="color:var(--ok)">🏁 Meta.</b> Tiempo ${sim.t.toFixed(1)} s + ${sim.collisions*5} s penalización = <b>${net.toFixed(1)} s netos</b>.`;
+      return;
+    }
+    if(sim.t>60){stop();$("#verdict2",p).innerHTML="<b>Se acabó el tiempo (60 s).</b> Sube la velocidad de crucero o reduce el tiempo de giro.";return;}
+    raf=requestAnimationFrame(loop);
+  }
+  $("#start",p).onclick=()=>{ if(running)return; sync(); resetRun(); running=true; raf=requestAnimationFrame(loop); };
+  $("#stopb",p).onclick=()=>{stop();$("#verdict2",p).textContent="Detenido.";};
+  $("#course",p).onclick=()=>{stop();ci=(ci+1)%COURSES.length;obstacles=COURSES[ci];sim.reset(20,20,0.5);drawArena(px,pcv,sim,obstacles,AW,AH,{finish});$("#verdict2",p).textContent="Pista "+(ci+1)+" de "+COURSES.length+".";};
+  sim.reset(20,20,0.5); sim.state="EN ESPERA";
+  drawArena(px,pcv,sim,obstacles,AW,AH,{finish}); tel();
+  BUILDERS.pista.stop=stop;
+}};
+
+/* ---------- 06 · CHECKLIST DE FABRICACIÓN Y CONFIGURACIÓN ---------- */
+const CHECKLIST_SECS=[
+  {id:"impresion", tag:"mech", title:"🖨️ Impresión 3D", when:"antes del taller (facilitador)", items:[
+    {t:"Imprimir las 8 piezas STL (elegir 1 variante de <code>main_body</code>).", h:"~3–4 h de impresora, según relleno"},
+    {t:"Pegar los 4 <code>link</code> con un pasador de filamento 1.75 mm.", h:"necesita tiempo de secado — no es viable hacerlo en vivo"},
+    {t:"Montar cada rueda en su motor \"130\".", h:"6 ruedas"},
+    {t:"Pre-atornillar cada <b>bogie</b> (<code>chassis_2</code>) con sus 2 motores/ruedas ya puestos.", h:"2 bogies"},
+  ]},
+  {id:"mecanica", tag:"mech", title:"⚙️ Ensamble mecánico", when:"celda Mecánica · en vivo", items:[
+    {t:"Atornillar los 2 brazos <b>rocker</b> (<code>chassis_1</code>, espejados) al cuerpo principal."},
+    {t:"Unir cada bogie pre-armado al extremo de su rocker con el <code>link</code> pre-pegado."},
+    {t:"Montar la 3ª rueda/motor (la del extremo del rocker) por lado."},
+    {t:"Instalar la barra diferencial (<code>chassis_rod</code>) entre ambos rockers."},
+    {t:"Prueba sin electrónica: empujar a mano sobre una piedra/escalón. ¿Las 6 ruedas quedan en el piso?"},
+  ]},
+  {id:"electronica", tag:"elec", title:"⚡ Cableado electrónico", when:"celda Electrónica · en vivo", items:[
+    {t:"Quitar los 2 jumpers de <b>ENA/ENB</b> del módulo L298N.", h:"si quedan puestos, el PWM del ESP32 no tiene ningún efecto"},
+    {t:"Puentear el pin <b>+5V</b> del L298N (sin usar su regulador) a la misma línea de 5V del ESP32.", h:"el regulador interno no funciona con solo 5V de entrada"},
+    {t:"Cablear banco izquierdo (3 motores en paralelo) a OUT1/OUT2, banco derecho a OUT3/OUT4."},
+    {t:"Cablear ENA=25 · IN1=26 · IN2=27 (izq.) &nbsp;·&nbsp; IN3=14 · IN4=12 · ENB=33 (der.)."},
+    {t:"Armar el divisor 1 kΩ / 2 kΩ en la línea ECHO <i>antes</i> de conectarla a GPIO 18.", h:"el HC-SR04 regresa 5V; el GPIO del ESP32 es de 3.3V"},
+    {t:"Tierra común: confirmar que L298N GND, ESP32 GND y power bank (–) están todos unidos."},
+    {t:"Prueba de humo: energizar y verificar que nada se calienta antes de cargar código."},
+  ]},
+  {id:"software", tag:"soft", title:"💻 Configuración de software", when:"celda Software · en vivo", items:[
+    {t:"Flashear <code>rover_L298N_ESP32.ino</code> al ESP32 (soporte de placas ESP32 instalado en el IDE)."},
+    {t:"Ajustar las 4 constantes: <code>UMBRAL_CM</code>, <code>VEL_CRUCERO</code>, <code>T_REVERSA_MS</code>, <code>T_GIRO_MS</code>."},
+    {t:"¿Se usa telemetría en la demo? Activar <code>TELEMETRIA_WIFI 1</code> y elegir <code>WIFI_MODO_STA</code>: 0 = red propia (AP), 1 = red de la sede (con respaldo automático a AP)."},
+    {t:"Abrir el Monitor Serial y confirmar: \"Control de motores corriendo en el Core: 1\" y, si aplica, la IP o <code>rover.local</code>."},
+  ]},
+  {id:"integracion", tag:null, title:"🧩 Prueba final", when:"Hito de integración", items:[
+    {t:"Un único juego de valores + un código por grupo, anotado en la Hoja de integración."},
+    {t:"Cargar la configuración final acordada al rover físico compartido."},
+    {t:"Corrida en la pista con el panel de telemetría proyectado (si aplica)."},
+  ]},
+];
+BUILDERS.checklist={build(p){
+  let state={}; try{state=JSON.parse(localStorage.getItem("tm-checklist"))||{};}catch(e){state={};}
+  const save=()=>{try{localStorage.setItem("tm-checklist",JSON.stringify(state));}catch(e){}};
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Módulo 06 · Ejecución</span><h2>Checklist de fabricación y configuración</h2></div>
+   <p class="mlede">La bitácora completa del rover, de la impresora 3D a la pista: qué se prepara antes, qué se hace en vivo por celda, y qué configura Software en el ESP32. Márcalo conforme avanzas — le da a cada celda una guía clara de <b>qué sigue</b> mientras trabaja.</p>
+   <div class="cl-progress"><div class="cl-bar"><span id="clbarAll" style="width:0%"></span></div><div class="cl-pct" id="clpctAll">0%</div></div>
+   <div id="clsecs"></div>
+   <div class="diagram-shell">
+     <h3>Cómo se reparte el trabajo dentro del ESP32 (los 2 núcleos)</h3>
+     <svg class="diagram" viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg">
+       <defs><marker id="tm-arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--muted)"/></marker></defs>
+       <rect class="box core1" x="10" y="20" width="220" height="90" rx="10"/>
+       <text class="lbl" x="120" y="45" text-anchor="middle">Core 1 · loop()</text>
+       <text x="120" y="63" text-anchor="middle">sensa → decide → actúa</text>
+       <text class="small" x="120" y="80" text-anchor="middle">~20 Hz, nunca se detiene</text>
+       <text class="small" x="120" y="96" text-anchor="middle">(default de Arduino-ESP32)</text>
+
+       <rect class="box shared" x="270" y="35" width="200" height="60" rx="10"/>
+       <text class="lbl" x="370" y="58" text-anchor="middle">Estado compartido</text>
+       <text class="small" x="370" y="75" text-anchor="middle">distancia · pwmL/R · estado</text>
+       <text class="small" x="370" y="88" text-anchor="middle">protegido por g_mutex</text>
+       <path class="arrow" d="M230,65 H270" marker-end="url(#tm-arrow2)"/>
+       <path class="arrow" d="M270,80 H230" marker-end="url(#tm-arrow2)"/>
+
+       <rect class="box core0" x="510" y="10" width="220" height="120" rx="10"/>
+       <text class="lbl" x="620" y="33" text-anchor="middle">Core 0 · tareaRed()</text>
+       <text x="620" y="51" text-anchor="middle">WiFi + servidor</text>
+       <text class="small" x="620" y="68" text-anchor="middle">AP propio  ó  STA + mDNS</text>
+       <text class="small" x="620" y="82" text-anchor="middle">(reconecta sola si se cae)</text>
+       <text class="small" x="620" y="98" text-anchor="middle">rutas: / (panel) y /data (JSON)</text>
+       <path class="arrow" d="M470,60 H510" marker-end="url(#tm-arrow2)"/>
+
+       <rect class="box act" x="270" y="150" width="200" height="34" rx="8"/>
+       <text x="370" y="171" text-anchor="middle">no bloquea al control de motores</text>
+     </svg>
+     <p class="cap">Sin telemetría (<code>TELEMETRIA_WIFI 0</code>) el Core 0 simplemente no se usa. Con ella activa, los dos núcleos trabajan a la vez — la red nunca hace que el rover "tartamudee".</p>
+   </div>`;
+  const secs=$("#clsecs",p);
+  function render(){
+    let doneAll=0, totalAll=0;
+    secs.innerHTML="";
+    CHECKLIST_SECS.forEach(sec=>{
+      const done=sec.items.filter((_,i)=>state[sec.id+i]).length;
+      doneAll+=done; totalAll+=sec.items.length;
+      const w=el("div","cl-sec");
+      w.innerHTML=`<div class="sh"><span class="tag ${sec.tag||''}" style="${sec.tag?'':'background:var(--surface-2);color:var(--muted)'}">${sec.tag?sec.tag:'hito'}</span><h4>${sec.title}</h4><span class="when">${sec.when}</span><span class="mini">${done}/${sec.items.length}</span></div>`;
+      const ul=el("ul","cl-items");
+      sec.items.forEach((it,i)=>{
+        const key=sec.id+i, on=!!state[key];
+        const li=el("li"); li.className=on?"done":"";
+        li.innerHTML=`<input type="checkbox" ${on?"checked":""}><span class="cl-txt">${it.t}${it.h?`<small>${it.h}</small>`:""}</span>`;
+        li.onclick=()=>{state[key]=!state[key];save();render();};
+        ul.appendChild(li);
+      });
+      w.appendChild(ul); secs.appendChild(w);
+    });
+    const pct=totalAll?Math.round(doneAll/totalAll*100):0;
+    $("#clbarAll",p).style.width=pct+"%"; $("#clpctAll",p).textContent=pct+"%";
+  }
+  render();
+}};
+
+/* ---------- ★ MAPA DE LA CARRERA ---------- */
+const PLAN=[
+  {s:"1er semestre",c:[
+    {n:"Ciencias de la Ingeniería",a:"core",d:"Pensar problemas como sistemas. Base de todo.",r:"Módulo 01 — caja negra"},
+    {n:"Fundamentos de Programación",a:"soft",d:"Tus primeras líneas de lógica y control de flujo.",r:"Módulo 04 — el lazo del algoritmo"},
+    {n:"Dibujo Computarizado (CAD)",a:"mech",d:"Modelar en 3D antes de cortar una sola pieza.",r:"Módulo 02 — geometría del chasis"},
+    {n:"Lengua Extranjera 1",a:"core",d:"Un nivel de inglés técnico por semestre.",r:"Datasheets de sensores y drivers"},
+  ]},
+  {s:"2º semestre",c:[
+    {n:"Procesos de Manufactura",a:"mech",d:"Cómo se fabrican realmente las piezas.",r:"Módulo 02 — corte del chasis"},
+    {n:"Administración de Operaciones",a:"core",d:"Planear, medir y mejorar procesos.",r:"Módulo 05 — logística de la carrera"},
+    {n:"Probabilidad y Estadística para Ciencia de Datos",a:"soft",d:"Domar datos ruidosos, como los del sensor.",r:"Módulo 03 — ruido del HC-SR04"},
+    {n:"Lengua Extranjera 2",a:"core",d:"Inglés técnico, nivel 2.",r:""},
+  ]},
+  {s:"3er semestre",c:[
+    {n:"Mecánica de Materiales",a:"mech",d:"Qué aguanta un golpe y qué se rompe.",r:"Módulo 02 — resistencia del chasis"},
+    {n:"Matemáticas Avanzadas",a:"soft",d:"El lenguaje del movimiento y el control.",r:"Módulo 02 — cinemática diferencial"},
+    {n:"Circuitos Eléctricos y Electrónicos",a:"elec",d:"Baterías, corriente, potencia, señales.",r:"Módulo 03 — todo el cableado"},
+    {n:"Lengua Extranjera 3",a:"core",d:"Inglés técnico, nivel 3.",r:""},
+  ]},
+  {s:"4º semestre",c:[
+    {n:"Ingeniería de Control",a:"soft",d:"Hacer que un sistema se comporte como quieres.",r:"Módulo 04 — sensa/decide/actúa"},
+    {n:"Automatización Industrial",a:"elec",d:"PLCs, actuadores, sensores en planta.",r:"Módulo 03 — puente H a escala industrial"},
+    {n:"Diseño Mecatrónico",a:"int",d:"Integrar mecánica + electrónica + software en un producto.",r:"Módulo 05 — integración completa"},
+    {n:"Lengua Extranjera 4",a:"core",d:"Inglés técnico, nivel 4.",r:""},
+  ]},
+  {s:"5º semestre",c:[
+    {n:"Control Digital",a:"soft",d:"Control en tiempo discreto: lo que corre en el microcontrolador.",r:"Módulo 04 — el loop() muestreado"},
+    {n:"Robótica Industrial",a:"int",d:"Programar y calibrar robots reales (cobots).",r:"Módulo 05 — calibración previa a la corrida"},
+    {n:"Diseño de Redes Industriales",a:"elec",d:"Que las máquinas se hablen entre sí (Cisco).",r:"Telemetría del rover"},
+    {n:"Lengua Extranjera 5",a:"core",d:"Inglés técnico, nivel 5.",r:""},
+  ]},
+  {s:"6º–7º semestre · ruta de enfoque",c:[
+    {n:"6 certificados optativos",a:"int",d:"Personalizas tu carrera: robótica, manufactura avanzada, IoT, IA…",r:"'Si esto te gustó, aquí eliges tu especialidad'"},
+  ]},
+  {s:"8º semestre",c:[
+    {n:"Estancia Empresarial",a:"int",d:"Un periodo completo aplicando todo en una empresa real (+3,900 convenios).",r:"Egresas con experiencia comprobable en el CV"},
+  ]},
+];
+BUILDERS.carrera={build(p){
+  p.innerHTML=`
+   <div class="mhead"><span class="kicker">Modelo MAPS · Tecmilenio</span><h2>Mapa de la carrera</h2></div>
+   <p class="mlede"><b>28 certificados</b> cocreados con empresas líderes sustituyen a las materias tradicionales — modulares, apilables y personalizables. Toca cualquiera para ver qué resuelve y con qué parte del taller de hoy se conecta. El color marca el dominio.</p>
+   <p class="legend">
+     <span><i style="background:var(--mech)"></i>Mecánica / diseño</span>
+     <span><i style="background:var(--elec)"></i>Electrónica</span>
+     <span><i style="background:var(--soft)"></i>Software / control</span>
+     <span><i style="background:var(--ink)"></i>Integración</span>
+     <span><i style="background:var(--line-strong)"></i>Base / transversal</span>
+   </p>
+   <div class="certdetail" id="cd"></div>
+   <div id="plan"></div>
+   <div class="card" style="margin-top:8px">
+     <h3>¿Qué podré hacer cuando me gradúe?</h3>
+     <p style="font-size:14px">Diseñar soluciones que integran mecánica, electrónica, robótica y tecnologías emergentes · crear modelos 3D de alta precisión · aplicar robótica y automatización para optimizar procesos industriales · diseñar sistemas de control estables y precisos · dirigir proyectos tecnológicos con criterio técnico, económico y ambiental.</p>
+     <p class="note"><b>9 de cada 10</b> estudiantes consiguen empleo alineado a su Propósito de Vida <b>antes de graduarse</b>, y el <b>100%</b> se gradúa con al menos 6 meses de experiencia profesional. Te formas con tecnología de Universal Robots, Siemens, Festo, Omron y Cisco.</p>
+   </div>`;
+  const plan=$("#plan",p), cd=$("#cd",p);
+  PLAN.forEach(sem=>{
+    const w=el("div","sem"); w.appendChild(el("h4",null,sem.s));
+    const g=el("div","certs");
+    sem.c.forEach(ct=>{
+      const c=el("div","cert"); c.dataset.area=ct.a;
+      c.innerHTML=`<div class="cn">${ct.n}</div><div class="cd">${ct.d}</div>`;
+      c.onclick=()=>{
+        cd.classList.add("show");
+        cd.innerHTML=`<b>${ct.n}</b> — ${ct.d}${ct.r?`<br><span style="color:var(--accent)">↳ En el taller de hoy: ${ct.r}</span>`:""}`;
+        cd.scrollIntoView({behavior:"smooth",block:"nearest"});
+      };
+      g.appendChild(c);
+    });
+    w.appendChild(g); plan.appendChild(w);
+  });
+}};
+
+/* boot */
+BUILDERS.inicio.build(panels.inicio); panels.inicio.dataset.built="1"; current="inicio";
+</script>
