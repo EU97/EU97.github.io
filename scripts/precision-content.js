@@ -107,6 +107,37 @@ window.precisionEngineeringContent = {
       ]
     },
     {
+      id: "dibujo-computarizado-t01",
+      course: "dibujo-computarizado",
+      courseLabel: { en: "Computer-Aided Drawing", es: "Dibujo Computarizado" },
+      week: "course-module",
+      weekLabel: { en: "Course Module", es: "Módulo del Curso" },
+      labType: "methodology",
+      labTypeLabel: { en: "Methodology", es: "Metodología" },
+      status: "published",
+      statusLabel: { en: "Published", es: "Publicado" },
+      title: {
+        en: "Dibujo Computarizado — T01 Design Stages",
+        es: "Dibujo Computarizado — T01 Etapas del Diseño"
+      },
+      description: {
+        en: "Course section Dibujo Computarizado with assignment T01.",
+        es: "Sección del curso Dibujo Computarizado con la tarea T01."
+      },
+      procedureUrl: "/curso/Dibujo%20Computarizado/",
+      instructionUrl: "/curso/Dibujo%20Computarizado/T01-etapas-diseno.html",
+      workingFiles: [
+        {
+          label: { en: "Course page", es: "Página del curso" },
+          url: "/curso/Dibujo%20Computarizado/"
+        },
+        {
+          label: { en: "T01 HTML", es: "HTML de T01" },
+          url: "/curso/Dibujo%20Computarizado/T01-etapas-diseno.html"
+        }
+      ]
+    },
+    {
       id: "taller-mecatronica-course",
       course: "taller-mecatronica",
       courseLabel: { en: "Mechatronics Workshop", es: "Taller Mecatrónica" },
