@@ -107,6 +107,34 @@ window.precisionEngineeringContent = {
       ]
     },
     {
+      id: "dibujo-computarizado-s01",
+      course: "dibujo-computarizado",
+      courseLabel: { en: "Computer-Aided Drawing", es: "Dibujo Computarizado" },
+      week: "block-01",
+      weekLabel: { en: "Block 1", es: "Bloque 1" },
+      labType: "methodology",
+      labTypeLabel: { en: "Methodology", es: "Metodología" },
+      status: "published",
+      statusLabel: { en: "Published", es: "Publicado" },
+      highlight: "green",
+      title: {
+        en: "Block 1 — Computer-Aided Drawing (S01 CAD Fundamentals)",
+        es: "Bloque 1 — Dibujo Computarizado (S01 Fundamentos CAD)"
+      },
+      description: {
+        en: "S01 course module covering CAD fundamentals and technical drawing practice.",
+        es: "Módulo S01 con fundamentos CAD y práctica de dibujo técnico."
+      },
+      procedureUrl: "/curso/Dibujo%20Computarizado/",
+      instructionUrl: "/addons/S01-fundamentos-cad.html",
+      workingFiles: [
+        {
+          label: { en: "S01 CAD Fundamentals", es: "S01 Fundamentos CAD" },
+          url: "/addons/S01-fundamentos-cad.html"
+        }
+      ]
+    },
+    {
       id: "dibujo-computarizado-t01",
       course: "dibujo-computarizado",
       courseLabel: { en: "Computer-Aided Drawing", es: "Dibujo Computarizado" },

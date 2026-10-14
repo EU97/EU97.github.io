@@ -527,7 +527,7 @@
             )).join('');
 
             return `
-              <article class="precision-card">
+              <article class="precision-card${activity.highlight === 'green' ? ' precision-card--highlighted' : ''}">
                 <div class="precision-card-header">
                   <h3>${escapeHtml(title)}</h3>
                   <span class="precision-status precision-status--${escapeHtml(activity.status)}">${escapeHtml(statusLabel)}</span>
