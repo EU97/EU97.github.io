@@ -238,13 +238,23 @@ img, svg, canvas { max-width: 100%; }
 .stat__n { font: 800 2.4rem var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; }
 .stat__l { font-size: .85rem; color: var(--ink-2); }
 
-/* ---------- Visor 3D (espacio reservado) ---------- */
+/* ---------- Visor 3D ---------- */
 .stage-3d {
   position: relative; min-height: 320px; border: 1px dashed var(--line-strong); border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--steel-50), var(--surface));
   display: grid; place-items: center; overflow: hidden;
 }
+.stage-3d[data-viewer3d] { border-style: solid; height: clamp(320px, 52vw, 460px); touch-action: none; }
+.stage-3d__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+.stage-3d__canvas:active { cursor: grabbing; }
 .stage-3d__hint { font: 500 .8rem var(--font-mono); color: var(--ink-3); }
+.stage-3d[data-state="error"]::after { content: "STL no disponible"; font: 500 .8rem var(--font-mono); color: var(--ink-3); }
+.stage-3d__tag {
+  position: absolute; left: var(--space-3); top: var(--space-3); z-index: 1; pointer-events: none;
+  font: 500 .72rem/1.5 var(--font-mono); color: var(--ink-2); background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .3rem .55rem;
+}
+.viewer-tools { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
 
 /* ---------- Pie ---------- */
 .footer { padding-block: var(--space-6); border-top: 1px solid var(--line); color: var(--ink-3); font-size: .88rem; }

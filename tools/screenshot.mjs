@@ -37,6 +37,12 @@ try {
           try {
             page.on('pageerror', e => console.error('JSERR', page_, e.message)); await page.goto(`http://127.0.0.1:${PORT}${page_}`, { waitUntil: 'load', timeout: 20000 });
             await page.waitForTimeout(600);
+            // Visores 3D: se montan al entrar en pantalla; se fuerzan y se espera a que terminen.
+            if (await page.locator('[data-viewer3d]').count()) {
+              await page.evaluate(() => document.querySelectorAll('[data-viewer3d]').forEach(el => window.Viewer3D?.mount(el)));
+              await page.waitForFunction(() => [...document.querySelectorAll('[data-viewer3d]')].every(el => ['ready', 'error'].includes(el.dataset.state)), null, { timeout: 20000 });
+              await page.waitForTimeout(300);
+            }
             const file = `${slug(page_)}__${vpName}-${theme}-${lang}.png`;
             await page.screenshot({ path: path.join(outDir, file), fullPage: vpName === 'desktop' });
             shots.push({ page: page_, vpName, theme, lang, file });

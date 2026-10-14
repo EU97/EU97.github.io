@@ -114,7 +114,18 @@
   <section class="section section--tight" id="modelo3d">
     <div class="container">
       <div class="section-head reveal"><span class="eyebrow">04</span><h2 data-i18n="sg.stage"></h2></div>
-      <div class="stage-3d reveal"><span class="stage-3d__hint" data-i18n="sg.stage.hint"></span></div>
+      <p data-i18n="sg.stage.lede"></p>
+      <div class="stage-3d reveal" id="viewer" data-viewer3d data-src="/models/pruebas/brida-eu97.stl" data-view="iso">
+        <span class="stage-3d__hint" data-i18n="sg.stage.hint"></span>
+        <span class="stage-3d__tag" id="viewer-stats" aria-live="polite"></span>
+      </div>
+      <div class="viewer-tools" id="viewer-tools">
+        <button class="chip" data-view="iso" aria-pressed="true">ISO</button>
+        <button class="chip" data-view="front" data-i18n="sg.v.front"></button>
+        <button class="chip" data-view="top" data-i18n="sg.v.top"></button>
+        <button class="chip" data-view="right" data-i18n="sg.v.right"></button>
+        <button class="chip" data-wire aria-pressed="false" data-i18n="sg.v.wire"></button>
+      </div>
     </div>
   </section>
 
@@ -123,6 +134,7 @@
   <script src="/scripts/i18n.js"></script>
   <script src="/scripts/topbar.js"></script>
   <script src="/scripts/motion.js"></script>
+  <script src="/scripts/viewer3d.js"></script>
   <script>
     SiteI18n.add({
       en: {
@@ -138,7 +150,9 @@
         'sg.card4': 'Sampling plans and capability decisions with statistical process control.',
         'sg.motion': 'Motion', 'sg.stat1': 'Years in industry', 'sg.stat2': 'Industry partners', 'sg.stat3': 'Courses redesigned',
         'sg.t1': 'Degree from UANL.', 'sg.t2': 'Control systems and UAV platforms.', 'sg.t3': 'FIME-UANL.',
-        'sg.stage': 'Slot for 3D models', 'sg.stage.hint': 'Reserved for the STL viewer (Phase 7)',
+        'sg.stage': '3D model test bench', 'sg.stage.hint': 'Loading viewer…',
+        'sg.stage.lede': 'Procedural test part (flanged hub) used to exercise the viewer API. Final CAD models will replace it.',
+        'sg.v.front': 'Front', 'sg.v.top': 'Top', 'sg.v.right': 'Right', 'sg.v.wire': 'Wireframe', 'sg.v.tris': 'triangles',
         'sg.footer': 'Phase 1 preview. Not part of the public navigation.'
       },
       es: {
@@ -154,9 +168,33 @@
         'sg.card4': 'Planes de muestreo y decisiones de capacidad con control estadístico.',
         'sg.motion': 'Movimiento', 'sg.stat1': 'Años en la industria', 'sg.stat2': 'Socios industriales', 'sg.stat3': 'Cursos rediseñados',
         'sg.t1': 'Licenciatura en la UANL.', 'sg.t2': 'Sistemas de control y plataformas UAV.', 'sg.t3': 'FIME-UANL.',
-        'sg.stage': 'Espacio para modelos 3D', 'sg.stage.hint': 'Reservado para el visor de STL (Fase 7)',
+        'sg.stage': 'Banco de pruebas 3D', 'sg.stage.hint': 'Cargando visor…',
+        'sg.stage.lede': 'Pieza de prueba procedural (brida con cubo) para ejercitar la API del visor. Los CAD definitivos la reemplazarán.',
+        'sg.v.front': 'Frontal', 'sg.v.top': 'Superior', 'sg.v.right': 'Lateral', 'sg.v.wire': 'Alambre', 'sg.v.tris': 'triángulos',
         'sg.footer': 'Vista previa de la Fase 1. No forma parte de la navegación pública.'
       }
+    });
+
+    const viewerEl = document.getElementById('viewer');
+    const statsEl = document.getElementById('viewer-stats');
+    let lastStats;
+    const showStats = () => {
+      if (!lastStats) return;
+      const { x, y, z } = lastStats.size;
+      statsEl.textContent = `brida-eu97.stl · ${x} × ${y} × ${z} mm · ${lastStats.triangles.toLocaleString()} ${SiteI18n.t('sg.v.tris')}`;
+    };
+    viewerEl.addEventListener('viewer3d:load', e => { lastStats = e.detail; showStats(); });
+    document.addEventListener('languageChanged', showStats);
+    document.getElementById('viewer-tools').addEventListener('click', async e => {
+      const btn = e.target.closest('.chip'); if (!btn) return;
+      const v = await Viewer3D.mount(viewerEl);
+      if (btn.hasAttribute('data-wire')) {
+        const on = btn.getAttribute('aria-pressed') !== 'true';
+        btn.setAttribute('aria-pressed', String(on)); v.setWireframe(on);
+        return;
+      }
+      btn.parentElement.querySelectorAll('[data-view]').forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
+      v.setView(btn.dataset.view);
     });
 
     const filters = document.getElementById('filters');
