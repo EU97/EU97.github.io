@@ -1,4 +1,5 @@
-/* Barra superior común. Uso: <div data-topbar data-active="home|cursos|herramientas"></div> */
+/* Barra superior común. Uso: <div data-topbar data-active="home|cursos|herramientas"></div>
+   Variante de la portada para industria: <div data-topbar data-variant="industry"></div> (secciones + enlace a docencia, sin sesión). */
 (() => {
   'use strict';
 
@@ -7,18 +8,28 @@
     { id: 'cursos', href: '/cursos/', key: 'topbar.courses' },
     { id: 'herramientas', href: '/herramientas/', key: 'topbar.tools' },
   ];
+  const INDUSTRY = [
+    { id: 'servicios', href: '#servicios', key: 'topbar.services' },
+    { id: 'casos', href: '#casos', key: 'topbar.cases' },
+    { id: 'trayectoria', href: '#trayectoria', key: 'topbar.record' },
+    { id: 'contacto', href: '#contacto', key: 'topbar.contact' },
+  ];
 
   function render(mount) {
     const active = mount.dataset.active || '';
+    const industry = mount.dataset.variant === 'industry';
+    const links = industry ? INDUSTRY : LINKS;
     mount.outerHTML = `
       <header class="topbar" id="topbar">
         <div class="container topbar__inner">
           <a class="brand" href="/" aria-label="EU97"><span class="brand__mark"></span><span>EU97</span></a>
           <nav class="topbar__nav" id="topbar-nav" aria-label="Principal">
-            ${LINKS.map(l => `<a class="topbar__link" href="${l.href}"${l.id === active ? ' aria-current="page"' : ''} data-i18n="${l.key}"></a>`).join('')}
+            ${links.map(l => `<a class="topbar__link" href="${l.href}"${l.id === active ? ' aria-current="page"' : ''} data-i18n="${l.key}"></a>`).join('')}
           </nav>
           <div class="topbar__tools">
-            <span class="session-chip" data-state="out"><span class="session-chip__lock"></span><span data-i18n="topbar.guest"></span></span>
+            ${industry
+              ? '<a class="topbar__aside" href="/#precision" data-i18n="topbar.teaching"></a>'
+              : '<span class="session-chip" data-state="out"><span class="session-chip__lock"></span><span data-i18n="topbar.guest"></span></span>'}
             <button class="icon-btn" id="lang-btn" type="button" data-i18n-aria="topbar.lang"></button>
             <button class="icon-btn" type="button" data-theme-toggle data-theme-icon-only aria-pressed="false" data-i18n-aria="topbar.theme"><span class="theme-icon"></span></button>
             <button class="icon-btn topbar__burger" id="burger" type="button" aria-expanded="false" aria-controls="topbar-nav" data-i18n-aria="topbar.menu">&#9776;</button>
@@ -43,8 +54,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     SiteI18n.add({
-      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu' },
-      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú' },
+      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu', 'topbar.services': 'Services', 'topbar.cases': 'Case studies', 'topbar.record': 'Track record', 'topbar.contact': 'Contact', 'topbar.teaching': 'Teaching ↗' },
+      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú', 'topbar.services': 'Servicios', 'topbar.cases': 'Casos', 'topbar.record': 'Trayectoria', 'topbar.contact': 'Contacto', 'topbar.teaching': 'Docencia ↗' },
     });
     const mount = document.querySelector('[data-topbar]');
     if (!mount) return;

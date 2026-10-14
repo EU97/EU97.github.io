@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Edgar Ulises Rojo — I+D aplicada para la industria</title>
+  <meta name="description" content="Metrología, control y validación experimental para manufactura e I+D industrial.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/v2/home.css">
+  <script src="/scripts/theme.js"></script>
+</head>
+<body>
+  <div data-topbar data-variant="industry"></div>
+
+  <main>
+    <!-- 01 · Hero -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <span class="eyebrow" data-i18n="h.eyebrow"></span>
+          <h1 class="hero__title" data-i18n-html="h.title"></h1>
+          <p class="hero__lede" data-i18n="h.lede"></p>
+          <div class="hero__cta">
+            <a class="btn btn--primary btn--lg" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica" data-i18n="h.cta"></a>
+            <a class="btn btn--ghost btn--lg" href="#casos" data-i18n="h.cta2"></a>
+          </div>
+        </div>
+
+        <figure class="cell" data-scene="probe-cell" data-src="/models/pruebas/brida-eu97.stl">
+          <figcaption class="cell__block">
+            <span>SIM-01</span><span data-i18n="cell.name"></span><span>brida-eu97 · REV A</span>
+          </figcaption>
+          <div class="cell__readout" id="readout" aria-live="polite">
+            <span class="cell__pt" id="ro-n">P-00</span>
+            <span>X <b id="ro-x">—</b></span><span>Y <b id="ro-y">—</b></span><span>Z <b id="ro-z">—</b></span>
+            <span class="cell__dev" id="ro-dev">Δ —</span>
+          </div>
+          <div class="cell__hint" id="cell-hint" data-i18n="cell.hint"></div>
+          <span class="cell__sim" data-i18n="cell.sim"></span>
+        </figure>
+      </div>
+
+      <div class="container">
+        <div class="clients">
+          <span class="clients__k" data-i18n="h.clients"></span>
+          <ul class="clients__list">
+            <li>Magna Powertrain</li><li>FEMSA</li><li>Heineken</li><li>Friedrich</li><li>Optima</li><li>ONR Global</li><li>University of Southampton</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · Problemas -->
+    <section class="section" id="problemas">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">02</span><span class="shead__k" data-i18n="p.k"></span>
+          <h2 data-i18n="p.title"></h2>
+          <p class="lede" data-i18n="p.lede"></p>
+        </header>
+        <div class="pains" id="pains" data-stagger></div>
+      </div>
+    </section>
+
+    <!-- 03 · Método / servicios -->
+    <section class="section section--band" id="servicios">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">03</span><span class="shead__k" data-i18n="s.k"></span>
+          <h2 data-i18n="s.title"></h2>
+          <p class="lede" data-i18n="s.lede"></p>
+        </header>
+        <ol class="method" id="method"></ol>
+      </div>
+    </section>
+
+    <!-- 04 · Casos -->
+    <section class="section" id="casos">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">04</span><span class="shead__k" data-i18n="c.k"></span>
+          <h2 data-i18n="c.title"></h2>
+          <p class="lede" data-i18n="c.lede"></p>
+        </header>
+        <div class="cases" id="cases"></div>
+      </div>
+    </section>
+
+    <!-- 05 · Trayectoria -->
+    <section class="section section--band" id="trayectoria">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">05</span><span class="shead__k" data-i18n="r.k"></span>
+          <h2 data-i18n="r.title"></h2>
+        </header>
+        <div class="figures" data-stagger>
+          <div class="figure"><span class="figure__n"><b data-count="8">8</b>+</span><span class="figure__l" data-i18n="r.f1"></span></div>
+          <div class="figure"><span class="figure__n"><b data-count="6">6</b></span><span class="figure__l" data-i18n="r.f2"></span></div>
+          <div class="figure"><span class="figure__n">N62909</span><span class="figure__l" data-i18n="r.f3"></span></div>
+          <div class="figure"><span class="figure__n">ES·EN·FR</span><span class="figure__l" data-i18n="r.f4"></span></div>
+        </div>
+        <div class="record">
+          <div>
+            <h3 class="record__h" data-i18n="r.exp"></h3>
+            <ul class="record__list" id="record-exp"></ul>
+          </div>
+          <div>
+            <h3 class="record__h" data-i18n="r.edu"></h3>
+            <ul class="record__list" id="record-edu"></ul>
+            <div class="record__links">
+              <a href="https://www.linkedin.com/in/eu97/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://orcid.org/0000-0002-9516-4651" target="_blank" rel="noopener">ORCID ↗</a>
+              <a href="https://github.com/EU97" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · Además (secundario) -->
+    <section class="section section--tight" id="ademas">
+      <div class="container">
+        <div class="aside-links">
+          <span class="aside-links__k" data-i18n="a.k"></span>
+          <a class="aside-link" href="/#precision"><b data-i18n="a.t1"></b><span data-i18n="a.d1"></span></a>
+          <a class="aside-link" href="/#precision"><b data-i18n="a.t2"></b><span data-i18n="a.d2"></span></a>
+          <a class="aside-link" href="https://github.com/EU97" target="_blank" rel="noopener"><b data-i18n="a.t3"></b><span data-i18n="a.d3"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · Contacto -->
+    <section class="section cta" id="contacto">
+      <div class="container cta__inner reveal">
+        <h2 class="cta__title" data-i18n="k.title"></h2>
+        <p class="lede" data-i18n="k.lede"></p>
+        <div class="hero__cta">
+          <a class="btn btn--accent btn--lg" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica">eurr97@gmail.com</a>
+          <a class="btn btn--ghost btn--lg" href="https://www.linkedin.com/in/eu97/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer__inner"><p data-i18n="f.copy"></p><p class="mono" data-i18n="f.note"></p></div></footer>
+
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script src="/scripts/viewer3d.js"></script>
+  <script src="/scripts/probe-cell.js"></script>
+  <script src="/v2/home.js"></script>
+  <script src="/scripts/motion.js"></script>
+</body>
+</html>

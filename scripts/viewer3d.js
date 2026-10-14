@@ -178,7 +178,7 @@
     els.forEach(el => io.observe(el));
   }
 
-  window.Viewer3D = { mount, auto };
+  window.Viewer3D = { mount, auto, loadThree };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => auto());
   else auto();
 })();
