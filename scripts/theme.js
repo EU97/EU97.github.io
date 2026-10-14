@@ -19,8 +19,10 @@
     root.style.colorScheme = isDark ? 'dark' : 'light';
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
       button.setAttribute('aria-pressed', String(isDark));
-      button.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
-      button.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      if (!button.hasAttribute('data-theme-icon-only')) {
+        button.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+        button.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      }
     });
   }
 
@@ -35,7 +37,7 @@
   }
 
   applyTheme(resolveTheme());
-
+  window.SiteTheme = { refresh: () => applyTheme(root.getAttribute('data-theme') || resolveTheme()) };
   document.addEventListener('click', event => {
     const toggle = event.target.closest('[data-theme-toggle]');
     if (!toggle) return;

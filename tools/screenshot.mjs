@@ -35,7 +35,7 @@ try {
           }, [theme, lang]);
           const page = await ctx.newPage();
           try {
-            await page.goto(`http://127.0.0.1:${PORT}${page_}`, { waitUntil: 'load', timeout: 20000 });
+            page.on('pageerror', e => console.error('JSERR', page_, e.message)); await page.goto(`http://127.0.0.1:${PORT}${page_}`, { waitUntil: 'load', timeout: 20000 });
             await page.waitForTimeout(600);
             const file = `${slug(page_)}__${vpName}-${theme}-${lang}.png`;
             await page.screenshot({ path: path.join(outDir, file), fullPage: vpName === 'desktop' });

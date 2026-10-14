@@ -18,8 +18,8 @@ Retomar: `git checkout feat/portfolio-redesign`, revisar la primera fase sin mar
 
 - [x] **-1. Preparación**: rama, este plan.
 - [x] **-1b. Línea base**: capturas del sitio actual en `docs/baseline/`.
-- [ ] **0. Inventario**: `docs/inventory.md` (enlaces y rutas) y catálogo de cursos por área (`docs/catalog-draft.json`).
-- [ ] **1. Sistema de diseño**: tokens, componentes, movimiento, barra superior común, i18n base, guía de estilo (`styleguide/`).
+- [x] **0. Inventario**: `docs/inventory.md` (enlaces y rutas) y catálogo de cursos por área (`docs/catalog-draft.json`).
+- [x] **1. Sistema de diseño**: `styles/site.css` (convive con `main.css` hasta la Fase 4), `scripts/i18n.js`, `scripts/motion.js`, `scripts/topbar.js`, guía de estilo en `/styleguide/`. Vista previa: `docs/previews/fase1/index.md`.
 - [ ] **2. Home**: hero, resumen, experiencia, proyectos, docencia por áreas, herramientas, contacto.
 - [ ] **3. Hubs**: `cursos/` y `herramientas/` con catálogos JSON.
 - [ ] **4. Reorganización**: mover carpetas, redirecciones, rutas absolutas.
