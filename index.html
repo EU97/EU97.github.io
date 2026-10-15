@@ -1,1364 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Edgar Ulises Rojo Rodriguez. Mechatronics engineer specialized in control systems, industrial metrology, advanced manufacturing, and applied AI. Ph.D. candidate in Aeronautical Engineering. Associate Professor at FIME-UANL.">
-    <meta name="keywords" content="EU97, Edgar Ulises Rojo Rodriguez, systems engineer, mechatronics, control systems, industrial metrology, aeronautical engineering, FIME-UANL, ONR Global, portfolio">
-    <meta name="author" content="Edgar Ulises Rojo Rodriguez">
-    
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/images/favicon/site.webmanifest">
-    
-    <title>Edgar Ulises Rojo Rodriguez — Systems Engineer | Researcher | Professor</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/styles/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edgar Ulises Rojo — I+D aplicada para la industria</title>
+  <meta name="description" content="Metrología, control y validación experimental para manufactura e I+D industrial.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/styles/home.css">
+  <script src="/scripts/theme.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav" id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-logo">EU97</a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#timeline" class="nav-link">Timeline</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#precision" class="nav-link">Course Resources</a></li>
-                <li><a href="#skills" class="nav-link">Tools</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><button id="theme-toggle" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">🌙 Dark</button></li>
-                <li><button id="lang-toggle" class="lang-toggle" aria-label="Toggle language">🇪🇸 ES</button></li>
-            </ul>
-        </div>
-    </nav>
+  <div data-topbar data-variant="industry"></div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="hero-particles"></div>
-            <div class="hero-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-            </div>
+  <main>
+    <!-- 01 · Hero: nombre, áreas, foto con trabajos alrededor -->
+    <section class="hero" id="inicio">
+      <canvas class="hero__flow" id="flow" aria-hidden="true"></canvas>
+      <div class="hero__wrap">
+        <div class="hero__id">
+          <span class="eyebrow" data-i18n="h.eyebrow"></span>
+          <h1 class="hero__name"><span class="hero__first">Edgar Ulises</span> <span class="hero__last">Rojo Rodriguez</span></h1>
+          <p class="hero__claim" data-i18n-html="h.title"></p>
+          <ul class="areas" id="areas">
+            <li data-area="metro"><span class="areas__n">01</span><b data-i18n="ar.1"></b><span class="areas__t">GD&amp;T · CMM · SPC</span></li>
+            <li data-area="ctrl"><span class="areas__n">02</span><b data-i18n="ar.2"></b><span class="areas__t">PID · LQR · IoT</span></li>
+            <li data-area="uav"><span class="areas__n">03</span><b data-i18n="ar.3"></b><span class="areas__t">UAV · UTV · ONR</span></li>
+            <li data-area="aero"><span class="areas__n">04</span><b data-i18n="ar.4"></b><span class="areas__t">CFD · Wind tunnel</span></li>
+          </ul>
+          <a class="hero__link" href="#casos"><span data-i18n="h.cta2"></span> <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="section-container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <svg width="20" height="20" style="vertical-align: middle; margin-right: 5px;">
-                        <use href="/images/icons.svg#icon-code"/>
-                    </svg>
-                    Edgar Ulises Rojo Rodriguez · EU97 Portfolio
-                </div>
-                <h1 class="hero-title">
-                    <span class="title-line">Edgar Ulises Rojo Rodriguez</span>
-                    <span class="title-gradient">M.Sc. Aeronautical Eng. | Ph.D. Candidate</span>
-                </h1>
-                <p class="hero-subtitle">Systems Engineering · Industrial R&D · Control & Automation · AI Implementation</p>
-                <p class="hero-description">Associate Professor at FIME-UANL and industry-engaged researcher with 8+ years of experience in control systems, industrial metrology, advanced manufacturing, and applied research — bridging physical systems with intelligent automation.</p>
-                <div class="hero-cta">
-                    <a href="#projects" class="btn btn-primary">
-                        <span>Explore Projects</span>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <span>Get in Touch</span>
-                    </a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="8">0</div>
-                        <div class="stat-label">Years Industry Experience</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="6">0</div>
-                        <div class="stat-label">Industry Partners</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="10">0</div>
-                        <div class="stat-label">Courses Redesigned</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="3">0</div>
-                        <div class="stat-label">Languages (ES/EN/FR)</div>
-                    </div>
-                </div>
-            </div>
+
+        <!-- Escenario: foto recortada (PNG transparente en data-photo) con trabajos flotando alrededor.
+             Mientras no exista la foto se muestra una silueta provisional. -->
+        <div class="showcase" id="stage">
+          <figure class="portrait" id="portrait" data-photo="">
+            <svg class="portrait__ph" viewBox="0 0 400 520" aria-hidden="true">
+              <defs>
+                <linearGradient id="ph-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="currentColor" stop-opacity=".9"/>
+                  <stop offset=".75" stop-color="currentColor" stop-opacity=".55"/>
+                  <stop offset="1" stop-color="currentColor" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path class="portrait__body" d="M40 520 C 48 420, 110 372, 200 372 C 290 372, 352 420, 360 520 Z"/>
+              <path class="portrait__neck" d="M172 300 h56 v80 q-28 22 -56 0 z"/>
+              <ellipse class="portrait__head" cx="200" cy="230" rx="78" ry="92"/>
+              <path class="portrait__line" d="M200 372 v148 M150 380 l50 52 l50 -52"/>
+              <ellipse class="portrait__contour" cx="200" cy="230" rx="96" ry="110"/>
+            </svg>
+            <figcaption class="portrait__tag" data-i18n="ph.tag"></figcaption>
+          </figure>
+
+          <div class="float float--metro" data-area="metro" data-depth="18">
+            <svg viewBox="0 0 120 80" aria-hidden="true">
+              <path class="f-part" d="M8 66 V36 H34 V20 H86 V36 H112 V66 Z"/><circle class="f-hole" cx="60" cy="50" r="8"/>
+              <g class="f-beam"><rect x="0" y="-5" width="120" height="10" class="f-glow"/><line x1="0" y1="0" x2="120" y2="0"/></g>
+              <g class="f-pts"><circle cx="20" cy="36" r="2"/><circle cx="48" cy="20" r="2"/><circle cx="86" cy="28" r="2"/><circle cx="104" cy="36" r="2"/></g>
+            </svg>
+            <span class="float__tag">Magna · FEMSA</span>
+          </div>
+          <div class="float float--uav" data-area="uav" data-depth="30">
+            <svg viewBox="-60 -30 120 80" aria-hidden="true">
+              <g class="f-drone">
+                <path class="f-arm" d="M-36 -10 L36 10 M-36 10 L36 -10"/>
+                <rect class="f-core" x="-13" y="-8" width="26" height="16" rx="5"/><circle class="f-led" r="2.4"/>
+                <ellipse class="f-rotor" cx="-36" cy="-10" rx="16" ry="3.4"/><ellipse class="f-rotor" cx="36" cy="-10" rx="16" ry="3.4"/>
+                <ellipse class="f-rotor" cx="-36" cy="10" rx="16" ry="3.4"/><ellipse class="f-rotor" cx="36" cy="10" rx="16" ry="3.4"/>
+              </g>
+              <ellipse class="f-shadow" cx="0" cy="44" rx="30" ry="4"/>
+            </svg>
+            <span class="float__tag">ONR Global</span>
+          </div>
+          <div class="float float--aero" data-area="aero" data-depth="12">
+            <svg viewBox="0 0 160 70" aria-hidden="true">
+              <path class="f-stream" d="M0 12 C 50 10, 90 4, 160 12"/>
+              <path class="f-stream" d="M0 58 C 50 60, 90 66, 160 58"/>
+              <path class="f-stream f-stream--b" d="M0 30 C 30 30, 40 22, 80 20 S 130 30, 160 32"/>
+              <path class="f-foil" d="M12 38 C 26 22, 66 20, 140 34 C 66 44, 26 48, 12 38 Z"/>
+            </svg>
+            <span class="float__tag">Southampton</span>
+          </div>
+          <div class="float float--ctrl" data-area="ctrl" data-depth="22">
+            <svg viewBox="0 0 120 74" aria-hidden="true">
+              <rect class="f-screen" x="1" y="1" width="118" height="72" rx="8"/>
+              <line class="f-sp" x1="10" y1="24" x2="110" y2="24"/>
+              <path class="f-trace" pathLength="1" d="M10 64 C 24 64, 26 10, 42 12 S 60 30, 70 25 S 92 22, 110 24"/>
+            </svg>
+            <span class="float__tag">PID / LQR</span>
+          </div>
         </div>
+
+        <div class="feats">
+          <svg class="feats__wave" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 20 C 100 2, 200 38, 300 20 S 500 2, 600 20 S 800 38, 900 20 S 1100 2, 1200 20"/>
+          </svg>
+          <div class="feat"><span class="feat__n"><b data-count="8">8</b><i>+</i></span><span class="feat__l" data-i18n="st.1"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="6">6</b></span><span class="feat__l" data-i18n="st.2"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="10">10</b></span><span class="feat__l" data-i18n="st.3"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="3">3</b></span><span class="feat__l" data-i18n="st.4"></span></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="clients">
+          <span class="clients__k" data-i18n="h.clients"></span>
+          <ul class="clients__list">
+            <li>Magna Powertrain</li><li>FEMSA</li><li>Heineken</li><li>Friedrich</li><li>Optima</li><li>ONR Global</li><li>University of Southampton</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Who Am I</span>
-                <h2>About Me</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-image">
-                    <div class="image-wrapper">
-                        <div class="image-background"></div>
-                        <div class="avatar-initials" aria-label="Edgar Ulises Rojo Rodriguez">EUR</div>
-                    </div>
-                </div>
-                <div class="about-text">
-                    <div class="about-intro">
-                        <h3>Edgar Ulises Rojo Rodriguez</h3>
-                        <p class="about-role">Mechatronics Engineer · M.Sc. &amp; Ph.D. Candidate in Aeronautical Engineering</p>
-                    </div>
-
-                    <div class="about-bio">
-                        <p>Mechatronics Engineer with a M.Sc. and Ph.D. candidacy in Aeronautical Engineering. Over 8 years of experience in control systems design, industrial metrology, advanced manufacturing, and applied research. I have led multidisciplinary projects for Tier-1 automotive suppliers (Magna Powertrain, FEMSA, Friedrich), directed internationally funded research (ONR Global), and completed a research fellowship at the University of Southampton, UK.</p>
-                        <p>Currently an Associate Professor at FIME-UANL teaching Electrical Systems, Measurement Techniques, and Aerodynamics, with active involvement in the Metrology Lab, Advanced Manufacturing Lab, and Navigation research area. I mentor students through terminal projects and extracurricular engineering teams while providing direct technical services to industry.</p>
-                        <p>My work bridges physical systems with intelligent automation — from control logic development and instrumentation to AI-driven workflows using Python, MATLAB, and modern web technologies.</p>
-                    </div>
-
-                    <div class="about-stats-bar">
-                        <div class="about-stat-item">
-                            <span class="about-stat-number">8+</span>
-                            <span class="about-stat-label">Years Industry Experience</span>
-                        </div>
-                        <div class="about-stat-item">
-                            <span class="about-stat-number">6+</span>
-                            <span class="about-stat-label">Industry Partners</span>
-                        </div>
-                        <div class="about-stat-item">
-                            <span class="about-stat-number">10+</span>
-                            <span class="about-stat-label">Courses Redesigned</span>
-                        </div>
-                        <div class="about-stat-item">
-                            <span class="about-stat-number">3</span>
-                            <span class="about-stat-label">Languages (ES/EN/FR)</span>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 2rem;">
-                        <a href="#projects" class="btn btn-primary">Explore Projects</a>
-                        <a href="https://github.com/EU97" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Profile</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Timeline Section -->
-    <section id="timeline" class="timeline">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Career Path</span>
-                <h2>Professional Timeline</h2>
-                <p>Key milestones in engineering, research, and academia</p>
-            </div>
-            <div class="timeline-container">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2019</div>
-                    <div class="timeline-content">
-                        <h4>B.Eng. Mechatronics — UANL</h4>
-                        <p>Graduated with a degree in Mechatronics Engineering from the Universidad Autónoma de Nuevo León.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2017–Present</div>
-                    <div class="timeline-content">
-                        <h4>Innovation Engineer — Industry R&amp;D Collaborations</h4>
-                        <p>Ongoing technical services and engineering projects for Tier-1 suppliers and industrial partners (Magna Powertrain, FEMSA, Friedrich, Heineken, Optima).</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2021</div>
-                    <div class="timeline-content">
-                        <h4>M.Sc. Aeronautical Engineering — UANL</h4>
-                        <p>Master of Science in Aeronautical Engineering, specializing in control systems and UAV platforms.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2021–2024</div>
-                    <div class="timeline-content">
-                        <h4>Lead Engineer — ONR Global Project</h4>
-                        <p>Led end-to-end development of UAV and UTV platforms under Office of Naval Research Global Grant N62909-20-1-2030.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2023–Present</div>
-                    <div class="timeline-content">
-                        <h4>Associate Professor — FIME, UANL</h4>
-                        <p>Teaching Electrical Systems, Measurement Techniques, and Aerodynamics. Active in Metrology Lab and Advanced Manufacturing Lab.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2023–Present</div>
-                    <div class="timeline-content">
-                        <h4>Technical Director — DUAS Symposium</h4>
-                        <p>Directing the international academic symposium and full-stack platform development at duas.com.mx.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2024</div>
-                    <div class="timeline-content">
-                        <h4>Research Fellow — University of Southampton, UK</h4>
-                        <p>International fellowship focused on aerodynamic design and wind-tunnel validation of convertible UAV configurations.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2026</div>
-                    <div class="timeline-content">
-                        <h4>Ph.D. in Aeronautical Engineering — In Progress</h4>
-                        <p>Doctoral research at UANL advancing autonomous systems, navigation, and intelligent control for aerial vehicles.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- 02 · En acción: celda de medición -->
+    <section class="section section--band" id="laboratorio">
+      <div class="container lab">
+        <header class="shead lab__text reveal">
+          <span class="shead__n">02</span><span class="shead__k" data-i18n="lab.k"></span>
+          <h2 data-i18n="lab.title"></h2>
+          <p class="lede" data-i18n="lab.lede"></p>
+          <ul class="lab__legend">
+            <li><i class="dot dot--ok"></i><span data-i18n="lab.ok"></span></li>
+            <li><i class="dot dot--out"></i><span data-i18n="lab.out"></span></li>
+          </ul>
+        </header>
+        <figure class="cell" data-scene="probe-cell" data-src="/models/pruebas/brida-eu97.stl">
+          <figcaption class="cell__block">
+            <span>SIM-01</span><span data-i18n="cell.name"></span><span>brida-eu97 · REV A</span>
+          </figcaption>
+          <div class="cell__readout" id="readout" aria-live="polite">
+            <span class="cell__pt" id="ro-n">P-00</span>
+            <span>X <b id="ro-x">—</b></span><span>Y <b id="ro-y">—</b></span><span>Z <b id="ro-z">—</b></span>
+            <span class="cell__dev" id="ro-dev">Δ —</span>
+          </div>
+          <div class="cell__hint" id="cell-hint" data-i18n="cell.hint"></div>
+          <span class="cell__sim" data-i18n="cell.sim"></span>
+        </figure>
+      </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Portfolio</span>
-                <h2>Featured Projects</h2>
-                <p>Explore my work across software development, IoT innovation, and physical computing</p>
-            </div>
-            
-            <!-- Project Category Tabs -->
-            <div class="project-tabs">
-                <button class="tab-btn active" data-category="all">
-                    <span class="tab-icon">⚙️</span>
-                    <span>All</span>
-                </button>
-                <button class="tab-btn" data-category="industrial">
-                    <span class="tab-icon">🏭</span>
-                    <span>Industrial R&amp;D</span>
-                </button>
-                <button class="tab-btn" data-category="research">
-                    <span class="tab-icon">🔬</span>
-                    <span>Research &amp; Defense</span>
-                </button>
-                <button class="tab-btn" data-category="control">
-                    <span class="tab-icon">🎛️</span>
-                    <span>Control &amp; Automation</span>
-                </button>
-                <button class="tab-btn" data-category="simulation">
-                    <span class="tab-icon">✈️</span>
-                    <span>Simulation &amp; Viz</span>
-                </button>
-                <button class="tab-btn" data-category="academic">
-                    <span class="tab-icon">🎓</span>
-                    <span>Academic &amp; Leadership</span>
-                </button>
-                <button class="tab-btn" data-category="opensource">
-                    <span class="tab-icon">💻</span>
-                    <span>Open Source</span>
-                </button>
-            </div>
-            
-            <div class="projects-grid" id="projects-grid">
-
-                <!-- Magna Powertrain — Industrial R&D -->
-                <div class="project-card" data-category="industrial">
-                    <div class="project-badge">Industrial R&D</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="100" cy="100" r="50" fill="none" stroke="#00d4ff" stroke-width="4"/>
-                            <circle cx="100" cy="100" r="35" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <circle cx="100" cy="100" r="10" fill="#00d4ff"/>
-                            <line x1="100" y1="50" x2="100" y2="38" stroke="#00d4ff" stroke-width="3"/>
-                            <line x1="100" y1="150" x2="100" y2="162" stroke="#00d4ff" stroke-width="3"/>
-                            <line x1="50" y1="100" x2="38" y2="100" stroke="#00d4ff" stroke-width="3"/>
-                            <line x1="150" y1="100" x2="162" y2="100" stroke="#00d4ff" stroke-width="3"/>
-                            <line x1="135" y1="65" x2="143" y2="57" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="65" y1="135" x2="57" y2="143" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="65" y1="65" x2="57" y2="57" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="135" y1="135" x2="143" y2="143" stroke="#7b68ee" stroke-width="2"/>
-                            <path d="M80 95 L100 80 L120 95 L120 115 L80 115 Z" fill="none" stroke="#00ff88" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Magna Powertrain — Dimensional Inspection</h3>
-                        <p class="project-description">
-                            Engineered dimensional inspection protocols for Transfer Housing castings using 3D scanning and CMM. Developed process flow diagrams, control plans, and inspection lay-outs. Resolved tolerance stack-up issues through optimized Datum Selection and GD&amp;T strategies under IATF 16949.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">GD&amp;T</span>
-                            <span class="tag">3D Scanning</span>
-                            <span class="tag">CMM</span>
-                            <span class="tag">IATF 16949</span>
-                        </div>
-                        <div class="project-links">
-                            <span class="project-link project-link-disabled">Confidential</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ONR Global — UAV/UTV Research -->
-                <div class="project-card" data-category="research control">
-                    <div class="project-badge">Research &amp; Defense</div>
-                    <div class="project-image project-image--research">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M60 110 L100 80 L140 110" fill="none" stroke="#00d4ff" stroke-width="3" stroke-linecap="round"/>
-                            <path d="M75 110 L100 95 L125 110" fill="#00d4ff" opacity="0.3"/>
-                            <line x1="100" y1="80" x2="100" y2="120" stroke="#00d4ff" stroke-width="2"/>
-                            <circle cx="100" cy="120" r="6" fill="#7b68ee"/>
-                            <path d="M50 115 L65 110 L65 120 L50 115Z" fill="#00d4ff"/>
-                            <path d="M150 115 L135 110 L135 120 L150 115Z" fill="#00d4ff"/>
-                            <circle cx="100" cy="55" r="4" fill="#00ff88"/>
-                            <path d="M90 62 Q100 52 110 62" fill="none" stroke="#00ff88" stroke-width="2"/>
-                            <text x="100" y="150" text-anchor="middle" fill="#7b68ee" font-size="10" font-family="monospace">N62909-20-1-2030</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">ONR Global — UAV/UTV Platform Systems</h3>
-                        <p class="project-description">
-                            Led end-to-end construction of UAV and UTV platforms under aeronautical standards for the Office of Naval Research Global (Grant N62909-20-1-2030). Designed control architectures, developed real-time PID/LQR algorithms, integrated sensors and communication systems.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Control Systems</span>
-                            <span class="tag">PID/LQR</span>
-                            <span class="tag">UAV</span>
-                            <span class="tag">Telemetry</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://orcid.org/0000-0002-9516-4651" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>ORCID Profile</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- University of Southampton — Aerodynamics -->
-                <div class="project-card" data-category="research simulation">
-                    <div class="project-badge">Research</div>
-                    <div class="project-image project-image--aero">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="aeroGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.2"/>
-                                    <stop offset="60%" style="stop-color:#7b68ee;stop-opacity:0.7"/>
-                                    <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0.1"/>
-                                </linearGradient>
-                            </defs>
-                            <path d="M30 100 Q100 60 170 100 Q100 105 30 100Z" fill="url(#aeroGrad)" stroke="#00d4ff" stroke-width="2"/>
-                            <path d="M30 103 Q60 140 100 140 Q140 140 170 103" fill="none" stroke="#7b68ee" stroke-width="1.5" opacity="0.6"/>
-                            <path d="M20 95 L180 95" stroke="#00ff88" stroke-width="1" opacity="0.4" stroke-dasharray="4,4"/>
-                            <path d="M20 80 Q100 45 180 80" stroke="#00d4ff" stroke-width="1.5" opacity="0.5"/>
-                            <path d="M20 70 Q100 30 180 70" stroke="#00d4ff" stroke-width="1" opacity="0.3"/>
-                            <text x="100" y="165" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="sans-serif">Southampton · Wind Tunnel</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Southampton — Aerodynamic Design &amp; Wind Tunnel</h3>
-                        <p class="project-description">
-                            Directed aerodynamic design and experimental validation for convertible UAV configurations at the University of Southampton, UK. Correlated wind-tunnel data with CFD models to optimize transition-phase stability. International research fellowship in an English-only environment.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">CFD</span>
-                            <span class="tag">Wind Tunnel</span>
-                            <span class="tag">Aerodynamics</span>
-                            <span class="tag">International Research</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://orcid.org/0000-0002-9516-4651" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>Publications</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FEMSA — Seal Integrity Inspection -->
-                <div class="project-card" data-category="industrial">
-                    <div class="project-badge">Industrial R&D</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="100" cy="90" r="45" fill="none" stroke="#00d4ff" stroke-width="3"/>
-                            <circle cx="100" cy="90" r="30" fill="none" stroke="#7b68ee" stroke-width="2" stroke-dasharray="6,3"/>
-                            <circle cx="100" cy="90" r="8" fill="none" stroke="#00ff88" stroke-width="2"/>
-                            <line x1="100" y1="45" x2="100" y2="35" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="100" y1="135" x2="100" y2="145" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="55" y1="90" x2="45" y2="90" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="145" y1="90" x2="155" y2="90" stroke="#00d4ff" stroke-width="2"/>
-                            <path d="M75 155 L85 148 L95 155 L105 148 L115 155 L125 148 L135 155" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="sans-serif">SPC · Quality Control</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">FEMSA — Seal Integrity Inspection</h3>
-                        <p class="project-description">
-                            Optimized seal-integrity inspection for aluminum cans and glass bottles via 3D scanning and SPC. Developed control plans and identified critical deviations through root cause analysis, reducing production non-conformances.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">SPC</span>
-                            <span class="tag">3D Scanning</span>
-                            <span class="tag">Root Cause Analysis</span>
-                            <span class="tag">Quality</span>
-                        </div>
-                        <div class="project-links">
-                            <span class="project-link project-link-disabled">Confidential</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Heineken — Reverse Engineering & Additive Manufacturing -->
-                <div class="project-card" data-category="industrial">
-                    <div class="project-badge">Industrial R&D</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="70" y="130" width="60" height="10" rx="2" fill="#00d4ff" opacity="0.8"/>
-                            <rect x="75" y="115" width="50" height="15" rx="2" fill="#00d4ff" opacity="0.6"/>
-                            <rect x="80" y="100" width="40" height="15" rx="2" fill="#7b68ee" opacity="0.7"/>
-                            <rect x="82" y="85" width="36" height="15" rx="2" fill="#7b68ee" opacity="0.6"/>
-                            <rect x="85" y="70" width="30" height="15" rx="2" fill="#00ff88" opacity="0.6"/>
-                            <rect x="88" y="57" width="24" height="13" rx="2" fill="#00ff88" opacity="0.5"/>
-                            <line x1="100" y1="50" x2="100" y2="45" stroke="#00d4ff" stroke-width="2"/>
-                            <circle cx="100" cy="43" r="3" fill="#00d4ff"/>
-                            <line x1="50" y1="135" x2="150" y2="135" stroke="#a0a0a0" stroke-width="1" opacity="0.5"/>
-                            <text x="100" y="158" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="sans-serif">DMLS · SLA · FDM</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Heineken — Reverse Eng. &amp; Additive Manufacturing</h3>
-                        <p class="project-description">
-                            Led reverse engineering of legacy mechanical components using smart materials and additive manufacturing (DMLS, SLA, FDM), reducing maintenance downtime through engineering-driven replacement solutions.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Additive Manufacturing</span>
-                            <span class="tag">Reverse Engineering</span>
-                            <span class="tag">DMLS</span>
-                            <span class="tag">SLA</span>
-                        </div>
-                        <div class="project-links">
-                            <span class="project-link project-link-disabled">Confidential</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DUAS Symposium -->
-                <div class="project-card" data-category="academic">
-                    <div class="project-badge">Academic / Leadership</div>
-                    <div class="project-image project-image--academic">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="100" cy="100" r="55" fill="none" stroke="#7b68ee" stroke-width="2" opacity="0.5"/>
-                            <ellipse cx="100" cy="100" rx="55" ry="20" fill="none" stroke="#7b68ee" stroke-width="1.5" opacity="0.6"/>
-                            <ellipse cx="100" cy="100" rx="30" ry="55" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.6"/>
-                            <line x1="45" y1="100" x2="155" y2="100" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
-                            <line x1="100" y1="45" x2="100" y2="155" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
-                            <circle cx="100" cy="100" r="6" fill="#00ff88"/>
-                            <circle cx="130" cy="75" r="4" fill="#00d4ff" opacity="0.8"/>
-                            <circle cx="70" cy="125" r="4" fill="#00d4ff" opacity="0.8"/>
-                            <circle cx="140" cy="115" r="3" fill="#7b68ee" opacity="0.7"/>
-                            <circle cx="60" cy="85" r="3" fill="#7b68ee" opacity="0.7"/>
-                            <text x="100" y="175" text-anchor="middle" fill="#7b68ee" font-size="10" font-family="monospace">duas.com.mx</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">DUAS Symposium — Technical Direction &amp; Platform</h3>
-                        <p class="project-description">
-                            Technical Director of an international academic symposium. Orchestrated multi-committee logistics and developed the full-stack event platform at duas.com.mx with registration, scheduling, and live content management.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Full-Stack</span>
-                            <span class="tag">Event Management</span>
-                            <span class="tag">Technical Leadership</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://duas.com.mx" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>Visit Platform</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ciencia Magica — Academic / Outreach -->
-                <div class="project-card" data-category="academic">
-                    <div class="project-badge">Academic / Outreach</div>
-                    <div class="project-image">
-                        <img src="/images/LOGO CMWorking.svg" alt="Ciencia Magica Logo" />
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Ciencia Magica</h3>
-                        <p class="project-description">
-                            Educational outreach platform exploring the intersection between science and magic. Features interactive content, dynamic elements, and creative approaches to make complex concepts accessible to broad audiences.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">HTML5</span>
-                            <span class="tag">CSS3</span>
-                            <span class="tag">Education</span>
-                            <span class="tag">Outreach</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="/CMindex.html" class="project-link">
-                                <span>View Project</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Flight Instruments -->
-                <div class="project-card" data-category="simulation">
-                    <div class="project-badge">Simulation &amp; Viz</div>
-                    <div class="project-image project-image--sim">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <use href="/images/icons.svg#icon-flight-computer" stroke="#00d4ff" fill="none"/>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Flight Instruments Simulator</h3>
-                        <p class="project-description">
-                            Interactive analog instrument panel with attitude indicator, altimeter, airspeed indicator, and turn coordinator. Real-time simulation with precise aeronautical physics, demonstrating deep knowledge of flight instrumentation standards.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">SVG Animation</span>
-                            <span class="tag">Aeronautics</span>
-                            <span class="tag">Real-time</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="/projects/flight-instruments.html" class="project-link">
-                                <span>View Demo</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Garmin G1000 -->
-                <div class="project-card" data-category="simulation">
-                    <div class="project-badge">Simulation &amp; Viz</div>
-                    <div class="project-image project-image--sim">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="20" y="40" width="160" height="120" rx="5" fill="none" stroke="#00d4ff" stroke-width="3"/>
-                            <rect x="25" y="45" width="70" height="70" rx="2" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <rect x="105" y="45" width="70" height="70" rx="2" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="25" y1="80" x2="95" y2="80" stroke="#00ff88" stroke-width="2"/>
-                            <circle cx="60" cy="80" r="5" fill="#00ff88"/>
-                            <circle cx="140" cy="80" r="20" fill="none" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="140" y1="60" x2="140" y2="70" stroke="#00d4ff" stroke-width="2"/>
-                            <polygon points="140,85 135,75 145,75" fill="#00d4ff"/>
-                            <rect x="30" y="125" width="15" height="8" rx="2" fill="none" stroke="#a0a0a0" stroke-width="1"/>
-                            <rect x="50" y="125" width="15" height="8" rx="2" fill="none" stroke="#a0a0a0" stroke-width="1"/>
-                            <circle cx="35" cy="147" r="8" fill="none" stroke="#a0a0a0" stroke-width="2"/>
-                            <circle cx="165" cy="147" r="8" fill="none" stroke="#a0a0a0" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Garmin G1000 Glass Cockpit</h3>
-                        <p class="project-description">
-                            Fully functional Garmin G1000 glass cockpit simulator with Primary Flight Display (PFD) and Multi-Function Display (MFD). Authentic interface reproduction demonstrating aeronautical systems knowledge and advanced UI/graphics programming.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">Canvas API</span>
-                            <span class="tag">Avionics</span>
-                            <span class="tag">Real-time Systems</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="/projects/garmin-g1000.html" class="project-link">
-                                <span>View Demo</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aircraft Systems Visualizer -->
-                <div class="project-card" data-category="simulation">
-                    <div class="project-badge">Simulation &amp; Viz</div>
-                    <div class="project-image project-image--sim">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="40" width="120" height="120" rx="10" fill="none" stroke="#00d4ff" stroke-width="3"/>
-                            <circle cx="70" cy="70" r="18" fill="none" stroke="#00d4ff" stroke-width="2"/>
-                            <circle cx="130" cy="70" r="18" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <circle cx="70" cy="130" r="18" fill="none" stroke="#00ff88" stroke-width="2"/>
-                            <circle cx="130" cy="130" r="18" fill="none" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="70" y1="70" x2="75" y2="60" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="130" y1="70" x2="140" y2="70" stroke="#7b68ee" stroke-width="2"/>
-                            <path d="M65 130 L70 120 L75 130" stroke="#00ff88" stroke-width="2" fill="none"/>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Aircraft Systems Visualizer</h3>
-                        <p class="project-description">
-                            Interactive aircraft systems dashboard with functional instrument dials and live data inputs. Monitor airspeed, altitude, heading, engine parameters, fuel systems, and electrical systems — demonstrating real aeronautical knowledge through advanced visualization.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">SVG</span>
-                            <span class="tag">Aeronautics</span>
-                            <span class="tag">Interactive UI</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="/projects/aircraft-systems.html" class="project-link">
-                                <span>View Demo</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aero-Messure — Aeronautical Measurements -->
-                <div class="project-card" data-category="research opensource">
-                    <div class="project-badge">Research / Open Source</div>
-                    <div class="project-image project-image--research">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <line x1="30" y1="160" x2="170" y2="160" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="30" y1="160" x2="30" y2="40" stroke="#00d4ff" stroke-width="2"/>
-                            <polyline points="40,140 60,120 80,130 100,90 120,70 140,80 160,50" fill="none" stroke="#00ff88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="40" cy="140" r="4" fill="#00d4ff"/>
-                            <circle cx="80" cy="130" r="4" fill="#00d4ff"/>
-                            <circle cx="120" cy="70" r="4" fill="#00d4ff"/>
-                            <circle cx="160" cy="50" r="4" fill="#00ff88"/>
-                            <path d="M60 100 L80 60 L100 80 L110 50" fill="none" stroke="#7b68ee" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
-                            <text x="100" y="185" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">Aeronautical Data · Jupyter</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Aero-Messure</h3>
-                        <p class="project-description">
-                            Open-source repository for aeronautical measurements and data analysis. Jupyter Notebooks for processing and visualizing aeronautical sensor data, flight test measurements, and experimental results from aeronautical research.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Jupyter</span>
-                            <span class="tag">Python</span>
-                            <span class="tag">Data Analysis</span>
-                            <span class="tag">Aeronautics</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/Aero-Messure" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/aero-messure.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ForceWorkbench — Thrust Force Measurement -->
-                <div class="project-card" data-category="industrial control opensource">
-                    <div class="project-badge">Hardware / Open Source</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="70" y="80" width="60" height="60" rx="5" fill="none" stroke="#00d4ff" stroke-width="3"/>
-                            <rect x="80" y="90" width="40" height="40" rx="3" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <circle cx="100" cy="110" r="10" fill="none" stroke="#00ff88" stroke-width="2"/>
-                            <line x1="100" y1="80" x2="100" y2="60" stroke="#00d4ff" stroke-width="3"/>
-                            <path d="M85 55 L115 55 L110 45 L90 45 Z" fill="#00d4ff" opacity="0.8"/>
-                            <line x1="70" y1="140" x2="50" y2="155" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="130" y1="140" x2="150" y2="155" stroke="#7b68ee" stroke-width="2"/>
-                            <line x1="40" y1="155" x2="160" y2="155" stroke="#a0a0a0" stroke-width="2"/>
-                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">C++ · Motor Thrust</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">ForceWorkbench</h3>
-                        <p class="project-description">
-                            Development of a force workbench to measure thrust forces from small aircraft motors. C++ embedded firmware for real-time force data acquisition, calibration routines, and serial data transmission for UAV motor characterization.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">C++</span>
-                            <span class="tag">Embedded</span>
-                            <span class="tag">UAV</span>
-                            <span class="tag">Force Measurement</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/ForceWorkbench" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/force-workbench.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SISELA-Init — Aircraft Electrical Systems -->
-                <div class="project-card" data-category="academic simulation opensource">
-                    <div class="project-badge">Academic / Open Source</div>
-                    <div class="project-image project-image--aero">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="60" cy="80" r="20" fill="none" stroke="#00d4ff" stroke-width="2"/>
-                            <circle cx="140" cy="80" r="20" fill="none" stroke="#7b68ee" stroke-width="2"/>
-                            <circle cx="100" cy="140" r="20" fill="none" stroke="#00ff88" stroke-width="2"/>
-                            <line x1="80" y1="80" x2="120" y2="80" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="70" y1="97" x2="90" y2="125" stroke="#00d4ff" stroke-width="2"/>
-                            <line x1="130" y1="97" x2="110" y2="125" stroke="#7b68ee" stroke-width="2"/>
-                            <text x="60" y="85" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="monospace">AC</text>
-                            <text x="140" y="85" text-anchor="middle" fill="#7b68ee" font-size="9" font-family="monospace">DC</text>
-                            <text x="100" y="145" text-anchor="middle" fill="#00ff88" font-size="8" font-family="monospace">BUS</text>
-                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">SISELA · Python</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">SISELA-Init</h3>
-                        <p class="project-description">
-                            Introduction to aircraft electrical systems (Sistemas Eléctricos de Aeronaves). Python-based educational materials and simulations covering AC/DC power systems, bus architecture, and electrical load analysis for aeronautical engineering students.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Aeronautics</span>
-                            <span class="tag">Education</span>
-                            <span class="tag">Electrical Systems</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/SISELA-Init" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/sisela-init.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PSO Optimal — Optimization Algorithm -->
-                <div class="project-card" data-category="simulation opensource">
-                    <div class="project-badge">Algorithm / Open Source</div>
-                    <div class="project-image project-image--sim">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="60" cy="130" r="5" fill="#00d4ff" opacity="0.7"/>
-                            <circle cx="90" cy="100" r="5" fill="#00d4ff" opacity="0.8"/>
-                            <circle cx="75" cy="115" r="4" fill="#7b68ee" opacity="0.7"/>
-                            <circle cx="110" cy="85" r="5" fill="#7b68ee" opacity="0.9"/>
-                            <circle cx="130" cy="70" r="5" fill="#00ff88"/>
-                            <circle cx="145" cy="60" r="6" fill="#00ff88" opacity="0.9"/>
-                            <circle cx="120" cy="90" r="4" fill="#00d4ff" opacity="0.6"/>
-                            <circle cx="80" cy="140" r="4" fill="#7b68ee" opacity="0.6"/>
-                            <line x1="60" y1="130" x2="90" y2="100" stroke="#00d4ff" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
-                            <line x1="90" y1="100" x2="130" y2="70" stroke="#7b68ee" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
-                            <line x1="130" y1="70" x2="145" y2="60" stroke="#00ff88" stroke-width="2" opacity="0.8"/>
-                            <star points="145,53 148,58 154,58 149,62 151,68 145,64 139,68 141,62 136,58 142,58" fill="#00ff88" stroke="#00ff88" stroke-width="1"/>
-                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">PSO · Function Optimization</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">PSO_optimal</h3>
-                        <p class="project-description">
-                            Particle Swarm Optimization (PSO) algorithm implementation in Python for function optimization. Demonstrates swarm intelligence techniques applicable to control parameter tuning, trajectory optimization, and engineering design problems.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Optimization</span>
-                            <span class="tag">Swarm Intelligence</span>
-                            <span class="tag">Algorithms</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/PSO_optimal" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/pso-optimal.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PIOMotion — IMU Async Reading -->
-                <div class="project-card" data-category="control opensource">
-                    <div class="project-badge">Embedded / Open Source</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="70" y="70" width="60" height="60" rx="5" fill="none" stroke="#7b68ee" stroke-width="3"/>
-                            <circle cx="100" cy="100" r="15" fill="none" stroke="#00d4ff" stroke-width="2"/>
-                            <circle cx="100" cy="100" r="5" fill="#00d4ff"/>
-                            <line x1="100" y1="85" x2="100" y2="75" stroke="#00d4ff" stroke-width="2.5"/>
-                            <line x1="115" y1="100" x2="130" y2="100" stroke="#00d4ff" stroke-width="2"/>
-                            <path d="M80 120 Q85 135 90 125 Q95 115 100 130 Q105 145 110 130 Q115 115 120 120" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.7"/>
-                            <text x="100" y="160" text-anchor="middle" fill="#7b68ee" font-size="8" font-family="monospace">IMU · ASYNC</text>
-                            <text x="100" y="178" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">PIOMotion · MicroPython</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">PIOMotion</h3>
-                        <p class="project-description">
-                            Inertial Motion Unit (IMU) asynchronous reading firmware. Efficient embedded solution for concurrent IMU data acquisition, enabling high-frequency attitude and motion sensing for UAV and robotics applications.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Embedded</span>
-                            <span class="tag">IMU</span>
-                            <span class="tag">Async</span>
-                            <span class="tag">UAV Sensing</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/PIOMotion" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/pio-motion.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Roughness_Data_Model — Roughness Data Conversion -->
-                <div class="project-card" data-category="industrial opensource">
-                    <div class="project-badge">Industrial / Open Source</div>
-                    <div class="project-image project-image--industrial">
-                        <svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <line x1="30" y1="110" x2="170" y2="110" stroke="#a0a0a0" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
-                            <polyline points="30,110 45,95 55,118 65,100 75,108 85,90 95,112 105,88 115,105 125,92 135,107 145,95 155,110 165,100" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="30" y1="140" x2="170" y2="140" stroke="#a0a0a0" stroke-width="1.5"/>
-                            <line x1="30" y1="80" x2="170" y2="80" stroke="#7b68ee" stroke-width="1" stroke-dasharray="6,3" opacity="0.6"/>
-                            <text x="22" y="84" fill="#7b68ee" font-size="8" font-family="monospace">Ra</text>
-                            <text x="100" y="175" text-anchor="middle" fill="#a0a0a0" font-size="9" font-family="monospace">Surface Roughness · Python</text>
-                        </svg>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Roughness_Data_Model</h3>
-                        <p class="project-description">
-                            Python scripting for surface roughness data conversion and modeling. Automates processing of roughness measurement data from profilometers, computing Ra, Rz, and other ISO surface texture parameters for quality control workflows.
-                        </p>
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">Surface Metrology</span>
-                            <span class="tag">Data Processing</span>
-                            <span class="tag">Quality Control</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EU97/Roughness_Data_Model" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <span>GitHub</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="/projects/roughness-data.html" class="project-link">
-                                <span>Details</span>
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <!-- 03 · Problemas -->
+    <section class="section" id="problemas">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">03</span><span class="shead__k" data-i18n="p.k"></span>
+          <h2 data-i18n="p.title"></h2>
+          <p class="lede" data-i18n="p.lede"></p>
+        </header>
+        <div class="pains" id="pains" data-stagger></div>
+      </div>
     </section>
 
-    <!-- Skills/Tools Section -->
-    <section id="skills" class="skills">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Expertise</span>
-                <h2>Technologies &amp; Tools</h2>
-                <p>A multidisciplinary toolkit spanning control engineering, industrial metrology, software development, and AI</p>
-            </div>
-            
-            <div class="tools-container">
-                <!-- Control & Instrumentation -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">🎛️</div>
-                            <h3>Control &amp; Instrumentation</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">📐</div>
-                                <div class="tool-info">
-                                    <h4>MATLAB / Simulink</h4>
-                                    <p>Control design, simulation, data analysis</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📊</div>
-                                <div class="tool-info">
-                                    <h4>LabVIEW / DAQ</h4>
-                                    <p>Data acquisition and instrumentation</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">⚙️</div>
-                                <div class="tool-info">
-                                    <h4>PID / LQR</h4>
-                                    <p>Real-time control algorithm development</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📡</div>
-                                <div class="tool-info">
-                                    <h4>Sensor Integration</h4>
-                                    <p>Accelerometers, gyroscopes, pressure, force</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Industrial Engineering -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">🏭</div>
-                            <h3>Industrial Engineering</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">📏</div>
-                                <div class="tool-info">
-                                    <h4>GD&amp;T (Zeiss Certified)</h4>
-                                    <p>Geometric dimensioning and tolerancing</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🔍</div>
-                                <div class="tool-info">
-                                    <h4>CMM / 3D Scanning</h4>
-                                    <p>Coordinate measurement and reverse engineering</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🛠️</div>
-                                <div class="tool-info">
-                                    <h4>SolidWorks / Geomagic</h4>
-                                    <p>CAD modeling and scan-to-CAD workflows</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🖨️</div>
-                                <div class="tool-info">
-                                    <h4>Additive Manufacturing</h4>
-                                    <p>DMLS, SLM, SLA, FDM and DfAM</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Software & AI -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">💻</div>
-                            <h3>Software &amp; AI</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">🐍</div>
-                                <div class="tool-info">
-                                    <h4>Python</h4>
-                                    <p>Automation, AI/ML, data workflows</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">⚡</div>
-                                <div class="tool-info">
-                                    <h4>JavaScript / Node.js</h4>
-                                    <p>Web platforms, full-stack development</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🔗</div>
-                                <div class="tool-info">
-                                    <h4>n8n</h4>
-                                    <p>Workflow automation and integration</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📐</div>
-                                <div class="tool-info">
-                                    <h4>MATLAB</h4>
-                                    <p>Numerical computing and algorithm development</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simulation & Analysis -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">📊</div>
-                            <h3>Simulation &amp; Analysis</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">✈️</div>
-                                <div class="tool-info">
-                                    <h4>CFD</h4>
-                                    <p>Computational fluid dynamics — aerodynamic analysis</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🔩</div>
-                                <div class="tool-info">
-                                    <h4>Structural FEA</h4>
-                                    <p>Finite element simulation</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📈</div>
-                                <div class="tool-info">
-                                    <h4>SPC / Statistical Tools</h4>
-                                    <p>Process capability and quality analysis</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📋</div>
-                                <div class="tool-info">
-                                    <h4>AutoCAD 2D</h4>
-                                    <p>Technical drawing and documentation</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Documentation & Quality -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">📋</div>
-                            <h3>Documentation &amp; Quality</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">⚠️</div>
-                                <div class="tool-info">
-                                    <h4>PFMEA / Control Plans</h4>
-                                    <p>Process risk analysis and quality planning</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🏆</div>
-                                <div class="tool-info">
-                                    <h4>IATF 16949 / Lean</h4>
-                                    <p>Automotive quality standards and manufacturing</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">📝</div>
-                                <div class="tool-info">
-                                    <h4>LaTeX</h4>
-                                    <p>Technical documents, publications, CVs</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🌿</div>
-                                <div class="tool-info">
-                                    <h4>Git / GitHub</h4>
-                                    <p>Version control and collaboration</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Currently Developing -->
-                <div class="tool-category expandable">
-                    <div class="category-header">
-                        <div class="category-title">
-                            <div class="category-icon">📚</div>
-                            <h3>Currently Developing</h3>
-                        </div>
-                        <div class="expand-icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="category-content">
-                        <div class="tools-grid">
-                            <div class="tool-item">
-                                <div class="tool-icon">🔒</div>
-                                <div class="tool-info">
-                                    <h4>OT Cybersecurity</h4>
-                                    <p>Operational technology security awareness</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">🏗️</div>
-                                <div class="tool-info">
-                                    <h4>DCS / Industrial Control</h4>
-                                    <p>Distributed control system platforms</p>
-                                </div>
-                            </div>
-                            <div class="tool-item">
-                                <div class="tool-icon">☁️</div>
-                                <div class="tool-info">
-                                    <h4>Cloud Deployment</h4>
-                                    <p>Azure cloud services and deployment</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Course Resources Section -->
-    <section id="precision" class="precision">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Course Resources</span>
-                <h2>Course Portfolio</h2>
-                <p id="precision-subtitle">Interactive resources, open tools, and structured activities for courses and professional training.</p>
-            </div>
- 
-            <div class="general-tools" aria-labelledby="general-tools-title">
-                <div class="general-tools__header">
-                    <h3 id="general-tools-title">Interactive Tools for General Use</h3>
-                    <p id="general-tools-subtitle">Reusable simulators and calculators for engineering, instruction, and experimentation.</p>
-                </div>
-                <div class="general-tools__grid" id="general-tools-grid">
-                    <a class="general-tool-card" href="/projects/flight-instruments.html">
-                        <strong>Flight Instruments Simulator</strong>
-                        <span>Interactive analog cockpit instrument suite.</span>
-                    </a>
-                    <a class="general-tool-card" href="/projects/garmin-g1000.html">
-                        <strong>Garmin G1000 System</strong>
-                        <span>Dual-screen PFD/MFD avionics simulation.</span>
-                    </a>
-                    <a class="general-tool-card" href="/projects/fluid-dynamics.html">
-                        <strong>Fluid Dynamics Simulator</strong>
-                        <span>Interactive engineering calculations and flow models.</span>
-                    </a>
-                    <a class="general-tool-card" href="/projects/aircraft-systems.html">
-                        <strong>Aircraft Systems Visualizer</strong>
-                        <span>Interactive aircraft subsystem behavior explorer.</span>
-                    </a>
-                </div>
-            </div>
- 
-            <div class="precision-controls">
-                <label class="precision-control">
-                    <span id="precision-filter-course-label">Course</span>
-                    <select id="precision-filter-course">
-                        <option value="all">All Courses</option>
-                    </select>
-                </label>
-                <label class="precision-control">
-                    <span id="precision-filter-week-label">Week</span>
-                    <select id="precision-filter-week">
-                        <option value="all">All Weeks</option>
-                    </select>
-                </label>
-                <label class="precision-control">
-                    <span id="precision-filter-lab-label">Lab Type</span>
-                    <select id="precision-filter-lab">
-                        <option value="all">All Lab Types</option>
-                    </select>
-                </label>
-                <label class="precision-control">
-                    <span id="precision-filter-status-label">Status</span>
-                    <select id="precision-filter-status">
-                        <option value="all">All Statuses</option>
-                    </select>
-                </label>
-                <label class="precision-control precision-control--search">
-                    <span id="precision-search-label">Quick Search</span>
-                    <input
-                        id="precision-search"
-                        type="search"
-                        placeholder="Search by title, description, or files..."
-                        autocomplete="off"
-                    />
-                </label>
-            </div>
-
-            <p class="precision-results" id="precision-results">0 activities</p>
-            <div class="precision-grid" id="precision-grid"></div>
-
-            <div class="precision-template">
-                <h3 id="precision-template-title">Resource structure</h3>
-                <ul id="precision-template-list">
-                    <li>Course category + activity identifier</li>
-                    <li>Professional objective and short context</li>
-                    <li>Learning route and practical status</li>
-                    <li>Direct route to activity details (example: /curso/IngPre/Act4)</li>
-                    <li>Editable methodology page for quick content updates</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-badge">Let's Connect</span>
-                <h2>Get In Touch</h2>
-            </div>
-            <div class="contact-content">
-                <div class="contact-text">
-                    <p class="contact-intro">Open to industry collaboration, consulting, applied research partnerships, and technical services in metrology, advanced manufacturing, and control systems.</p>
-                    
-                    <div class="contact-ways">
-                        <div class="contact-item">
-                            <div class="contact-icon">🏭</div>
-                            <div class="contact-info">
-                                <h4>Industry Collaboration</h4>
-                                <p>Metrology, advanced manufacturing, dimensional inspection, process engineering</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">🔬</div>
-                            <div class="contact-info">
-                                <h4>Applied Research</h4>
-                                <p>Control systems, UAV/UTV platforms, aerodynamics, instrumentation</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">🎓</div>
-                            <div class="contact-info">
-                                <h4>Academic Partnerships</h4>
-                                <p>Joint research, student mentoring, technical consulting for academic institutions</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="social-section">
-                    <h3>Connect With Me</h3>
-                    <div class="social-links">
-                        <a href="mailto:eurr97@gmail.com" class="social-link social-link--email" title="Email">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="M2 7l10 7 10-7"/>
-                            </svg>
-                            <span>eurr97@gmail.com</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/eu97/" target="_blank" rel="noopener noreferrer" class="social-link social-link--linkedin" title="LinkedIn">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                            <span>linkedin.com/in/eu97</span>
-                        </a>
-                        <a href="https://github.com/EU97" target="_blank" rel="noopener noreferrer" class="social-link social-link--github" title="GitHub">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                            <span>github.com/EU97</span>
-                        </a>
-                        <a href="https://orcid.org/0000-0002-9516-4651" target="_blank" rel="noopener noreferrer" class="social-link social-link--orcid" title="ORCID">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm-1.763 17.78H8.51V9.083h1.727v8.697zm-.864-9.832a1.1 1.1 0 110-2.2 1.1 1.1 0 010 2.2zm8.373 9.832h-1.723v-4.26c0-1.016-.018-2.322-1.415-2.322-1.417 0-1.634 1.107-1.634 2.25v4.332h-1.72V9.083h1.652v1.19h.023c.23-.435.793-1.19 1.946-1.19 2.082 0 2.468 1.37 2.468 3.152v5.545z"/>
-                            </svg>
-                            <span>0000-0002-9516-4651</span>
-                        </a>
-                        <a href="https://www.researchgate.net/profile/Edgar-Ulises-Rojo-Rodriguez" target="_blank" rel="noopener noreferrer" class="social-link social-link--rg" title="ResearchGate">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a3.193 3.193 0 0 0-.112.437 8.365 8.365 0 0 0-.078.53 9 9 0 0 0-.05.727c-.01.282-.013.621-.013 1.016a31.121 31.123 0 0 0 .014 1.017 9 9 0 0 0 .05.727 7.946 7.946 0 0 0 .077.53h-.005a3.334 3.334 0 0 0 .113.438c.245.743.65 1.303 1.214 1.68.565.376 1.256.564 2.075.564.8 0 1.536-.213 2.105-.603.57-.39.94-.916 1.175-1.65.076-.235.135-.558.177-.93a10.9 10.9 0 0 0 .043-1.207v-.82c0-.095-.04-.15-.123-.15h-2.914c-.086 0-.14.06-.14.15v.87c0 .09.054.15.14.15h1.666c.064 0 .1.033.1.095 0 .308-.005.537-.014.692a8.048 8.048 0 0 1-.045.495 2.88 2.88 0 0 1-.08.43c-.124.42-.34.723-.636.895-.296.17-.65.254-1.07.254-.435 0-.784-.1-1.044-.296-.26-.196-.447-.51-.563-.94a8.146 8.146 0 0 1-.11-.5 9.25 9.25 0 0 1-.05-.726 31 31 0 0 1-.013-1.017c0-.395.004-.734.013-1.016.009-.283.026-.523.05-.727a9.25 9.25 0 0 1 .05-.527 8.146 8.146 0 0 1 .11-.499c.116-.43.304-.744.563-.94.26-.197.61-.296 1.044-.296.42 0 .773.085 1.07.255.295.17.51.473.635.893.04.13.074.29.1.478h.007a4.212 4.212 0 0 0 .08.43c.014.055.013.11-.004.16-.017.047-.053.07-.108.07h-1.064c-.08 0-.122.04-.122.12v.73c0 .08.04.12.12.12h2.826c.086 0 .13-.04.13-.12V6.53c0-.418-.044-.773-.11-1.065a3.224 3.224 0 0 0-.178-.6 2.866 2.866 0 0 0-.266-.49c-.432-.6-1.02-1.016-1.757-1.25A5.37 5.37 0 0 0 19.586 0zM0 0v24h24V0H0zm4.18 5.9h3.656c.98 0 1.75.227 2.306.68.558.455.836 1.088.836 1.9 0 .56-.14 1.03-.423 1.41-.28.382-.674.65-1.178.806.553.14.984.43 1.294.87.31.44.466.98.466 1.617 0 .87-.29 1.558-.872 2.06-.58.5-1.378.75-2.393.75H4.18V5.9zm1.667 1.34v2.73h1.75c.523 0 .934-.12 1.23-.358.295-.238.443-.575.443-1.01 0-.447-.143-.78-.43-1.003-.287-.222-.706-.333-1.256-.333H5.847zm0 4.07v3.14h1.876c.58 0 1.022-.133 1.326-.397.303-.265.455-.65.455-1.158 0-.51-.152-.893-.457-1.148-.303-.256-.745-.384-1.326-.384H5.847z"/>
-                            </svg>
-                            <span>ResearchGate Profile</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- 04 · Método / servicios -->
+    <section class="section section--band" id="servicios">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">04</span><span class="shead__k" data-i18n="s.k"></span>
+          <h2 data-i18n="s.title"></h2>
+          <p class="lede" data-i18n="s.lede"></p>
+        </header>
+        <ol class="method" id="method"></ol>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="section-container">
-            <p>&copy; 2023–2026 Edgar Ulises Rojo Rodriguez. Built with purpose.</p>
-        </div>
-    </footer>
+    <!-- 05 · Casos -->
+    <section class="section" id="casos">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">05</span><span class="shead__k" data-i18n="c.k"></span>
+          <h2 data-i18n="c.title"></h2>
+          <p class="lede" data-i18n="c.lede"></p>
+        </header>
+        <div class="cases" id="cases"></div>
+      </div>
+    </section>
 
-    <!-- JavaScript -->
-    <script src="/scripts/theme.js"></script>
-    <script src="/scripts/translations.js"></script>
-    <script src="/scripts/precision-content.js"></script>
-    <script src="/scripts/main.js"></script>
+    <!-- 06 · Trayectoria -->
+    <section class="section section--band" id="trayectoria">
+      <div class="container">
+        <header class="shead reveal">
+          <span class="shead__n">06</span><span class="shead__k" data-i18n="r.k"></span>
+          <h2 data-i18n="r.title"></h2>
+        </header>
+        <div class="record">
+          <div>
+            <h3 class="record__h" data-i18n="r.exp"></h3>
+            <ul class="record__list" id="record-exp"></ul>
+          </div>
+          <div>
+            <h3 class="record__h" data-i18n="r.edu"></h3>
+            <ul class="record__list" id="record-edu"></ul>
+            <div class="record__links">
+              <a href="https://www.linkedin.com/in/eu97/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://orcid.org/0000-0002-9516-4651" target="_blank" rel="noopener">ORCID ↗</a>
+              <a href="https://github.com/EU97" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · Además (secundario) -->
+    <section class="section section--tight" id="ademas">
+      <div class="container">
+        <div class="aside-links">
+          <span class="aside-links__k" data-i18n="a.k"></span>
+          <a class="aside-link" href="/cursos/"><b data-i18n="a.t1"></b><span data-i18n="a.d1"></span></a>
+          <a class="aside-link" href="/herramientas/"><b data-i18n="a.t2"></b><span data-i18n="a.d2"></span></a>
+          <a class="aside-link" href="/herramientas/#codigo-abierto"><b data-i18n="a.t3"></b><span data-i18n="a.d3"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · Contacto -->
+    <section class="section cta" id="contacto">
+      <div class="container cta__inner reveal">
+        <h2 class="cta__title" data-i18n="k.title"></h2>
+        <p class="lede" data-i18n="k.lede"></p>
+        <div class="hero__cta">
+          <a class="btn btn--accent btn--lg" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica">eurr97@gmail.com</a>
+          <a class="btn btn--ghost btn--lg" href="https://www.linkedin.com/in/eu97/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer__inner"><p data-i18n="f.copy"></p><p class="mono"><a href="/cursos/" data-i18n="topbar.courses"></a> · <a href="/herramientas/" data-i18n="topbar.tools"></a></p></div></footer>
+
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script src="/scripts/viewer3d.js"></script>
+  <script src="/scripts/probe-cell.js"></script>
+  <script src="/scripts/hero.js"></script>
+  <script src="/scripts/home.js"></script>
+  <script src="/scripts/motion.js"></script>
 </body>
 </html>

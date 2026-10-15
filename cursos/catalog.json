@@ -1,0 +1,283 @@
+{
+  "schema": "cursos/1",
+  "updated": "2026-10-15",
+  "_note": "Catálogo de cursos. Agregar un curso = añadir un objeto en courses del área. access: public | login (login llega en la Fase 5). url null = próximamente.",
+  "areas": [
+    {
+      "id": "design-manufacturing",
+      "title": {
+        "en": "Design and Manufacturing",
+        "es": "Diseño y Manufactura"
+      },
+      "summary": {
+        "en": "Engineering design methods, computer-aided drafting and axiomatic design applied to product development.",
+        "es": "Métodos de diseño en ingeniería, dibujo asistido por computadora y diseño axiomático aplicados al desarrollo de producto."
+      },
+      "courses": [
+        {
+          "id": "dibujo-computarizado",
+          "title": {
+            "en": "Computer-Aided Drawing",
+            "es": "Dibujo Computarizado"
+          },
+          "description": {
+            "en": "CAD fundamentals, technical drawing conventions and the stages of the design process.",
+            "es": "Fundamentos de CAD, convenciones de dibujo técnico y etapas del proceso de diseño."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Block 1 — S01 CAD Fundamentals",
+                "es": "Bloque 1 — S01 Fundamentos CAD"
+              },
+              "url": "/cursos/dibujo-computarizado/S01-fundamentos-cad.html",
+              "type": "presentation",
+              "access": "login"
+            },
+            {
+              "title": {
+                "en": "T01 — Design Stages",
+                "es": "T01 — Etapas del Diseño"
+              },
+              "url": "/cursos/dibujo-computarizado/T01-etapas-diseno.html",
+              "type": "assignment",
+              "access": "login"
+            }
+          ],
+          "url": "/cursos/dibujo-computarizado/"
+        },
+        {
+          "id": "dsm",
+          "title": {
+            "en": "DSM",
+            "es": "DSM"
+          },
+          "description": {
+            "en": "Axiomatic design matrix for functional requirements and design parameters.",
+            "es": "Matriz de diseño axiomático para requerimientos funcionales y parámetros de diseño."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Axiomatic Design Matrix",
+                "es": "Matriz de Diseño Axiomático"
+              },
+              "url": "/cursos/dsm/",
+              "type": "interactive",
+              "access": "login"
+            },
+            {
+              "title": {
+                "en": "Matrix tool (full screen)",
+                "es": "Herramienta de matriz (pantalla completa)"
+              },
+              "url": "/cursos/dsm/matriz-diseno-axiomatica.html",
+              "type": "tool",
+              "access": "login"
+            }
+          ],
+          "url": "/cursos/dsm/"
+        }
+      ]
+    },
+    {
+      "id": "metrology-precision",
+      "title": {
+        "en": "Metrology and Precision Engineering",
+        "es": "Metrología e Ingeniería de Precisión"
+      },
+      "summary": {
+        "en": "Measurement systems, calibration, CMM inspection and statistically designed experiments.",
+        "es": "Sistemas de medición, calibración, inspección CMM y experimentos diseñados estadísticamente."
+      },
+      "courses": [
+        {
+          "id": "precision-engineering",
+          "title": {
+            "en": "Precision Engineering",
+            "es": "Ingeniería de Precisión"
+          },
+          "description": {
+            "en": "Process capability, measurement error and factorial experiments (2²) on critical part dimensions.",
+            "es": "Capacidad de proceso, error de medición y experimentos factoriales (2²) sobre dimensiones críticas."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Activity 4 — Factorial Experiment",
+                "es": "Actividad 4 — Experimento Factorial"
+              },
+              "url": "/cursos/ingenieria-precision/act4/",
+              "type": "interactive",
+              "access": "login"
+            },
+            {
+              "title": {
+                "en": "Activity 4 — Editable methodology",
+                "es": "Actividad 4 — Metodología editable"
+              },
+              "url": "/cursos/ingenieria-precision/act4/metodologia.html",
+              "type": "reference",
+              "access": "login"
+            }
+          ],
+          "url": "/cursos/ingenieria-precision/act4/"
+        },
+        {
+          "id": "metrology-i",
+          "title": {
+            "en": "Precision Metrology I",
+            "es": "Metrología de Precisión I"
+          },
+          "description": {
+            "en": "Instrument verification, calibration at the bench and datum strategy for CMM inspection.",
+            "es": "Verificación de instrumentos, calibración en banco y estrategia de datums para inspección CMM."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Week 01 — Dial indicator verification",
+                "es": "Semana 01 — Verificación de reloj comparador"
+              },
+              "url": null,
+              "type": "procedure",
+              "access": "login"
+            },
+            {
+              "title": {
+                "en": "Week 03 — CMM datum strategy",
+                "es": "Semana 03 — Estrategia de datums en CMM"
+              },
+              "url": null,
+              "type": "procedure",
+              "access": "login"
+            }
+          ]
+        },
+        {
+          "id": "process-engineering",
+          "title": {
+            "en": "Process Engineering",
+            "es": "Ingeniería de Procesos"
+          },
+          "description": {
+            "en": "Sampling plans and process capability decisions using statistical process control.",
+            "es": "Planes de muestreo y decisiones de capacidad de proceso con control estadístico."
+          },
+          "status": "draft",
+          "items": [
+            {
+              "title": {
+                "en": "Week 05 — Seal integrity (SPC)",
+                "es": "Semana 05 — Integridad de sellado (SPC)"
+              },
+              "url": null,
+              "type": "procedure",
+              "access": "login"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mechatronics-systems",
+      "title": {
+        "en": "Mechatronics and Systems",
+        "es": "Mecatrónica y Sistemas"
+      },
+      "summary": {
+        "en": "Integration of mechanics, electronics and software, from rover prototypes to aircraft electrical systems.",
+        "es": "Integración de mecánica, electrónica y software, desde prototipos de rover hasta sistemas eléctricos de aeronaves."
+      },
+      "courses": [
+        {
+          "id": "taller-mecatronica",
+          "title": {
+            "en": "Mechatronics Workshop",
+            "es": "Taller de Mecatrónica"
+          },
+          "description": {
+            "en": "Interactive simulators to discover mechatronics engineering by building an autonomous rover.",
+            "es": "Simuladores interactivos para descubrir la ingeniería mecatrónica construyendo un rover autónomo."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Autonomous rover workshop",
+                "es": "Taller de rover autónomo"
+              },
+              "url": "/cursos/taller-mecatronica/",
+              "type": "interactive",
+              "access": "public"
+            }
+          ],
+          "url": "/cursos/taller-mecatronica/"
+        },
+        {
+          "id": "electrical-systems",
+          "title": {
+            "en": "Aircraft Electrical Systems",
+            "es": "Sistemas Eléctricos de Aeronaves"
+          },
+          "description": {
+            "en": "AC/DC power, bus architecture and load analysis with Python simulations (SISELA-Init).",
+            "es": "Potencia CA/CD, arquitectura de buses y análisis de cargas con simulaciones en Python (SISELA-Init)."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "SISELA-Init",
+                "es": "SISELA-Init"
+              },
+              "url": "/proyectos/sisela-init.html",
+              "type": "reference",
+              "access": "public"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aeronautics",
+      "title": {
+        "en": "Aeronautics",
+        "es": "Aeronáutica"
+      },
+      "summary": {
+        "en": "Aerodynamics, flight instruments and aircraft systems explored with interactive tools.",
+        "es": "Aerodinámica, instrumentos de vuelo y sistemas de aeronave explorados con herramientas interactivas."
+      },
+      "courses": [
+        {
+          "id": "aerodynamics",
+          "title": {
+            "en": "Aerodynamics",
+            "es": "Aerodinámica"
+          },
+          "description": {
+            "en": "Fluid behavior and aerodynamic fundamentals supported by interactive simulation.",
+            "es": "Comportamiento de fluidos y fundamentos aerodinámicos apoyados con simulación interactiva."
+          },
+          "status": "published",
+          "items": [
+            {
+              "title": {
+                "en": "Fluid Dynamics Simulator",
+                "es": "Simulador de Dinámica de Fluidos"
+              },
+              "url": "/herramientas/dinamica-fluidos/",
+              "type": "tool",
+              "access": "public"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -37,6 +37,10 @@ try {
           try {
             page.on('pageerror', e => console.error('JSERR', page_, e.message)); await page.goto(`http://127.0.0.1:${PORT}${page_}`, { waitUntil: 'load', timeout: 20000 });
             await page.waitForTimeout(600);
+            // Hubs: esperar a que el catálogo JSON termine de pintarse.
+            if (await page.locator('body[data-hub]').count()) {
+              await page.waitForFunction(() => ['ready', 'error'].includes(document.body.dataset.state), null, { timeout: 15000 });
+            }
             // Visores y escenas 3D: los visores se montan al entrar en pantalla (se fuerzan); se espera a que terminen.
             if (await page.locator('[data-viewer3d], [data-scene]').count()) {
               await page.evaluate(() => {

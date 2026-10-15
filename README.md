@@ -19,28 +19,41 @@ Currently serving as Associate Professor at [FIME-UANL](https://www.fime.uanl.mx
 
 ---
 
-## Portfolio Sections
+## Site structure
 
-| Section | Description |
+| Route | Content |
 |---|---|
-| **Home** | Introduction and key highlights |
-| **About** | Background, education, and research focus |
-| **Timeline** | Academic and professional milestones |
-| **Projects** | Engineering and research projects |
-| **Precision Engineering** | Student resources: procedures, activities, and working files |
-| **Tools** | Technical skills and software stack |
-| **Contact** | Get in touch |
+| `/` | Industry-focused home: identity, interactive measurement cell, method, case studies, track record, contact |
+| `/cursos/` | Course hub generated from `cursos/catalog.json` (areas → courses → resources) |
+| `/cursos/<course>/` | Course pages and activities (Dibujo Computarizado, DSM, Ingeniería de Precisión, Taller de Mecatrónica) |
+| `/herramientas/` | Tools hub generated from `herramientas/catalog.json` (simulators, open source, outreach) |
+| `/herramientas/<tool>/` | Browser simulators (flight instruments, Garmin G1000, aircraft systems, fluid dynamics) |
+| `/proyectos/` | Open-source and outreach project pages |
+| `/styleguide/` | Design system preview (not linked publicly) |
+
+Old URLs (`/curso/…`, `/addons/…`, `/projects/…`, `/CMindex.html`) redirect to their new location (`docs/redirects.json`).
+
+### Adding content
+
+- **Course or resource:** add an object to `cursos/catalog.json`.
+- **Tool or project:** add an object to `herramientas/catalog.json`.
+- **Moved page:** add `"old": "new"` to `docs/redirects.json` and run `node tools/redirects.mjs`.
+
+### Checks
+
+```bash
+python3 -m http.server 8000          # local preview
+node tools/check-links.mjs           # local links + catalog URLs
+node tools/screenshot.mjs <phase> /  # light/dark · ES/EN · desktop/mobile captures
+```
 
 ---
 
-## Tech Stack
+## Tech stack
 
-This portfolio site is built with:
-
-- **HTML5 / CSS3 / JavaScript** — core front-end
-- **Parcel** — module bundler
-- **Custom CSS animations** — hero section and UI effects
-- Bilingual support (**English / Spanish**)
+- **HTML5 / CSS3 / JavaScript**, no build step for the site (the flight-instruments simulator ships a Parcel bundle and its source in `herramientas/instrumentos-vuelo/`)
+- **three.js r128** for the interactive 3D measurement cell and STL viewer
+- Light/dark themes, **Spanish / English**, `prefers-reduced-motion` support
 
 ---
 

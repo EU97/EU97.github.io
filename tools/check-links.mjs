@@ -1,5 +1,5 @@
 // Uso: node tools/check-links.mjs [--inventory]
-// Revisa href/src locales de los HTML. Con --inventory escribe docs/inventory.md.
+// Revisa href/src locales de los HTML y los "url" de los catálogos JSON. Con --inventory escribe docs/inventory.md.
 import { readdirSync, readFileSync, existsSync, statSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -48,12 +48,26 @@ for (const file of pages) {
   }
 }
 
+// Catálogos JSON: cada "url" local debe existir.
+const CATALOGS = ['cursos/catalog.json', 'herramientas/catalog.json'];
+for (const cat of CATALOGS) {
+  const file = path.join(root, cat);
+  if (!existsSync(file)) continue;
+  const urls = [];
+  JSON.parse(readFileSync(file, 'utf8'), (k, v) => { if (k === 'url' && typeof v === 'string') urls.push(v); return v; });
+  for (const ref of urls) {
+    if (/^https?:/i.test(ref)) continue;
+    const ok = existsSync(resolveTarget(file, ref));
+    rows.push({ from: cat, ref, ok });
+    if (!ok) broken.push({ from: cat, ref });
+  }
+}
+
 if (process.argv.includes('--inventory')) {
   let md = '# Inventario de rutas y enlaces locales\n\nGenerado con `node tools/check-links.mjs --inventory`.\n\n## Páginas HTML\n\n';
   for (const p of pages) md += `- \`${path.relative(root, p)}\`\n`;
   md += '\n## Enlaces locales por página\n';
-  for (const p of pages) {
-    const rel = path.relative(root, p);
+  for (const rel of [...pages.map(p => path.relative(root, p)), ...CATALOGS]) {
     const mine = rows.filter(r => r.from === rel);
     if (!mine.length) continue;
     md += `\n### ${rel}\n\n`;

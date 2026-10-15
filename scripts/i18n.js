@@ -19,6 +19,7 @@
     root.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n, l); });
     root.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml, l); }); // solo textos propios del diccionario
     root.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria, l)); });
+    root.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder, l)); });
     root.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.dataset.i18nTitle, l)); });
   }
 

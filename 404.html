@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Página no encontrada — EU97</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/styles/hub.css">
+  <script src="/scripts/theme.js"></script>
+</head>
+<body>
+  <div data-topbar></div>
+  <main class="container">
+    <header class="hub-head">
+      <span class="eyebrow">404</span>
+      <h1 data-i18n-html="nf.title"></h1>
+      <p class="lede" data-i18n="nf.lede"></p>
+      <p class="mono"><a href="/" data-i18n="topbar.home"></a> · <a href="/cursos/" data-i18n="topbar.courses"></a> · <a href="/herramientas/" data-i18n="topbar.tools"></a></p>
+    </header>
+  </main>
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script>
+    SiteI18n.add({
+      es: { 'nf.title': 'Esta página <span>no existe</span>', 'nf.lede': 'El sitio se reorganizó. Los cursos y las herramientas tienen ahora su propia sección.' },
+      en: { 'nf.title': 'This page <span>doesn’t exist</span>', 'nf.lede': 'The site was reorganized. Courses and tools now have their own sections.' }
+    });
+  </script>
+</body>
+</html>

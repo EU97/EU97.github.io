@@ -28,7 +28,7 @@
           </nav>
           <div class="topbar__tools">
             ${industry
-              ? '<a class="topbar__aside" href="/#precision" data-i18n="topbar.teaching"></a>'
+              ? '<a class="topbar__aside" href="/cursos/" data-i18n="topbar.courses"></a><a class="topbar__aside" href="/herramientas/" data-i18n="topbar.tools"></a>'
               : '<span class="session-chip" data-state="out"><span class="session-chip__lock"></span><span data-i18n="topbar.guest"></span></span>'}
             <button class="icon-btn" id="lang-btn" type="button" data-i18n-aria="topbar.lang"></button>
             <button class="icon-btn" type="button" data-theme-toggle data-theme-icon-only aria-pressed="false" data-i18n-aria="topbar.theme"><span class="theme-icon"></span></button>
@@ -54,8 +54,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     SiteI18n.add({
-      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu', 'topbar.services': 'Services', 'topbar.cases': 'Case studies', 'topbar.record': 'Track record', 'topbar.contact': 'Contact', 'topbar.teaching': 'Teaching ↗' },
-      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú', 'topbar.services': 'Servicios', 'topbar.cases': 'Casos', 'topbar.record': 'Trayectoria', 'topbar.contact': 'Contacto', 'topbar.teaching': 'Docencia ↗' },
+      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu', 'topbar.services': 'Services', 'topbar.cases': 'Case studies', 'topbar.record': 'Track record', 'topbar.contact': 'Contact', 'topbar.teaching': 'Teaching' },
+      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú', 'topbar.services': 'Servicios', 'topbar.cases': 'Casos', 'topbar.record': 'Trayectoria', 'topbar.contact': 'Contacto', 'topbar.teaching': 'Docencia' },
     });
     const mount = document.querySelector('[data-topbar]');
     if (!mount) return;

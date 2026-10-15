@@ -1,0 +1,240 @@
+{
+  "schema": "herramientas/1",
+  "updated": "2026-10-15",
+  "_note": "Catálogo de herramientas. group: simulator | opensource | outreach.",
+  "groups": [
+    {
+      "id": "simuladores",
+      "title": {
+        "es": "Simuladores interactivos",
+        "en": "Interactive simulators"
+      },
+      "summary": {
+        "es": "Instrumentos y sistemas de aeronave que corren en el navegador, para formación técnica y demostración.",
+        "en": "Aircraft instruments and systems that run in the browser, for technical training and demos."
+      },
+      "items": [
+        {
+          "id": "instrumentos-vuelo",
+          "icon": "gauge",
+          "title": {
+            "es": "Instrumentos de vuelo",
+            "en": "Flight instruments"
+          },
+          "description": {
+            "es": "Panel analógico con horizonte artificial, altímetro, velocímetro y coordinador de viraje en tiempo real.",
+            "en": "Analog panel with attitude indicator, altimeter, airspeed indicator and turn coordinator in real time."
+          },
+          "url": "/herramientas/instrumentos-vuelo/",
+          "tags": [
+            "JavaScript",
+            "SVG",
+            "Aeronáutica"
+          ]
+        },
+        {
+          "id": "garmin-g1000",
+          "icon": "screen",
+          "title": {
+            "es": "Garmin G1000",
+            "en": "Garmin G1000"
+          },
+          "description": {
+            "es": "Cabina digital con pantallas PFD y MFD sincronizadas.",
+            "en": "Glass cockpit with synchronized PFD and MFD displays."
+          },
+          "url": "/herramientas/garmin-g1000/",
+          "tags": [
+            "Canvas",
+            "Aviónica"
+          ]
+        },
+        {
+          "id": "sistemas-aeronave",
+          "icon": "dial",
+          "title": {
+            "es": "Sistemas de aeronave",
+            "en": "Aircraft systems"
+          },
+          "description": {
+            "es": "Tablero de motor, combustible y sistema eléctrico con entradas en vivo.",
+            "en": "Engine, fuel and electrical dashboard with live inputs."
+          },
+          "url": "/herramientas/sistemas-aeronave/",
+          "tags": [
+            "SVG",
+            "Aeronáutica"
+          ]
+        },
+        {
+          "id": "dinamica-fluidos",
+          "icon": "flow",
+          "title": {
+            "es": "Dinámica de fluidos",
+            "en": "Fluid dynamics"
+          },
+          "description": {
+            "es": "Modelos interactivos de flujo para explorar parámetros en clase.",
+            "en": "Interactive flow models to explore parameters in class."
+          },
+          "url": "/herramientas/dinamica-fluidos/",
+          "tags": [
+            "Simulación",
+            "Fluidos"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "codigo-abierto",
+      "title": {
+        "es": "Código abierto",
+        "en": "Open source"
+      },
+      "summary": {
+        "es": "Repositorios propios de adquisición de datos, metrología y optimización.",
+        "en": "Own repositories for data acquisition, metrology and optimization."
+      },
+      "items": [
+        {
+          "id": "aero-messure",
+          "icon": "chart",
+          "title": {
+            "es": "Aero-Messure",
+            "en": "Aero-Messure"
+          },
+          "description": {
+            "es": "Notebooks para procesar y visualizar mediciones aeronáuticas y pruebas de vuelo.",
+            "en": "Notebooks to process and visualize aeronautical measurements and flight tests."
+          },
+          "url": "/proyectos/aero-messure.html",
+          "repo": "https://github.com/EU97/Aero-Messure",
+          "tags": [
+            "Python",
+            "Jupyter"
+          ]
+        },
+        {
+          "id": "force-workbench",
+          "icon": "chip",
+          "title": {
+            "es": "ForceWorkbench",
+            "en": "ForceWorkbench"
+          },
+          "description": {
+            "es": "Banco de fuerza para empuje de motores de UAV: firmware C++ de adquisición y calibración.",
+            "en": "Thrust bench for UAV motors: C++ acquisition and calibration firmware."
+          },
+          "url": "/proyectos/force-workbench.html",
+          "repo": "https://github.com/EU97/ForceWorkbench",
+          "tags": [
+            "C++",
+            "Embebido"
+          ]
+        },
+        {
+          "id": "pio-motion",
+          "icon": "chip",
+          "title": {
+            "es": "PIOMotion",
+            "en": "PIOMotion"
+          },
+          "description": {
+            "es": "Lectura asíncrona de IMU para actitud y movimiento a alta frecuencia.",
+            "en": "Asynchronous IMU reading for high-rate attitude and motion sensing."
+          },
+          "url": "/proyectos/pio-motion.html",
+          "repo": "https://github.com/EU97/PIOMotion",
+          "tags": [
+            "Embebido",
+            "IMU"
+          ]
+        },
+        {
+          "id": "roughness-data",
+          "icon": "chart",
+          "title": {
+            "es": "Roughness Data Model",
+            "en": "Roughness Data Model"
+          },
+          "description": {
+            "es": "Conversión y modelado de rugosidad: Ra, Rz y parámetros ISO desde perfilómetros.",
+            "en": "Roughness conversion and modeling: Ra, Rz and ISO parameters from profilometers."
+          },
+          "url": "/proyectos/roughness-data.html",
+          "repo": "https://github.com/EU97/Roughness_Data_Model",
+          "tags": [
+            "Python",
+            "Metrología"
+          ]
+        },
+        {
+          "id": "pso-optimal",
+          "icon": "swarm",
+          "title": {
+            "es": "PSO Optimal",
+            "en": "PSO Optimal"
+          },
+          "description": {
+            "es": "Optimización por enjambre de partículas para sintonía de control y diseño.",
+            "en": "Particle swarm optimization for control tuning and design."
+          },
+          "url": "/proyectos/pso-optimal.html",
+          "repo": "https://github.com/EU97/PSO_optimal",
+          "tags": [
+            "Python",
+            "Optimización"
+          ]
+        },
+        {
+          "id": "sisela-init",
+          "icon": "bolt",
+          "title": {
+            "es": "SISELA-Init",
+            "en": "SISELA-Init"
+          },
+          "description": {
+            "es": "Material y simulaciones de sistemas eléctricos de aeronaves: buses CA/CD y cargas.",
+            "en": "Aircraft electrical systems material and simulations: AC/DC buses and loads."
+          },
+          "url": "/proyectos/sisela-init.html",
+          "repo": "https://github.com/EU97/SISELA-Init",
+          "tags": [
+            "Python",
+            "Docencia"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "divulgacion",
+      "title": {
+        "es": "Divulgación",
+        "en": "Outreach"
+      },
+      "summary": {
+        "es": "Proyectos para acercar la ciencia a públicos amplios.",
+        "en": "Projects that bring science to broad audiences."
+      },
+      "items": [
+        {
+          "id": "ciencia-magica",
+          "icon": "spark",
+          "title": {
+            "es": "Ciencia Mágica",
+            "en": "Ciencia Mágica"
+          },
+          "description": {
+            "es": "Plataforma de divulgación entre la ciencia y la magia, con contenido interactivo.",
+            "en": "Outreach platform between science and magic, with interactive content."
+          },
+          "url": "/proyectos/ciencia-magica.html",
+          "tags": [
+            "HTML5",
+            "Divulgación"
+          ]
+        }
+      ]
+    }
+  ]
+}
