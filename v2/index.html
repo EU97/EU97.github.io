@@ -26,10 +26,16 @@
           <span class="eyebrow" data-i18n="h.eyebrow"></span>
           <h1 class="hero__name">Edgar Ulises <span>Rojo Rodriguez</span></h1>
           <p class="hero__claim" data-i18n-html="h.title"></p>
-          <p class="hero__lede" data-i18n="h.lede"></p>
-          <div class="hero__cta">
-            <a class="btn btn--primary btn--lg" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica" data-i18n="h.cta"></a>
-            <a class="btn btn--ghost btn--lg" href="#casos" data-i18n="h.cta2"></a>
+          <div class="hero__act">
+            <!-- Sello circular de contacto: texto giratorio alrededor de una flecha -->
+            <a class="seal" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica" data-i18n-aria="h.cta">
+              <svg class="seal__ring" viewBox="0 0 120 120" aria-hidden="true">
+                <defs><path id="seal-path" d="M60 60 m-47 0 a47 47 0 1 1 94 0 a47 47 0 1 1 -94 0"/></defs>
+                <text><textPath href="#seal-path" textLength="292" lengthAdjust="spacing" data-i18n="h.seal"></textPath></text>
+              </svg>
+              <span class="seal__core" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+            </a>
+            <a class="hero__link" href="#casos"><span data-i18n="h.cta2"></span> <span aria-hidden="true">↓</span></a>
           </div>
         </div>
 
@@ -100,25 +106,23 @@
               <path class="av-trace" pathLength="1" d="M6 50 C 18 50, 20 8, 32 10 S 46 24, 54 19 S 70 17, 86 18"/>
             </g>
           </svg>
-          <span class="av-label av-label--tl"><b data-i18n="av.l1"></b><span data-i18n="av.l1d"></span></span>
-          <span class="av-label av-label--tr"><b data-i18n="av.l2"></b><span data-i18n="av.l2d"></span></span>
-          <span class="av-label av-label--bl"><b data-i18n="av.l3"></b><span data-i18n="av.l3d"></span></span>
-          <span class="av-label av-label--br"><b data-i18n="av.l4"></b><span data-i18n="av.l4d"></span></span>
+          <span class="av-label av-label--tl" data-i18n="av.l1"></span>
+          <span class="av-label av-label--tr" data-i18n="av.l2"></span>
+          <span class="av-label av-label--bl" data-i18n="av.l3"></span>
+          <span class="av-label av-label--br" data-i18n="av.l4"></span>
           <figcaption class="av-tag" data-i18n="av.tag"></figcaption>
         </figure>
 
-        <aside class="datasheet" data-i18n-aria="ds.aria">
-          <header class="datasheet__head"><span data-i18n="ds.title"></span><span>EU97 · REV 2026</span></header>
-          <dl class="datasheet__rows">
-            <div><dt>8+</dt><dd data-i18n="ds.r1"></dd></div>
-            <div><dt>6</dt><dd data-i18n="ds.r2"></dd></div>
-            <div><dt>ONR</dt><dd data-i18n="ds.r3"></dd></div>
-            <div><dt>UK</dt><dd data-i18n="ds.r4"></dd></div>
-            <div><dt>UANL</dt><dd data-i18n="ds.r5"></dd></div>
-            <div><dt>DUAS</dt><dd data-i18n="ds.r6"></dd></div>
-          </dl>
-          <footer class="datasheet__foot"><span data-i18n="ds.lang"></span><span>ES · EN · FR</span></footer>
-        </aside>
+        <!-- Cifras: compactas, sin cajas, unidas por una línea de corriente -->
+        <div class="feats">
+          <svg class="feats__wave" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 20 C 100 2, 200 38, 300 20 S 500 2, 600 20 S 800 38, 900 20 S 1100 2, 1200 20"/>
+          </svg>
+          <div class="feat"><span class="feat__n"><b data-count="8">8</b><i>+</i></span><span class="feat__l" data-i18n="st.1"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="6">6</b></span><span class="feat__l" data-i18n="st.2"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="10">10</b></span><span class="feat__l" data-i18n="st.3"></span></div>
+          <div class="feat"><span class="feat__n"><b data-count="3">3</b></span><span class="feat__l" data-i18n="st.4"></span></div>
+        </div>
       </div>
 
       <div class="container">

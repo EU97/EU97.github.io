@@ -17,7 +17,7 @@ Móvil:
 
 Las capturas de arriba usan `prefers-reduced-motion: reduce` (líneas de corriente fijas, pose fija). Estas muestran la versión animada.
 
-Hero: flujo potencial alrededor del avatar, horizonte artificial que sigue el cursor, dron y elementos animados.
+Hero: flujo potencial alrededor del avatar, horizonte artificial que sigue el cursor, sello de contacto giratorio y cifras.
 
 ![hero](interaccion-hero.png)
 
