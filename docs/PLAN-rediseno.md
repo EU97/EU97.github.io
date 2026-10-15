@@ -21,7 +21,8 @@ Retomar: `git checkout feat/portfolio-redesign`, revisar la primera fase sin mar
 
 - Métrica de resultado por caso (los casos muestran "Métrica por confirmar"): p. ej. reducción de no conformidades (FEMSA), tiempo muerto evitado (Heineken), Cpk o scrap antes/después (Magna).
 - Confirmar qué clientes se pueden nombrar y cuáles van como "Tier-1 automotriz" anónimo.
-- Foto profesional y, si existen, imágenes o videos propios de proyectos (túnel de viento, plataformas UAV).
+- Avatar definitivo (el actual es v0, provisional): foto profesional o ilustración propia; se reemplaza el grupo `av-bust` del SVG en `v2/index.html`.
+- Imágenes o videos propios de proyectos (túnel de viento, plataformas UAV).
 - Socios industriales: el sitio actual dice 6; confirmar la lista.
 
 ## Fases
@@ -31,7 +32,7 @@ Retomar: `git checkout feat/portfolio-redesign`, revisar la primera fase sin mar
 - [x] **0. Inventario**: `docs/inventory.md` (enlaces y rutas) y catálogo de cursos por área (`docs/catalog-draft.json`).
 - [x] **1. Sistema de diseño**: `styles/site.css` (convive con `main.css` hasta la Fase 4), `scripts/i18n.js`, `scripts/motion.js`, `scripts/topbar.js`, guía de estilo en `/styleguide/`. Vista previa: `docs/previews/fase1/index.md`.
 - [x] **1b. Banco de pruebas 3D**: `scripts/viewer3d.js` (API `mount`/`load`/`setView`/`setWireframe`/`snapshot`/`dispose`, montaje diferido, tema claro/oscuro), pieza de prueba y panel en `/styleguide/#modelo3d`. `tools/screenshot.mjs` espera a que los visores terminen. Vista previa: `docs/previews/fase1b/index.md`.
-- [~] **2. Home para industria** (`/v2/`): hero con celda de medición interactiva, problemas, método con animaciones SVG, casos, trayectoria, enlaces secundarios y contacto. Vista previa: `docs/previews/fase2/index.md`. Falta: métricas reales de los casos y revisión del autor.
+- [~] **2. Home para industria** (`/v2/`): hero horizontal de identidad (nombre, avatar v0 con flujo potencial, horizonte artificial y elementos animados de las áreas: dron, escaneo, perfil aerodinámico, control; hoja de datos con logros), sección "En acción" con la celda de medición, problemas, método con animaciones SVG, casos, trayectoria, enlaces secundarios y contacto. Vista previa: `docs/previews/fase2/index.md`. Falta: métricas reales de los casos, avatar definitivo y revisión del autor.
 - [ ] **3. Hubs**: `cursos/` y `herramientas/` con catálogos JSON.
 - [ ] **4. Reorganización**: mover carpetas, redirecciones, rutas absolutas; `/v2/` pasa a `/` y los enlaces secundarios apuntan a `/cursos/` y `/herramientas/`.
 - [ ] **5. Login con usuarios fijos**: `scripts/auth.js`.

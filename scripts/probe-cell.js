@@ -273,7 +273,7 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       const fit = Math.max(1, 1.45 / camera.aspect);
-      base.set(330, 290, 470).multiplyScalar(.97 * fit);
+      base.set(330, 290, 470).multiplyScalar(1.06 * fit);
       camera.updateProjectionMatrix();
       dirty();
     }
@@ -308,6 +308,15 @@
   }
 
   window.ProbeCell = { mount };
-  const init = () => document.querySelectorAll('[data-scene="probe-cell"]').forEach(el => mount(el).catch(() => {}));
+  (window.Scenes ??= {})['probe-cell'] = mount; // registro común: tools/screenshot.mjs fuerza el montaje
+  // Montaje diferido: three.js y el STL solo se cargan cuando la celda se acerca a la vista.
+  const init = () => {
+    const els = document.querySelectorAll('[data-scene="probe-cell"]');
+    if (!('IntersectionObserver' in window)) { els.forEach(el => mount(el).catch(() => {})); return; }
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) if (e.isIntersecting) { io.unobserve(e.target); mount(e.target).catch(() => {}); }
+    }, { rootMargin: '300px' });
+    els.forEach(el => io.observe(el));
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

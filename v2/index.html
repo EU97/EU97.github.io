@@ -18,12 +18,14 @@
   <div data-topbar data-variant="industry"></div>
 
   <main>
-    <!-- 01 · Hero -->
-    <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__copy">
+    <!-- 01 · Hero: identidad, avatar y logros -->
+    <section class="hero" id="inicio">
+      <canvas class="hero__flow" id="flow" aria-hidden="true"></canvas>
+      <div class="hero__wrap">
+        <div class="hero__id">
           <span class="eyebrow" data-i18n="h.eyebrow"></span>
-          <h1 class="hero__title" data-i18n-html="h.title"></h1>
+          <h1 class="hero__name">Edgar Ulises <span>Rojo Rodriguez</span></h1>
+          <p class="hero__claim" data-i18n-html="h.title"></p>
           <p class="hero__lede" data-i18n="h.lede"></p>
           <div class="hero__cta">
             <a class="btn btn--primary btn--lg" href="mailto:eurr97@gmail.com?subject=Conversaci%C3%B3n%20t%C3%A9cnica" data-i18n="h.cta"></a>
@@ -31,6 +33,116 @@
           </div>
         </div>
 
+        <!-- Avatar provisional (v0): se reemplazará por la versión definitiva o una foto. -->
+        <figure class="avatar" id="avatar" data-i18n-aria="av.aria">
+          <svg viewBox="0 0 480 480" class="avatar__svg" role="img" aria-hidden="true">
+            <defs><clipPath id="disc-clip"><circle cx="240" cy="240" r="138"/></clipPath></defs>
+            <!-- líneas guía hacia los elementos -->
+            <g class="av-lead">
+              <polyline points="132,128 104,100 70,100"/><circle cx="132" cy="128" r="3"/>
+              <polyline points="350,130 382,104 410,104"/><circle cx="350" cy="130" r="3"/>
+              <polyline points="128,352 100,384 70,384"/><circle cx="128" cy="352" r="3"/>
+              <polyline points="352,350 384,380 410,380"/><circle cx="352" cy="350" r="3"/>
+            </g>
+            <!-- disco: horizonte artificial que se inclina con el cursor -->
+            <g clip-path="url(#disc-clip)">
+              <g id="horizon" class="av-horizon">
+                <rect class="av-sky" x="40" y="-160" width="400" height="400"/>
+                <rect class="av-ground" x="40" y="240" width="400" height="400"/>
+                <line class="av-hline" x1="40" y1="240" x2="440" y2="240"/>
+                <g class="av-ladder">
+                  <line x1="214" y1="200" x2="266" y2="200"/><line x1="226" y1="220" x2="254" y2="220"/>
+                  <line x1="226" y1="260" x2="254" y2="260"/><line x1="214" y1="280" x2="266" y2="280"/>
+                </g>
+              </g>
+              <!-- busto -->
+              <g class="av-bust">
+                <path class="av-body" d="M128 400 C 136 330, 184 300, 240 300 C 296 300, 344 330, 352 400 Z"/>
+                <path class="av-collar" d="M214 302 L240 338 L266 302"/>
+                <rect class="av-neck" x="224" y="252" width="32" height="54" rx="12"/>
+                <circle class="av-head" cx="240" cy="210" r="50"/>
+                <path class="av-visor" d="M198 204 Q240 186 282 204 L278 222 Q240 210 202 222 Z"/>
+              </g>
+            </g>
+            <circle class="av-rim" cx="240" cy="240" r="138"/>
+            <!-- anillo de rumbo -->
+            <g class="av-ring" id="ring"></g>
+            <path class="av-pointer" d="M240 76 l-7 -12 h14 z"/>
+            <!-- dron (arriba derecha) -->
+            <g class="av-drone" transform="translate(410 150)">
+              <g class="av-drone__body">
+                <ellipse class="av-shadow" cx="0" cy="58" rx="34" ry="5"/>
+                <path class="av-arm" d="M-34 -10 L34 10 M-34 10 L34 -10"/>
+                <rect class="av-core" x="-12" y="-8" width="24" height="16" rx="5"/>
+                <circle class="av-led" cx="0" cy="0" r="2.4"/>
+                <g class="av-rotor"><ellipse cx="-34" cy="-10" rx="15" ry="3.2"/></g>
+                <g class="av-rotor"><ellipse cx="34" cy="-10" rx="15" ry="3.2"/></g>
+                <g class="av-rotor"><ellipse cx="-34" cy="10" rx="15" ry="3.2"/></g>
+                <g class="av-rotor"><ellipse cx="34" cy="10" rx="15" ry="3.2"/></g>
+              </g>
+            </g>
+            <!-- escaneo dimensional (arriba izquierda) -->
+            <g class="av-scan" transform="translate(30 132)">
+              <path class="av-part" d="M0 44 V22 H18 V12 H52 V22 H70 V44 Z"/>
+              <circle class="av-hole" cx="35" cy="32" r="5"/>
+              <g class="av-beam"><line x1="-6" y1="0" x2="76" y2="0"/></g>
+            </g>
+            <!-- perfil aerodinámico (abajo izquierda) -->
+            <g class="av-wing" transform="translate(22 300)">
+              <path class="av-stream" d="M-10 8 C 30 6, 60 2, 100 8"/>
+              <path class="av-stream" d="M-10 44 C 30 46, 60 50, 100 44"/>
+              <path class="av-foil" d="M4 26 C 14 12, 44 10, 92 24 C 44 32, 14 34, 4 26 Z"/>
+            </g>
+            <!-- osciloscopio de control (abajo derecha) -->
+            <g class="av-scope" transform="translate(374 304)">
+              <rect class="av-screen" x="0" y="0" width="92" height="56" rx="5"/>
+              <line class="av-sp" x1="6" y1="18" x2="86" y2="18"/>
+              <path class="av-trace" pathLength="1" d="M6 50 C 18 50, 20 8, 32 10 S 46 24, 54 19 S 70 17, 86 18"/>
+            </g>
+          </svg>
+          <span class="av-label av-label--tl"><b data-i18n="av.l1"></b><span data-i18n="av.l1d"></span></span>
+          <span class="av-label av-label--tr"><b data-i18n="av.l2"></b><span data-i18n="av.l2d"></span></span>
+          <span class="av-label av-label--bl"><b data-i18n="av.l3"></b><span data-i18n="av.l3d"></span></span>
+          <span class="av-label av-label--br"><b data-i18n="av.l4"></b><span data-i18n="av.l4d"></span></span>
+          <figcaption class="av-tag" data-i18n="av.tag"></figcaption>
+        </figure>
+
+        <aside class="datasheet" data-i18n-aria="ds.aria">
+          <header class="datasheet__head"><span data-i18n="ds.title"></span><span>EU97 · REV 2026</span></header>
+          <dl class="datasheet__rows">
+            <div><dt>8+</dt><dd data-i18n="ds.r1"></dd></div>
+            <div><dt>6</dt><dd data-i18n="ds.r2"></dd></div>
+            <div><dt>ONR</dt><dd data-i18n="ds.r3"></dd></div>
+            <div><dt>UK</dt><dd data-i18n="ds.r4"></dd></div>
+            <div><dt>UANL</dt><dd data-i18n="ds.r5"></dd></div>
+            <div><dt>DUAS</dt><dd data-i18n="ds.r6"></dd></div>
+          </dl>
+          <footer class="datasheet__foot"><span data-i18n="ds.lang"></span><span>ES · EN · FR</span></footer>
+        </aside>
+      </div>
+
+      <div class="container">
+        <div class="clients">
+          <span class="clients__k" data-i18n="h.clients"></span>
+          <ul class="clients__list">
+            <li>Magna Powertrain</li><li>FEMSA</li><li>Heineken</li><li>Friedrich</li><li>Optima</li><li>ONR Global</li><li>University of Southampton</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · En acción: celda de medición -->
+    <section class="section section--band" id="laboratorio">
+      <div class="container lab">
+        <header class="shead lab__text reveal">
+          <span class="shead__n">02</span><span class="shead__k" data-i18n="lab.k"></span>
+          <h2 data-i18n="lab.title"></h2>
+          <p class="lede" data-i18n="lab.lede"></p>
+          <ul class="lab__legend">
+            <li><i class="dot dot--ok"></i><span data-i18n="lab.ok"></span></li>
+            <li><i class="dot dot--out"></i><span data-i18n="lab.out"></span></li>
+          </ul>
+        </header>
         <figure class="cell" data-scene="probe-cell" data-src="/models/pruebas/brida-eu97.stl">
           <figcaption class="cell__block">
             <span>SIM-01</span><span data-i18n="cell.name"></span><span>brida-eu97 · REV A</span>
@@ -44,22 +156,13 @@
           <span class="cell__sim" data-i18n="cell.sim"></span>
         </figure>
       </div>
-
-      <div class="container">
-        <div class="clients">
-          <span class="clients__k" data-i18n="h.clients"></span>
-          <ul class="clients__list">
-            <li>Magna Powertrain</li><li>FEMSA</li><li>Heineken</li><li>Friedrich</li><li>Optima</li><li>ONR Global</li><li>University of Southampton</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <!-- 02 · Problemas -->
+    <!-- 03 · Problemas -->
     <section class="section" id="problemas">
       <div class="container">
         <header class="shead reveal">
-          <span class="shead__n">02</span><span class="shead__k" data-i18n="p.k"></span>
+          <span class="shead__n">03</span><span class="shead__k" data-i18n="p.k"></span>
           <h2 data-i18n="p.title"></h2>
           <p class="lede" data-i18n="p.lede"></p>
         </header>
@@ -67,11 +170,11 @@
       </div>
     </section>
 
-    <!-- 03 · Método / servicios -->
+    <!-- 04 · Método / servicios -->
     <section class="section section--band" id="servicios">
       <div class="container">
         <header class="shead reveal">
-          <span class="shead__n">03</span><span class="shead__k" data-i18n="s.k"></span>
+          <span class="shead__n">04</span><span class="shead__k" data-i18n="s.k"></span>
           <h2 data-i18n="s.title"></h2>
           <p class="lede" data-i18n="s.lede"></p>
         </header>
@@ -79,11 +182,11 @@
       </div>
     </section>
 
-    <!-- 04 · Casos -->
+    <!-- 05 · Casos -->
     <section class="section" id="casos">
       <div class="container">
         <header class="shead reveal">
-          <span class="shead__n">04</span><span class="shead__k" data-i18n="c.k"></span>
+          <span class="shead__n">05</span><span class="shead__k" data-i18n="c.k"></span>
           <h2 data-i18n="c.title"></h2>
           <p class="lede" data-i18n="c.lede"></p>
         </header>
@@ -91,19 +194,13 @@
       </div>
     </section>
 
-    <!-- 05 · Trayectoria -->
+    <!-- 06 · Trayectoria -->
     <section class="section section--band" id="trayectoria">
       <div class="container">
         <header class="shead reveal">
-          <span class="shead__n">05</span><span class="shead__k" data-i18n="r.k"></span>
+          <span class="shead__n">06</span><span class="shead__k" data-i18n="r.k"></span>
           <h2 data-i18n="r.title"></h2>
         </header>
-        <div class="figures" data-stagger>
-          <div class="figure"><span class="figure__n"><b data-count="8">8</b>+</span><span class="figure__l" data-i18n="r.f1"></span></div>
-          <div class="figure"><span class="figure__n"><b data-count="6">6</b></span><span class="figure__l" data-i18n="r.f2"></span></div>
-          <div class="figure"><span class="figure__n">N62909</span><span class="figure__l" data-i18n="r.f3"></span></div>
-          <div class="figure"><span class="figure__n">ES·EN·FR</span><span class="figure__l" data-i18n="r.f4"></span></div>
-        </div>
         <div class="record">
           <div>
             <h3 class="record__h" data-i18n="r.exp"></h3>
@@ -153,6 +250,7 @@
   <script src="/scripts/topbar.js"></script>
   <script src="/scripts/viewer3d.js"></script>
   <script src="/scripts/probe-cell.js"></script>
+  <script src="/v2/hero.js"></script>
   <script src="/v2/home.js"></script>
   <script src="/scripts/motion.js"></script>
 </body>

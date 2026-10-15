@@ -39,7 +39,10 @@ try {
             await page.waitForTimeout(600);
             // Visores y escenas 3D: los visores se montan al entrar en pantalla (se fuerzan); se espera a que terminen.
             if (await page.locator('[data-viewer3d], [data-scene]').count()) {
-              await page.evaluate(() => document.querySelectorAll('[data-viewer3d]').forEach(el => window.Viewer3D?.mount(el)));
+              await page.evaluate(() => {
+                document.querySelectorAll('[data-viewer3d]').forEach(el => window.Viewer3D?.mount(el));
+                document.querySelectorAll('[data-scene]').forEach(el => window.Scenes?.[el.dataset.scene]?.(el)?.catch?.(() => {}));
+              });
               await page.waitForFunction(() => [...document.querySelectorAll('[data-viewer3d], [data-scene]')].every(el => ['ready', 'error'].includes(el.dataset.state)), null, { timeout: 20000 });
               await page.waitForTimeout(300);
             }

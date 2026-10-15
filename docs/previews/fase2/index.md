@@ -15,7 +15,17 @@ Móvil:
 
 ## Interacción (sin movimiento reducido)
 
-Las capturas de arriba usan `prefers-reduced-motion: reduce` (pose fija). Estas muestran la celda animada: ciclo automático, cursor sobre la pieza, punto medido con clic y cambio en vivo a claro/EN.
+Las capturas de arriba usan `prefers-reduced-motion: reduce` (líneas de corriente fijas, pose fija). Estas muestran la versión animada.
+
+Hero: flujo potencial alrededor del avatar, horizonte artificial que sigue el cursor, dron y elementos animados.
+
+![hero](interaccion-hero.png)
+
+Celda de medición en su sección "En acción":
+
+![celda](interaccion-celda-seccion.png)
+
+Ciclo automático, cursor sobre la pieza, punto medido con clic y cambio en vivo a claro/EN:
 
 ![celda](interaccion-celda.png)
 
