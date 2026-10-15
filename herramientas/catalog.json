@@ -1,17 +1,17 @@
 {
   "schema": "herramientas/1",
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "_note": "Catálogo de herramientas. group: simulator | opensource | outreach.",
   "groups": [
     {
       "id": "simuladores",
       "title": {
-        "es": "Simuladores interactivos",
-        "en": "Interactive simulators"
+        "es": "Simuladores y visores",
+        "en": "Simulators and viewers"
       },
       "summary": {
-        "es": "Instrumentos y sistemas de aeronave que corren en el navegador, para formación técnica y demostración.",
-        "en": "Aircraft instruments and systems that run in the browser, for technical training and demos."
+        "es": "Instrumentos de vuelo, sistemas de aeronave y modelos 3D que funcionan en el navegador, para formación técnica y demostraciones.",
+        "en": "Flight instruments, aircraft systems and 3D models that run in the browser, for technical training and demos."
       },
       "items": [
         {
@@ -22,8 +22,8 @@
             "en": "3D assembly viewer"
           },
           "description": {
-            "es": "Piezas STL con material, vista explosionada animada y aislamiento de piezas.",
-            "en": "STL parts with material, animated exploded view and part isolation."
+            "es": "Ensambles STL con su material, vista explosionada animada y aislamiento de piezas.",
+            "en": "STL assemblies with their material, animated exploded view and part isolation."
           },
           "url": "/herramientas/visor-3d/",
           "tags": [
@@ -92,7 +92,7 @@
             "en": "Fluid dynamics"
           },
           "description": {
-            "es": "Modelos interactivos de flujo para explorar parámetros en clase.",
+            "es": "Modelos de flujo interactivos para explorar parámetros en clase.",
             "en": "Interactive flow models to explore parameters in class."
           },
           "url": "/herramientas/dinamica-fluidos/",
@@ -111,7 +111,7 @@
       },
       "summary": {
         "es": "Repositorios propios de adquisición de datos, metrología y optimización.",
-        "en": "Own repositories for data acquisition, metrology and optimization."
+        "en": "My own repositories for data acquisition, metrology and optimization."
       },
       "items": [
         {
@@ -122,8 +122,8 @@
             "en": "Aero-Messure"
           },
           "description": {
-            "es": "Notebooks para procesar y visualizar mediciones aeronáuticas y pruebas de vuelo.",
-            "en": "Notebooks to process and visualize aeronautical measurements and flight tests."
+            "es": "Cuadernos de Jupyter para procesar y visualizar mediciones aeronáuticas y pruebas de vuelo.",
+            "en": "Jupyter notebooks to process and visualize aeronautical measurements and flight tests."
           },
           "url": "/proyectos/aero-messure.html",
           "repo": "https://github.com/EU97/Aero-Messure",
@@ -140,8 +140,8 @@
             "en": "ForceWorkbench"
           },
           "description": {
-            "es": "Banco de fuerza para empuje de motores de UAV: firmware C++ de adquisición y calibración.",
-            "en": "Thrust bench for UAV motors: C++ acquisition and calibration firmware."
+            "es": "Banco para medir el empuje de motores de UAV, con firmware en C++ de adquisición y calibración.",
+            "en": "Bench to measure UAV motor thrust, with C++ acquisition and calibration firmware."
           },
           "url": "/proyectos/force-workbench.html",
           "repo": "https://github.com/EU97/ForceWorkbench",
@@ -158,8 +158,8 @@
             "en": "PIOMotion"
           },
           "description": {
-            "es": "Lectura asíncrona de IMU para actitud y movimiento a alta frecuencia.",
-            "en": "Asynchronous IMU reading for high-rate attitude and motion sensing."
+            "es": "Lectura asíncrona de una IMU para medir actitud y movimiento a alta frecuencia.",
+            "en": "Asynchronous IMU reading to measure attitude and motion at high rate."
           },
           "url": "/proyectos/pio-motion.html",
           "repo": "https://github.com/EU97/PIOMotion",
@@ -176,8 +176,8 @@
             "en": "Roughness Data Model"
           },
           "description": {
-            "es": "Conversión y modelado de rugosidad: Ra, Rz y parámetros ISO desde perfilómetros.",
-            "en": "Roughness conversion and modeling: Ra, Rz and ISO parameters from profilometers."
+            "es": "Conversión y modelado de rugosidad (Ra, Rz y parámetros ISO) a partir de datos de perfilómetro.",
+            "en": "Roughness conversion and modeling (Ra, Rz and ISO parameters) from profilometer data."
           },
           "url": "/proyectos/roughness-data.html",
           "repo": "https://github.com/EU97/Roughness_Data_Model",
@@ -194,8 +194,8 @@
             "en": "PSO Optimal"
           },
           "description": {
-            "es": "Optimización por enjambre de partículas para sintonía de control y diseño.",
-            "en": "Particle swarm optimization for control tuning and design."
+            "es": "Optimización por enjambre de partículas para sintonizar controladores y resolver problemas de diseño.",
+            "en": "Particle swarm optimization to tune controllers and solve design problems."
           },
           "url": "/proyectos/pso-optimal.html",
           "repo": "https://github.com/EU97/PSO_optimal",
@@ -212,8 +212,8 @@
             "en": "SISELA-Init"
           },
           "description": {
-            "es": "Material y simulaciones de sistemas eléctricos de aeronaves: buses CA/CD y cargas.",
-            "en": "Aircraft electrical systems material and simulations: AC/DC buses and loads."
+            "es": "Material y simulaciones de sistemas eléctricos de aeronaves: buses de CA y CD y análisis de cargas.",
+            "en": "Aircraft electrical systems material and simulations: AC and DC buses and load analysis."
           },
           "url": "/proyectos/sisela-init.html",
           "repo": "https://github.com/EU97/SISELA-Init",
@@ -243,8 +243,8 @@
             "en": "Ciencia Mágica"
           },
           "description": {
-            "es": "Plataforma de divulgación entre la ciencia y la magia, con contenido interactivo.",
-            "en": "Outreach platform between science and magic, with interactive content."
+            "es": "Divulgación científica a través de la magia, con contenido interactivo.",
+            "en": "Science outreach through magic, with interactive content."
           },
           "url": "/proyectos/ciencia-magica.html",
           "tags": [

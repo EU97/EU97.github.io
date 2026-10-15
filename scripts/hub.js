@@ -17,14 +17,14 @@
       'hub.draft': 'Borrador', 'hub.soon': 'Próximamente', 'hub.login': 'Alumnos', 'hub.login.t': 'Requiere cuenta de alumno', 'hub.open.ok': 'Desbloqueado',
       'hub.open': 'Abrir curso', 'hub.repo': 'Repositorio', 'hub.view': 'Ver',
       'type.presentation': 'Presentación', 'type.assignment': 'Tarea', 'type.interactive': 'Interactivo', 'type.procedure': 'Procedimiento',
-      'type.reference': 'Referencia', 'type.tool': 'Herramienta'
+      'type.reference': 'Referencia', 'type.tool': 'Herramienta', 'type.lesson': 'Tema', 'type.guide': 'Guía'
     },
     en: {
       'hub.all': 'All', 'hub.search': 'Search course or resource', 'hub.empty': 'No results for that filter.',
       'hub.draft': 'Draft', 'hub.soon': 'Coming soon', 'hub.login': 'Students', 'hub.login.t': 'Requires a student account', 'hub.open.ok': 'Unlocked',
       'hub.open': 'Open course', 'hub.repo': 'Repository', 'hub.view': 'View',
       'type.presentation': 'Presentation', 'type.assignment': 'Assignment', 'type.interactive': 'Interactive', 'type.procedure': 'Procedure',
-      'type.reference': 'Reference', 'type.tool': 'Tool'
+      'type.reference': 'Reference', 'type.tool': 'Tool', 'type.lesson': 'Lesson', 'type.guide': 'Guide'
     }
   });
 
@@ -55,12 +55,13 @@
     const acc = it.access !== 'login' ? ''
       : open ? `<span class="res__lock res__lock--open">${unlock}${esc(SiteI18n.t('hub.open.ok'))}</span>`
       : `<span class="res__lock" title="${esc(SiteI18n.t('hub.login.t'))}">${lock}${esc(SiteI18n.t('hub.login'))}</span>`;
-    if (!it.url) return `<li class="res res--soon">${type}<span class="res__t">${esc(tr(it.title))}</span><span class="res__soon">${esc(SiteI18n.t('hub.soon'))}</span></li>`;
-    return `<li class="res"><a href="${esc(it.url)}">${type}<span class="res__t">${esc(tr(it.title))}</span>${acc}<span class="res__go" aria-hidden="true">→</span></a></li>`;
+    const t = `<span class="res__t">${it.code ? `<small class="res__code">${esc(tr(it.code))}</small>` : ''}${esc(tr(it.title))}</span>`;
+    if (!it.url) return `<li class="res res--soon">${type}${t}<span class="res__soon">${esc(SiteI18n.t('hub.soon'))}</span></li>`;
+    return `<li class="res"><a href="${esc(it.url)}">${type}${t}${acc}<span class="res__go" aria-hidden="true">→</span></a></li>`;
   }
   const matches = c => {
     if (!query) return true;
-    const hay = [tr(c.title), tr(c.description), ...c.items.map(i => tr(i.title))].join(' ').toLowerCase();
+    const hay = [tr(c.title), c.code || '', tr(c.description), ...c.items.flatMap(i => [tr(i.title), i.code ? tr(i.code) : ''])].join(' ').toLowerCase();
     return hay.includes(query);
   };
   function renderCursos() {
@@ -81,7 +82,7 @@
         <div class="courses">${courses.map(c => `
           <article class="course">
             <div class="course__id">
-              <h3>${c.url ? `<a href="${esc(c.url)}">${esc(tr(c.title))}</a>` : esc(tr(c.title))}</h3>
+              <h3>${c.url ? `<a href="${esc(c.url)}">${esc(tr(c.title))}</a>` : esc(tr(c.title))}</h3>${c.code ? ` <span class="course__code">${esc(c.code)}</span>` : ''}
               ${c.status === 'draft' ? `<span class="course__draft">${esc(SiteI18n.t('hub.draft'))}</span>` : ''}
               <p>${esc(tr(c.description))}</p>
               ${c.url ? `<a class="course__open" href="${esc(c.url)}">${esc(SiteI18n.t('hub.open'))} →</a>` : ''}

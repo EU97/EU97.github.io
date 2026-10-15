@@ -37,7 +37,9 @@
 }
 .res a:hover { border-color: var(--primary); transform: translateX(3px); color: var(--ink); }
 .res__type { font: 500 .68rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-.res__t { font-weight: 600; font-size: .95rem; }
+.res__t { font-weight: 600; font-size: .95rem; line-height: 1.3; }
+.res__code { display: block; font: 500 .68rem var(--font-mono); letter-spacing: .04em; color: var(--accent); margin-bottom: .1rem; }
+.course__code { font: 600 .68rem var(--font-mono); letter-spacing: .08em; color: var(--ink-3); border: 1px solid var(--line-strong); border-radius: 3px; padding: .05rem .4rem; vertical-align: middle; }
 .res__lock { display: inline-flex; align-items: center; gap: .3rem; font: 600 .66rem var(--font-mono); color: var(--accent); }
 .res__lock svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
 .res__lock--open { color: var(--ok); }
