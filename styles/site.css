@@ -150,8 +150,10 @@ img, svg, canvas { max-width: 100%; }
 [aria-pressed="true"] > .theme-icon::before { content: "\2600"; }
 .session-chip {
   display: inline-flex; align-items: center; gap: .45rem; height: 36px; padding: 0 .8rem;
-  border: 1px solid var(--line); border-radius: 999px; font-size: .82rem; color: var(--ink-2); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; font: 500 .82rem var(--font-sans); color: var(--ink-2); background: var(--surface);
+  cursor: pointer; transition: border-color .2s, color .2s;
 }
+.session-chip:hover { border-color: var(--primary); color: var(--ink); }
 .session-chip__lock { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); transition: background .3s; }
 .session-chip[data-state="in"] .session-chip__lock { background: var(--ok); }
 .topbar__burger { display: none; }

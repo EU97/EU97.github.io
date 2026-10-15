@@ -29,7 +29,7 @@
           <div class="topbar__tools">
             ${industry
               ? '<a class="topbar__aside" href="/cursos/" data-i18n="topbar.courses"></a><a class="topbar__aside" href="/herramientas/" data-i18n="topbar.tools"></a>'
-              : '<span class="session-chip" data-state="out"><span class="session-chip__lock"></span><span data-i18n="topbar.guest"></span></span>'}
+              : '<button class="session-chip" type="button" data-state="out"><span class="session-chip__lock"></span><span class="session-chip__label" data-i18n="topbar.guest"></span></button>'}
             <button class="icon-btn" id="lang-btn" type="button" data-i18n-aria="topbar.lang"></button>
             <button class="icon-btn" type="button" data-theme-toggle data-theme-icon-only aria-pressed="false" data-i18n-aria="topbar.theme"><span class="theme-icon"></span></button>
             <button class="icon-btn topbar__burger" id="burger" type="button" aria-expanded="false" aria-controls="topbar-nav" data-i18n-aria="topbar.menu">&#9776;</button>
@@ -63,6 +63,10 @@
     SiteI18n.apply();
     window.SiteTheme?.refresh();
     wire();
+    // La píldora de sesión necesita scripts/auth.js; se carga solo si la página no lo trae.
+    if (document.querySelector('.session-chip') && !window.SiteAuth && !document.querySelector('script[src="/scripts/auth.js"]')) {
+      const s = document.createElement('script'); s.src = '/scripts/auth.js'; document.head.appendChild(s);
+    }
     window.dispatchEvent(new Event('topbar:ready'));
   });
 })();

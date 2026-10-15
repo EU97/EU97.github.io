@@ -1,0 +1,61 @@
+{
+  "v": 1,
+  "kdf": {
+    "alg": "PBKDF2-SHA256",
+    "iterations": 210000
+  },
+  "users": [
+    {
+      "user": "alumno",
+      "name": "Alumno demo",
+      "roles": [
+        "alumno"
+      ],
+      "salt": "2FZz04HdxdkFcUKUSH7xZw==",
+      "uk": {
+        "iv": "bjLbHaf+Cp3K8vFB",
+        "ct": "dvhSzk+pLZxRJDtxyXfI3A9QnREw1+gMl0jH8KDPepHqNl0PQr//lSud+25NUZZp"
+      },
+      "keys": {
+        "dibujo-computarizado": {
+          "iv": "IgRVoLqGJqxwrnq2",
+          "ct": "BEDQj35V6MR50XlIoN04+Q8n7sw+m3WZO+n6g/JlgDh4Z4AvE4x42foot9AxIwOf"
+        },
+        "dsm": {
+          "iv": "p6fByBhDcdHC8LpU",
+          "ct": "rVE0gtxceaeK8Y/nNKz+Y1uhSGfdVst31WODZlmA2bnNJOW4/N3qcUVKxUzu5KMz"
+        },
+        "precision-engineering": {
+          "iv": "JDI0vRbcXc9I0Olt",
+          "ct": "8ERFZ5Z1EsvLNYeZy1UAE+cSX+q+dVZ2GLF1U7J1/cu58lKWjZQ8iwJoWpq5YeL2"
+        }
+      }
+    },
+    {
+      "user": "docente",
+      "name": "Edgar Ulises Rojo",
+      "roles": [
+        "docente"
+      ],
+      "salt": "i3Ufzqk/BT7sT7kfvvBxjg==",
+      "uk": {
+        "iv": "qW92lJ9U0fNu5SiP",
+        "ct": "m6YrUZ0bXGoBBiiQ0PqKsj3Dx49jgXTmvWRsa5zIpVjvAc1LX4mEqk3nPPngSN3Z"
+      },
+      "keys": {
+        "dibujo-computarizado": {
+          "iv": "uoROH+26G6Sl/mx+",
+          "ct": "Yx9IIhHpNXpTjo81kcgf/ZmlH50JhJ3SibHdiM89kppM/2zGkWltojsyl17jRFYc"
+        },
+        "dsm": {
+          "iv": "mnLj+/Ru82o9oh/A",
+          "ct": "wKZcZKKnlczFKgMQM1jIgKiu6VvuC8WQvLqq9urZ+TpccGdtMQI3PyebEinMfF1N"
+        },
+        "precision-engineering": {
+          "iv": "eneE9Agk/+/oGwFt",
+          "ct": "Xd3qT+CYqO+SVZzOTBKuctnJMAd2QsqHK9eiEfUBOsEu1qzwRyMMPtWQraxhJuaj"
+        }
+      }
+    }
+  ]
+}

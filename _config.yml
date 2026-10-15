@@ -1,0 +1,7 @@
+# GitHub Pages (Jekyll). El sitio se publica tal cual: no hay plantillas ni front matter.
+# Las carpetas que empiezan con "_" no se publican nunca (_privado/ guarda las fuentes de cursos protegidos).
+exclude:
+  - _privado
+  - tools
+  - docs
+  - README.md

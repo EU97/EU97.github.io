@@ -40,6 +40,7 @@
 .res__t { font-weight: 600; font-size: .95rem; }
 .res__lock { display: inline-flex; align-items: center; gap: .3rem; font: 600 .66rem var(--font-mono); color: var(--accent); }
 .res__lock svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+.res__lock--open { color: var(--ok); }
 .res__go { color: var(--primary); font-weight: 600; }
 .res--soon { opacity: .6; grid-template-columns: 7.5rem 1fr auto; }
 .res__soon { font: 500 .7rem var(--font-mono); color: var(--ink-3); }

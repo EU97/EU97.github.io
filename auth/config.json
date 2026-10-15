@@ -1,0 +1,7 @@
+{
+  "_note": "Proveedor de autenticación y llaves. local = auth/users.json (Fase 5/6). oracle = API REST (ORDS) sobre Oracle Autonomous Database + OCI Vault; ver docs/AUTH.md.",
+  "adapter": "local",
+  "users": "/auth/users.json",
+  "sessionHours": 8,
+  "oracle": { "endpoint": null }
+}

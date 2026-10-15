@@ -3,102 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ruta del curso DSM · Matriz de Diseño Axiomático">
-  <title>Curso · DSM · Matriz de Diseño Axiomático</title>
-  <link rel="stylesheet" href="/styles/main.css">
-  <style>
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 20% 20%, rgba(0, 212, 255, 0.2), transparent 40%),
-                  radial-gradient(circle at 80% 0%, rgba(123, 104, 238, 0.22), transparent 45%),
-                  var(--bg-primary);
-    }
-
-    .course-shell {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 6rem 1rem 2rem;
-    }
-
-    .course-panel {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 1.1rem;
-      background: rgba(20, 24, 36, 0.72);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 212, 255, 0.15) inset;
-      overflow: hidden;
-    }
-
-    .course-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.25rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .course-header h1 {
-      margin: 0;
-      font-size: clamp(1.4rem, 3.2vw, 2rem);
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .course-links {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .course-links a {
-      border: 1px solid var(--border-color);
-      border-radius: 999px;
-      padding: 0.45rem 0.95rem;
-      color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.04);
-      font-weight: 600;
-    }
-
-    .course-frame {
-      width: 100%;
-      height: min(75vh, 900px);
-      border: 0;
-      display: block;
-      background: #fff;
-    }
-
-    @media (max-width: 640px) {
-      .course-shell { padding-top: 5rem; }
-      .course-frame { height: 70vh; }
-    }
-  </style>
-</head>
-<body>
-  <main class="course-shell">
-    <section class="course-panel">
-      <header class="course-header">
-        <div>
-          <p class="section-badge">Curso / DSM</p>
-          <h1>DSM · Matriz de Diseño Axiomático</h1>
-        </div>
-        <nav class="course-links" aria-label="Enlaces del curso">
-          <a href="/cursos/dsm/matriz-diseno-axiomatica.html" target="_blank" rel="noopener noreferrer">Abrir HTML del curso</a>
-          <a href="/cursos/">Volver a actividades</a>
-          <button class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Cambiar tema">🌙 Dark</button>
-        </nav>
-      </header>
-      <iframe
-        class="course-frame"
-        src="/cursos/dsm/matriz-diseno-axiomatica.html"
-        title="Matriz de Diseño Axiomático"
-        loading="lazy"
-      ></iframe>
-    </section>
-  </main>
+  <meta name="robots" content="noindex">
+  <title>Curso · DSM · Matriz de Diseño Axiomático · EU97</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/styles/hub.css">
   <script src="/scripts/theme.js"></script>
+</head>
+<body class="vault" data-state="loading">
+  <div data-topbar data-active="cursos"></div>
+  <main class="container">
+    <header class="hub-head vault__gate">
+      <span class="eyebrow" data-i18n="vault.k"></span>
+      <h1>Curso · DSM · Matriz de Diseño Axiomático</h1>
+      <p class="lede" data-i18n="vault.lede"></p>
+      <p class="vault__actions">
+        <button class="btn btn--primary" id="vault-login" type="button" data-i18n="vault.go"></button>
+        <a class="btn btn--ghost" href="/cursos/" data-i18n="vault.back"></a>
+      </p>
+      <p class="vault__msg" id="vault-msg" role="status"></p>
+    </header>
+  </main>
+  <script type="application/json" id="eu97-vault">{"v":1,"alg":"AES-GCM","zip":"gzip","kid":"dsm","title":"Curso · DSM · Matriz de Diseño Axiomático","iv":"uYhyF6zxrBUOKGEA","ct":"pihYTlWELcks4hU5s2p40rMYPPDGq5XPbd7OsC3ULAMP+dZQM3M8KsvkFVqHiKzDFasgHyyiJgq1U1ItgHrqLn2NIHf7Vj/9LWrF89TTeQMjGPDSCg7GGC23J/Rz9FlNV7fuWlWfxL//mSvbJw3SUJuFyTkIpcVsYZMFEAbQKNyeJYnt/73oQR5di2NPS9i0gg2owgWCp8n7TbJUdFo3wpiUbNaKga9MwH14jj8Dpwf/qOqYh9PA15LKjyA1eJ/VQrA1P4QBMoMIS+PFUN0RE1qdxvrcoRTNCNHEc4YK8wkc4EWSzOsDkssvBmhOj9tPUBshXbyYbfwFT2jmUta1GK/pWtXcl4yeEF31PxUgQT5Lt2dqotv706zsmTDMRmXqv6qouevBAwapDmp2yCf4K+1DxTY+wfuZ+1tYjvY5GPMp8keTDyh0B8f8cRIM0cmd3rILhIUeggtE4Vp/iylFIKkPreo7XqAY8LHODztTUu2135W8hJ5+EJDQxHRugftihd67wNjGQpG07cnjdiHLSfOEwbtoGfCJFSudog0Q1ayVzjQrIiNIgvKMi+UaTvw8CcTFx5jB/A2kMwEY4VGtmGQqPZYCl8NxwjDZyKXPJVGSWhsTnVdPGC/RlhhyMTxqM9UzJbJOVYTIJmG20CT4WGEiZfpEOjp9nOl7HYpmysXR8DUJGxolMpQqEY8H48EHFy88gk7vQT3oWDHjDAYXIXjEeDhjsP9OLNqMgxd2FekGioNU9leWyJkRhoQIhbbRySOXUhtZXjKpI5miZN+bhK5yZ1NbYWb3A5naThsWOAGFwQZyXOZWiDZ92lshQhklUN1xgX/NVEqewVXg19UE7ha6lweSJoMaYoLvymxQQ5tRRozzT+vDhP6/5FwsWiQh0WjEKlmTq/ZOFeR9h3BvMkFfkzYmNI1bnZYzAeRVISONSEt1deVXBOJ0t/L0tgU0wRFmst7xLCR9N6FU4zBuQVTm0k55pk7b3TA83k+rXNgYrxSkuEg+wEO5aEK83MENiB84JSTKkNs98edMjCJ5VIw0tiSWZ3T/VSycFdS2YlURPZnoFLSXF9AeFAy7Y8yReqd86kUeVI3SnBu9l3oy4OTlxZmqMCNjcZBpxeVOcOX3W4dAPNd5LEsg48wGfOPIIyFsjRA41oaryyT3DfzvTfpINHnChc4FLMRufgVyoYLoFDCg0npxZTkuJmOcHInBApwqP+Tw/N5wzDhMBE66kKY9JcdGEgBFTCag0eI59weMkBQypuOMKjspfB/HbJ7aBI7q7m7QAsnkZHL6sHBh3yVdid3eWtPmDOuUGBJ9PQR1rCM5p0zxNocheeFIj0Hs/IO8e3JvKnw8B56CTr0poirSXmBBge1B5HUHEqQEMTV3wiJxwdp0rjjUpgBQ6LiT4WaofuCkBg3GN3I3or5VGoW1LNiBCOoghAmY+5fA7619A+Ws8Uwm4eNfJJPR5WdIClaybGv7ogsdBLbtWHUOt6wKJJlowOJ9WJmwwOhwxzJaRbGebJZ3obtPiP4RHv8q7c96nFXFHMUIcofnQTA+Et6DZUYVOPzviA7WVb2Yu940kr0OHqkFvqIf6qbkbWDPX90jSLdXI+eO2vmiuZB8BF2pdX2sLFRGFnSSvTc7FC5tvio3nBFWoI0yITZE69yqgldLn1Ltsg5NoASeR9C7ak0KdtLQaQ=="}</script>
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script src="/scripts/auth.js"></script>
+  <script src="/scripts/vault.js"></script>
 </body>
 </html>

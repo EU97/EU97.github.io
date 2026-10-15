@@ -14,14 +14,14 @@
   SiteI18n.add({
     es: {
       'hub.all': 'Todas', 'hub.search': 'Buscar curso o recurso', 'hub.empty': 'No hay resultados con ese filtro.',
-      'hub.draft': 'Borrador', 'hub.soon': 'Próximamente', 'hub.login': 'Alumnos', 'hub.login.t': 'Requerirá cuenta de alumno',
+      'hub.draft': 'Borrador', 'hub.soon': 'Próximamente', 'hub.login': 'Alumnos', 'hub.login.t': 'Requiere cuenta de alumno', 'hub.open.ok': 'Desbloqueado',
       'hub.open': 'Abrir curso', 'hub.repo': 'Repositorio', 'hub.view': 'Ver',
       'type.presentation': 'Presentación', 'type.assignment': 'Tarea', 'type.interactive': 'Interactivo', 'type.procedure': 'Procedimiento',
       'type.reference': 'Referencia', 'type.tool': 'Herramienta'
     },
     en: {
       'hub.all': 'All', 'hub.search': 'Search course or resource', 'hub.empty': 'No results for that filter.',
-      'hub.draft': 'Draft', 'hub.soon': 'Coming soon', 'hub.login': 'Students', 'hub.login.t': 'Will require a student account',
+      'hub.draft': 'Draft', 'hub.soon': 'Coming soon', 'hub.login': 'Students', 'hub.login.t': 'Requires a student account', 'hub.open.ok': 'Unlocked',
       'hub.open': 'Open course', 'hub.repo': 'Repository', 'hub.view': 'View',
       'type.presentation': 'Presentation', 'type.assignment': 'Assignment', 'type.interactive': 'Interactive', 'type.procedure': 'Procedure',
       'type.reference': 'Reference', 'type.tool': 'Tool'
@@ -42,14 +42,18 @@
   };
   const icon = k => `<svg class="hub-ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[k] || ICON.spark}</svg>`;
   const lock = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  const unlock = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>';
 
   let data = null, area = 'all', query = '';
   const $ = id => document.getElementById(id);
 
   // ---------- Cursos ----------
-  function itemRow(it) {
+  function itemRow(it, kid) {
     const type = `<span class="res__type">${esc(SiteI18n.t('type.' + it.type))}</span>`;
-    const acc = it.access === 'login' ? `<span class="res__lock" title="${esc(SiteI18n.t('hub.login.t'))}">${lock}${esc(SiteI18n.t('hub.login'))}</span>` : '';
+    const open = it.access === 'login' && window.SiteAuth?.has(kid);
+    const acc = it.access !== 'login' ? ''
+      : open ? `<span class="res__lock res__lock--open">${unlock}${esc(SiteI18n.t('hub.open.ok'))}</span>`
+      : `<span class="res__lock" title="${esc(SiteI18n.t('hub.login.t'))}">${lock}${esc(SiteI18n.t('hub.login'))}</span>`;
     if (!it.url) return `<li class="res res--soon">${type}<span class="res__t">${esc(tr(it.title))}</span><span class="res__soon">${esc(SiteI18n.t('hub.soon'))}</span></li>`;
     return `<li class="res"><a href="${esc(it.url)}">${type}<span class="res__t">${esc(tr(it.title))}</span>${acc}<span class="res__go" aria-hidden="true">→</span></a></li>`;
   }
@@ -81,7 +85,7 @@
               <p>${esc(tr(c.description))}</p>
               ${c.url ? `<a class="course__open" href="${esc(c.url)}">${esc(SiteI18n.t('hub.open'))} →</a>` : ''}
             </div>
-            <ul class="course__res">${c.items.map(itemRow).join('')}</ul>
+            <ul class="course__res">${c.items.map(it => itemRow(it, c.id)).join('')}</ul>
           </article>`).join('')}
         </div>
       </section>`;
@@ -123,7 +127,7 @@
       <a class="eyebrow" href="/cursos/#${esc(area.id)}">${esc(tr(area.title))}</a>
       <h1>${esc(tr(course.title))}</h1>
       <p class="lede">${esc(tr(course.description))}</p>`;
-    $('hub').innerHTML = `<ul class="course__res course__res--page">${course.items.filter(i => i.url !== course.url).map(itemRow).join('')}</ul>
+    $('hub').innerHTML = `<ul class="course__res course__res--page">${course.items.filter(i => i.url !== course.url).map(it => itemRow(it, course.id)).join('')}</ul>
       <p class="mono"><a href="/cursos/">← ${esc(SiteI18n.t('topbar.courses'))}</a></p>`;
   }
 
@@ -154,4 +158,5 @@
     }).catch(() => { $('hub').innerHTML = '<p class="hub-empty">No se pudo cargar el catálogo.</p>'; body.dataset.state = 'error'; });
   }
   document.addEventListener('languageChanged', render);
+  document.addEventListener('auth:change', render);
 })();
