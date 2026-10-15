@@ -38,6 +38,7 @@
     chip: '<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
     swarm: '<circle cx="6" cy="7" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="17" cy="9" r="1.6"/><circle cx="8" cy="15" r="1.6"/><circle cx="15" cy="16" r="1.6"/><path d="M12 12l6 6"/>',
     bolt: '<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>',
+    cube: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
     spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/>'
   };
   const icon = k => `<svg class="hub-ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[k] || ICON.spark}</svg>`;

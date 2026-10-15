@@ -42,6 +42,7 @@
       'a.t1': 'Docencia y cursos', 'a.d1': 'Profesor Asociado en FIME-UANL: metrología, sistemas eléctricos y aerodinámica.',
       'a.t2': 'Herramientas y simuladores', 'a.d2': 'Calculadoras e instrumentos de vuelo interactivos para formación técnica.',
       'a.t3': 'Código abierto', 'a.d3': 'Firmware de adquisición, análisis de rugosidad y optimización en GitHub.',
+      'a.t4': 'Blog', 'a.d4': 'Notas técnicas y divulgación con ejemplos interactivos.',
       'k.title': '¿Tienes un problema de medición, control o validación?',
       'k.lede': 'Cuéntame qué pasa en tu proceso. En la primera conversación definimos si se puede medir, qué datos faltan y cómo se validaría la solución.',
       'f.copy': '© 2023–2026 Edgar Ulises Rojo Rodriguez'
@@ -73,6 +74,7 @@
       'a.t1': 'Teaching and courses', 'a.d1': 'Associate Professor at FIME-UANL: metrology, electrical systems and aerodynamics.',
       'a.t2': 'Tools and simulators', 'a.d2': 'Interactive calculators and flight instruments for technical training.',
       'a.t3': 'Open source', 'a.d3': 'Acquisition firmware, roughness analysis and optimization on GitHub.',
+      'a.t4': 'Blog', 'a.d4': 'Technical notes and outreach with interactive examples.',
       'k.title': 'Have a measurement, control or validation problem?',
       'k.lede': 'Tell me what is happening in your process. In the first conversation we define whether it can be measured, which data is missing and how the solution would be validated.',
       'f.copy': '© 2023–2026 Edgar Ulises Rojo Rodriguez'

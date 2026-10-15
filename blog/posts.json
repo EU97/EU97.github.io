@@ -1,0 +1,31 @@
+{
+  "updated": "2026-10-15",
+  "posts": [
+    {
+      "url": "/blog/posts/flujo-potencial-cilindro.html",
+      "title": "Flujo potencial alrededor de un cilindro: la física detrás de la portada",
+      "description": "Las partículas que rodean la foto en la portada no son decoración: siguen la solución analítica del flujo ideal alrededor de un cilindro. Qué muestra, qué deja fuera y por qué importa el túnel de viento.",
+      "date": "2026-10-15",
+      "tags": [
+        "aerodinámica",
+        "simulación",
+        "divulgación"
+      ],
+      "lang": "es",
+      "minutes": 2
+    },
+    {
+      "url": "/blog/posts/celda-de-medicion-cinematica.html",
+      "title": "Cómo palpa la celda de medición: cinemática inversa en pocas líneas",
+      "description": "El brazo de la sección «En acción» resuelve, en cada cuadro, qué ángulos necesita para llevar el palpador a un punto. Así funciona la cinemática inversa de dos eslabones y el ciclo de palpado de una CMM.",
+      "date": "2026-10-14",
+      "tags": [
+        "cinemática",
+        "metrología",
+        "simulación"
+      ],
+      "lang": "es",
+      "minutes": 2
+    }
+  ]
+}

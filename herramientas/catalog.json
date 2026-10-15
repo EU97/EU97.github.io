@@ -15,6 +15,24 @@
       },
       "items": [
         {
+          "id": "visor-3d",
+          "icon": "cube",
+          "title": {
+            "es": "Visor 3D de ensambles",
+            "en": "3D assembly viewer"
+          },
+          "description": {
+            "es": "Piezas STL con material, vista explosionada animada y aislamiento de piezas.",
+            "en": "STL parts with material, animated exploded view and part isolation."
+          },
+          "url": "/herramientas/visor-3d/",
+          "tags": [
+            "three.js",
+            "STL",
+            "CAD"
+          ]
+        },
+        {
           "id": "instrumentos-vuelo",
           "icon": "gauge",
           "title": {

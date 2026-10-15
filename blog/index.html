@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — EU97</title>
+  <meta name="description" content="Notas técnicas y divulgación sobre metrología, control, aeronáutica y simulación.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/styles/hub.css">
+  <link rel="stylesheet" href="/styles/post.css">
+  <script src="/scripts/theme.js"></script>
+</head>
+<body data-hub="blog">
+  <div data-topbar data-active="blog"></div>
+  <main class="container">
+    <header class="hub-head">
+      <span class="eyebrow" data-i18n="bl.eyebrow"></span>
+      <h1 data-i18n-html="bl.title"></h1>
+      <p class="lede" data-i18n="bl.lede"></p>
+    </header>
+    <div class="hub-controls"><div class="filters" id="tags" role="group"></div></div>
+    <div class="blog-list" id="posts" aria-live="polite"></div>
+  </main>
+  <footer class="footer"><div class="container"><p>© 2023–2026 Edgar Ulises Rojo Rodriguez · <a href="/">EU97</a></p></div></footer>
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script>
+    SiteI18n.add({
+      es: { 'bl.eyebrow': 'Blog · divulgación', 'bl.title': 'Notas <span>técnicas</span>', 'bl.lede': 'Cómo funcionan las cosas que construyo: metrología, control, aeronáutica y simulación, explicadas con ejemplos interactivos.', 'bl.all': 'Todos', 'bl.min': 'min', 'bl.empty': 'Aún no hay posts con esa etiqueta.' },
+      en: { 'bl.eyebrow': 'Blog · outreach', 'bl.title': 'Technical <span>notes</span>', 'bl.lede': 'How the things I build work: metrology, control, aeronautics and simulation, explained with interactive examples.', 'bl.all': 'All', 'bl.min': 'min', 'bl.empty': 'No posts with that tag yet.' }
+    });
+    (() => {
+      const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      let posts = [], tag = decodeURIComponent(location.hash.slice(1));
+      const date = iso => new Date(iso + 'T12:00:00').toLocaleDateString(SiteI18n.lang() === 'en' ? 'en-US' : 'es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+      function render() {
+        const tags = [...new Set(posts.flatMap(p => p.tags))].sort((a, b) => a.localeCompare(b));
+        if (tag && !tags.includes(tag)) tag = '';
+        document.getElementById('tags').innerHTML = [['', SiteI18n.t('bl.all')], ...tags.map(t => [t, t])]
+          .map(([id, t]) => `<button class="chip" type="button" data-tag="${esc(id)}" aria-pressed="${id === tag}">${esc(t)}</button>`).join('');
+        const shown = posts.filter(p => !tag || p.tags.includes(tag));
+        document.getElementById('posts').innerHTML = shown.length ? shown.map(p => `
+          <a class="blog-item" href="${esc(p.url)}">
+            <time datetime="${esc(p.date)}">${esc(date(p.date))}</time>
+            <div><h2>${esc(p.title)}</h2><p>${esc(p.description)}</p>
+              <div class="blog-item__tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div></div>
+            <span class="blog-item__min">${p.minutes} ${SiteI18n.t('bl.min')}</span>
+          </a>`).join('') : `<p class="hub-empty">${SiteI18n.t('bl.empty')}</p>`;
+      }
+      document.getElementById('tags').addEventListener('click', e => {
+        const b = e.target.closest('[data-tag]'); if (!b) return;
+        tag = b.dataset.tag; history.replaceState(null, '', tag ? '#' + encodeURIComponent(tag) : location.pathname); render();
+      });
+      addEventListener('hashchange', () => { tag = decodeURIComponent(location.hash.slice(1)); render(); });
+      document.addEventListener('languageChanged', render);
+      fetch('/blog/posts.json').then(r => r.json()).then(j => { posts = j.posts; render(); document.body.dataset.state = 'ready'; })
+        .catch(() => { document.body.dataset.state = 'error'; });
+    })();
+  </script>
+</body>
+</html>

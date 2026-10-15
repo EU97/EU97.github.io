@@ -6,8 +6,17 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 - `404.html`
 - `CMindex.html`
+- `_privado/cursos/dibujo-computarizado/S01-fundamentos-cad.html`
+- `_privado/cursos/dibujo-computarizado/T01-etapas-diseno.html`
+- `_privado/cursos/dsm/index.html`
+- `_privado/cursos/dsm/matriz-diseno-axiomatica.html`
+- `_privado/cursos/ingenieria-precision/act4/index.html`
+- `_privado/cursos/ingenieria-precision/act4/metodologia.html`
 - `addons/Metodologia_Actividad4.html`
 - `addons/S01-fundamentos-cad.html`
+- `blog/index.html`
+- `blog/posts/celda-de-medicion-cinematica.html`
+- `blog/posts/flujo-potencial-cilindro.html`
 - `curso/DSM/index.html`
 - `curso/DSM/matriz-diseno-axiomatica.html`
 - `curso/Dibujo Computarizado/T01-etapas-diseno.html`
@@ -29,6 +38,7 @@ Generado con `node tools/check-links.mjs --inventory`.
 - `herramientas/index.html`
 - `herramientas/instrumentos-vuelo/index.html`
 - `herramientas/sistemas-aeronave/index.html`
+- `herramientas/visor-3d/index.html`
 - `index.html`
 - `projects/aero-messure.html`
 - `projects/aircraft-systems.html`
@@ -68,6 +78,32 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 - `/proyectos/ciencia-magica.html`
 
+### _privado/cursos/dibujo-computarizado/S01-fundamentos-cad.html
+
+- `/scripts/sim-bar.js`
+
+### _privado/cursos/dibujo-computarizado/T01-etapas-diseno.html
+
+- `/scripts/sim-bar.js`
+
+### _privado/cursos/dsm/index.html
+
+- `/styles/main.css`
+- `/cursos/dsm/matriz-diseno-axiomatica.html`
+- `/cursos/`
+- `/scripts/theme.js`
+
+### _privado/cursos/dsm/matriz-diseno-axiomatica.html
+
+- `/scripts/sim-bar.js`
+
+### _privado/cursos/ingenieria-precision/act4/index.html
+
+- `/styles/main.css`
+- `/cursos/ingenieria-precision/act4/metodologia.html`
+- `/cursos/`
+- `/scripts/theme.js`
+
 ### addons/Metodologia_Actividad4.html
 
 - `/cursos/ingenieria-precision/act4/metodologia.html`
@@ -75,6 +111,26 @@ Generado con `node tools/check-links.mjs --inventory`.
 ### addons/S01-fundamentos-cad.html
 
 - `/cursos/dibujo-computarizado/S01-fundamentos-cad.html`
+
+### blog/index.html
+
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/styles/post.css`
+- `/scripts/theme.js`
+- `/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+
+### blog/posts/celda-de-medicion-cinematica.html
+
+- `/scripts/post.js`
+- `/#laboratorio`
+
+### blog/posts/flujo-potencial-cilindro.html
+
+- `/scripts/post.js`
 
 ### curso/DSM/index.html
 
@@ -106,11 +162,27 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 ### cursos/dibujo-computarizado/S01-fundamentos-cad.html
 
-- `/scripts/sim-bar.js`
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
 
 ### cursos/dibujo-computarizado/T01-etapas-diseno.html
 
-- `/scripts/sim-bar.js`
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
 
 ### cursos/dibujo-computarizado/index.html
 
@@ -128,14 +200,27 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 ### cursos/dsm/index.html
 
-- `/styles/main.css`
-- `/cursos/dsm/matriz-diseno-axiomatica.html`
-- `/cursos/`
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
 - `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
 
 ### cursos/dsm/matriz-diseno-axiomatica.html
 
-- `/scripts/sim-bar.js`
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
 
 ### cursos/index.html
 
@@ -150,10 +235,27 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 ### cursos/ingenieria-precision/act4/index.html
 
-- `/styles/main.css`
-- `/cursos/ingenieria-precision/act4/metodologia.html`
-- `/cursos/`
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
 - `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
+
+### cursos/ingenieria-precision/act4/metodologia.html
+
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/scripts/theme.js`
+- `/cursos/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/auth.js`
+- `/scripts/vault.js`
 
 ### cursos/taller-mecatronica/index.html
 
@@ -196,6 +298,19 @@ Generado con `node tools/check-links.mjs --inventory`.
 - `/`
 - `/scripts/sim-bar.js`
 
+### herramientas/visor-3d/index.html
+
+- `/images/favicon/favicon-32x32.png`
+- `/styles/site.css`
+- `/styles/hub.css`
+- `/scripts/theme.js`
+- `/herramientas/`
+- `/`
+- `/scripts/i18n.js`
+- `/scripts/topbar.js`
+- `/scripts/viewer3d.js`
+- `/scripts/assembly-viewer.js`
+
 ### index.html
 
 - `/images/favicon/favicon-32x32.png`
@@ -206,6 +321,7 @@ Generado con `node tools/check-links.mjs --inventory`.
 - `/cursos/`
 - `/herramientas/`
 - `/herramientas/#codigo-abierto`
+- `/blog/`
 - `/scripts/i18n.js`
 - `/scripts/topbar.js`
 - `/scripts/viewer3d.js`
@@ -347,6 +463,7 @@ Generado con `node tools/check-links.mjs --inventory`.
 
 ### herramientas/catalog.json
 
+- `/herramientas/visor-3d/`
 - `/herramientas/instrumentos-vuelo/`
 - `/herramientas/garmin-g1000/`
 - `/herramientas/sistemas-aeronave/`

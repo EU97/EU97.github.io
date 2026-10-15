@@ -12,7 +12,7 @@ function walk(dir, out = []) {
     if (SKIP.has(name)) continue;
     const full = path.join(dir, name);
     if (statSync(full).isDirectory()) walk(full, out);
-    else if (name.endsWith('.html')) out.push(full);
+    else if (name.endsWith('.html') && !name.startsWith('_')) out.push(full); // _plantilla.html y similares no se publican
   }
   return out;
 }

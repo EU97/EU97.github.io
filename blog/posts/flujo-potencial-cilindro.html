@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Flujo potencial alrededor de un cilindro: la física detrás de la portada</title>
+  <meta name="description" content="Las partículas que rodean la foto en la portada no son decoración: siguen la solución analítica del flujo ideal alrededor de un cilindro. Qué muestra, qué deja fuera y por qué importa el túnel de viento.">
+  <meta name="post:date" content="2026-10-15">
+  <meta name="post:tags" content="aerodinámica, simulación, divulgación">
+  <script src="/scripts/post.js"></script>
+</head>
+<body>
+  <article>
+    <p>Si entras a la portada de este sitio verás partículas que fluyen de izquierda a derecha y se abren alrededor de la figura central. No es un efecto aleatorio: cada partícula se mueve con la velocidad que da una de las soluciones más clásicas de la mecánica de fluidos, el <strong>flujo potencial alrededor de un cilindro</strong>.</p>
+
+    <h2>La idea: sumar dos flujos simples</h2>
+    <p>En un fluido ideal (sin viscosidad y sin remolinos) los flujos se pueden sumar. Si a un flujo uniforme de velocidad <em>U</em> le añadimos un <em>doblete</em> —una fuente y un sumidero infinitamente juntos— aparece una línea de corriente cerrada con forma de círculo de radio <em>R</em>. Esa línea se comporta como la pared de un cilindro: el fluido la rodea sin atravesarla.</p>
+    <div class="eq">u = U · (1 − R²(x² − y²) / r⁴) &nbsp;&nbsp;·&nbsp;&nbsp; v = −2 U R² x y / r⁴</div>
+    <p>Con esas dos expresiones basta para mover miles de partículas en el navegador: en cada cuadro, cada partícula avanza <code>(u·dt, v·dt)</code>.</p>
+
+    <div class="demo">
+      <canvas id="flow-demo" aria-label="Simulación de flujo potencial alrededor de un cilindro"></canvas>
+      <div class="demo__ctrl">
+        <label>Velocidad U <input id="fd-u" type="range" min="20" max="160" value="70"></label>
+        <label>Radio R <input id="fd-r" type="range" min="20" max="110" value="60"></label>
+        <label><input id="fd-lines" type="checkbox"> Líneas de corriente</label>
+        <span id="fd-read">|V|/U bajo el cursor: —</span>
+      </div>
+    </div>
+    <p><small>Mueve el cursor sobre la simulación para leer la velocidad local relativa a <em>U</em>.</small></p>
+
+    <h2>Qué se ve</h2>
+    <ul>
+      <li><strong>Dos puntos de estancamiento</strong>, al frente y atrás del cilindro, donde la velocidad es cero.</li>
+      <li><strong>La velocidad máxima es 2U</strong> justo arriba y abajo del cilindro. Por eso en la portada las partículas cambian a naranja ahí: el código colorea las que superan 1.55 U.</li>
+      <li><strong>Simetría perfecta</strong> entre el frente y la parte trasera.</li>
+    </ul>
+
+    <h2>Lo que este modelo no dice</h2>
+    <p>Esa simetría es justamente su límite. Si la presión es igual adelante y atrás, la fuerza neta sobre el cilindro es cero: es la <em>paradoja de d'Alembert</em>. En un fluido real la viscosidad forma una capa límite que se desprende, aparece una estela y con ella el arrastre.</p>
+    <blockquote>Un modelo ideal sirve para entender; para decidir hay que medir.</blockquote>
+    <p>Por eso en proyectos reales —como la validación de un UAV convertible en la University of Southampton— los modelos numéricos (CFD) se correlacionan con ensayos en túnel de viento antes de confiar en ellos. El flujo potencial es el primer escalón: rápido, exacto dentro de sus supuestos y perfecto para explicar.</p>
+
+    <h2>El código</h2>
+<pre><code>// velocidad del flujo potencial alrededor de un cilindro (cx, cy, R)
+const vel = (x, y) => {
+  const dx = x - cx, dy = y - cy, r2 = dx * dx + dy * dy;
+  if (r2 &lt; R * R) return [0, 0];           // dentro del cilindro
+  const k = (R * R) / (r2 * r2);
+  return [U * (1 - k * (dx * dx - dy * dy)), -U * 2 * k * dx * dy];
+};</code></pre>
+    <p>La versión completa de la portada está en <a href="https://github.com/EU97/EU97.github.io/blob/main/scripts/hero.js">scripts/hero.js</a>.</p>
+
+    <script>
+      (() => {
+        const c = document.getElementById('flow-demo'), ctx = c.getContext('2d');
+        const $ = id => document.getElementById(id);
+        const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let W, H, cx, cy, U = 70, R = 60, P = [];
+        const vel = (x, y) => {
+          const dx = x - cx, dy = y - cy, r2 = dx * dx + dy * dy;
+          if (r2 < R * R) return [0, 0];
+          const k = (R * R) / (r2 * r2);
+          return [U * (1 - k * (dx * dx - dy * dy)), -U * 2 * k * dx * dy];
+        };
+        const spawn = (p, any) => { p.x = any ? Math.random() * W : -5; p.y = Math.random() * H; };
+        function size() {
+          const dpr = Math.min(devicePixelRatio || 1, 2), r = c.getBoundingClientRect();
+          W = r.width; H = r.height; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          cx = W * .45; cy = H / 2; P = Array.from({ length: 420 }, () => { const p = {}; spawn(p, true); return p; });
+        }
+        function body() {
+          ctx.fillStyle = css('--surface-2'); ctx.strokeStyle = css('--primary'); ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = css('--accent');
+          [[cx - R, cy], [cx + R, cy]].forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill(); });
+        }
+        function lines() {
+          ctx.strokeStyle = css('--line-strong'); ctx.lineWidth = 1; ctx.globalAlpha = .9;
+          for (let i = 0; i <= 24; i++) {
+            let x = 0, y = (i / 24) * H; ctx.beginPath(); ctx.moveTo(x, y);
+            for (let s = 0; s < 800 && x < W; s++) { const [u, v] = vel(x, y), m = Math.hypot(u, v) || 1; x += u / m * 3; y += v / m * 3; ctx.lineTo(x, y); }
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+        }
+        let last = 0;
+        function tick(now) {
+          const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+          ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(0, 0, W, H);
+          ctx.globalCompositeOperation = 'source-over';
+          if ($('fd-lines').checked) lines();
+          const prim = css('--primary'), hot = css('--accent');
+          for (const p of P) {
+            const [u, v] = vel(p.x, p.y), sp = Math.hypot(u, v) / U;
+            const nx = p.x + u * dt, ny = p.y + v * dt;
+            ctx.strokeStyle = sp > 1.55 ? hot : prim; ctx.globalAlpha = Math.min(.9, .25 + sp * .3);
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nx, ny); ctx.stroke();
+            p.x = nx; p.y = ny;
+            if (p.x > W + 5 || p.y < -5 || p.y > H + 5 || (u === 0 && v === 0)) spawn(p, false);
+          }
+          ctx.globalAlpha = 1; body();
+          if (!reduce) requestAnimationFrame(tick);
+        }
+        function still() { ctx.clearRect(0, 0, W, H); lines(); body(); }
+        $('fd-u').oninput = e => { U = +e.target.value; if (reduce) still(); };
+        $('fd-r').oninput = e => { R = +e.target.value; if (reduce) still(); };
+        $('fd-lines').onchange = () => { if (reduce) still(); };
+        c.addEventListener('pointermove', e => {
+          const r = c.getBoundingClientRect(), [u, v] = vel(e.clientX - r.left, e.clientY - r.top);
+          $('fd-read').textContent = `|V|/U bajo el cursor: ${(Math.hypot(u, v) / U).toFixed(2)}`;
+        });
+        new ResizeObserver(() => { size(); if (reduce) still(); }).observe(c);
+        size();
+        if (reduce) { $('fd-lines').checked = true; still(); } else requestAnimationFrame(tick);
+      })();
+    </script>
+  </article>
+</body>
+</html>

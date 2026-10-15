@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cómo palpa la celda de medición: cinemática inversa en pocas líneas</title>
+  <meta name="description" content="El brazo de la sección «En acción» resuelve, en cada cuadro, qué ángulos necesita para llevar el palpador a un punto. Así funciona la cinemática inversa de dos eslabones y el ciclo de palpado de una CMM.">
+  <meta name="post:date" content="2026-10-14">
+  <meta name="post:tags" content="cinemática, metrología, simulación">
+  <script src="/scripts/post.js"></script>
+</head>
+<body>
+  <article>
+    <p>En la sección <a href="/#laboratorio">«En acción»</a> de la portada hay un brazo que sigue el cursor y mide puntos sobre una brida. Para que el palpador llegue exactamente a donde apuntas, el programa resuelve en cada cuadro el problema inverso de un robot: <strong>dado un punto, ¿qué ángulos necesitan las articulaciones?</strong></p>
+
+    <h2>De 3D a un plano</h2>
+    <p>El brazo tiene una base que gira (guiñada) y tres articulaciones en un mismo plano vertical: hombro, codo y muñeca. El truco es separar el problema:</p>
+    <ol>
+      <li>La <strong>base</strong> gira hasta apuntar al objetivo: <code>θ₀ = atan2(Δz, Δx)</code>.</li>
+      <li>Lo que queda es un brazo de <strong>dos eslabones en un plano</strong> (L₁ y L₂) que debe alcanzar un punto a distancia horizontal <em>r</em> y altura <em>y</em>.</li>
+      <li>La <strong>muñeca</strong> se encarga de que el palpador quede siempre vertical, como en una máquina de medición por coordenadas.</li>
+    </ol>
+
+    <h2>La ley de cosenos hace el trabajo</h2>
+    <p>Con la distancia <em>d</em> del hombro al objetivo, el ángulo del codo sale directo de la ley de cosenos, y el del hombro de restar dos ángulos:</p>
+    <div class="eq">cos θ₂ = (d² − L₁² − L₂²) / (2 L₁ L₂) &nbsp;·&nbsp; θ₁ = atan2(y, r) − atan2(L₂ sen θ₂, L₁ + L₂ cos θ₂) &nbsp;·&nbsp; θ₃ = −90° − θ₁ − θ₂</div>
+    <p>Hay dos soluciones (codo arriba o codo abajo); la celda usa <em>codo arriba</em> tomando θ₂ negativo. Si el punto queda fuera del alcance (<em>d</em> &gt; L₁ + L₂), el objetivo se recorta al borde del área de trabajo.</p>
+
+    <div class="demo">
+      <canvas id="ik-demo" aria-label="Brazo de dos eslabones que sigue el cursor"></canvas>
+      <div class="demo__ctrl">
+        <span id="ik-read">θ₁ = — · θ₂ = — · θ₃ = —</span>
+        <label><input id="ik-down" type="checkbox"> Codo abajo</label>
+        <span>Clic sobre la línea gris para palpar</span>
+      </div>
+    </div>
+
+    <h2>El ciclo de palpado</h2>
+    <p>Una CMM con palpador de disparo no «ve» la pieza: la toca. La celda imita ese ciclo en cuatro fases, cada una con su propia interpolación suave:</p>
+    <ul>
+      <li><strong>Aproximación</strong> a un punto 34 mm por encima de la superficie.</li>
+      <li><strong>Descenso</strong> lento hasta el contacto.</li>
+      <li><strong>Registro</strong>: se guarda la coordenada y se compara con la nominal. En la simulación la desviación es sintética (±0.025 mm) y se colorea contra una tolerancia de ±0.02 mm: verde dentro, naranja fuera.</li>
+      <li><strong>Retracción</strong> al punto de aproximación.</li>
+    </ul>
+    <p>En una inspección real esos puntos alimentan el ajuste de datums y la evaluación GD&amp;T; esa es la parte que no cabe en una animación y la que más valor tiene en planta.</p>
+
+    <h2>El código</h2>
+<pre><code>function solve(p) {                         // p = punta del palpador (mundo)
+  yaw.rotation.y = Math.atan2(-dz, dx);     // base
+  const c2 = (d*d - L1*L1 - L2*L2) / (2*L1*L2);
+  const t2 = -Math.acos(clamp(c2, -1, 1));  // codo arriba
+  const t1 = Math.atan2(y, r) - Math.atan2(L2*Math.sin(t2), L1 + L2*Math.cos(t2));
+  shoulder.rotation.z = t1; elbow.rotation.z = t2;
+  wrist.rotation.z = -Math.PI/2 - t1 - t2;  // palpador vertical
+}</code></pre>
+    <p>El archivo completo es <a href="https://github.com/EU97/EU97.github.io/blob/main/scripts/probe-cell.js">scripts/probe-cell.js</a>.</p>
+
+    <script>
+      (() => {
+        const c = document.getElementById('ik-demo'), ctx = c.getContext('2d');
+        const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+        let W, H, base, L1, L2, target = null, tip = null, probes = [], surfaceY;
+        function size() {
+          const dpr = Math.min(devicePixelRatio || 1, 2), r = c.getBoundingClientRect();
+          W = r.width; H = r.height; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          base = { x: W * .22, y: H * .78 }; L1 = H * .42; L2 = H * .36; surfaceY = H * .7;
+          target ??= { x: W * .6, y: H * .5 }; tip ??= { ...target };
+          draw();
+        }
+        function ik(p) {
+          let r = p.x - base.x, y = base.y - p.y, d = Math.hypot(r, y);
+          const max = L1 + L2 - 1, min = Math.abs(L1 - L2) + 4;
+          if (d > max || d < min) { const k = (d > max ? max : min) / d; r *= k; y *= k; d = Math.hypot(r, y); }
+          const c2 = (d * d - L1 * L1 - L2 * L2) / (2 * L1 * L2);
+          const t2 = (document.getElementById('ik-down').checked ? 1 : -1) * Math.acos(Math.max(-1, Math.min(1, c2)));
+          const t1 = Math.atan2(y, r) - Math.atan2(L2 * Math.sin(t2), L1 + L2 * Math.cos(t2));
+          return { t1, t2, t3: -Math.PI / 2 - t1 - t2 };
+        }
+        const deg = a => (a * 180 / Math.PI).toFixed(1) + '°';
+        function draw() {
+          if (!W) return;
+          const { t1, t2, t3 } = ik(tip);
+          const e = { x: base.x + L1 * Math.cos(t1), y: base.y - L1 * Math.sin(t1) };
+          const w = { x: e.x + L2 * Math.cos(t1 + t2), y: e.y - L2 * Math.sin(t1 + t2) };
+          ctx.clearRect(0, 0, W, H);
+          ctx.setLineDash([4, 6]); ctx.strokeStyle = css('--line-strong'); ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.arc(base.x, base.y, L1 + L2, Math.PI, 2 * Math.PI); ctx.stroke(); ctx.setLineDash([]);
+          ctx.strokeStyle = css('--ink-3'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W * .42, surfaceY); ctx.lineTo(W * .95, surfaceY); ctx.stroke();
+          probes.forEach(p => { ctx.fillStyle = p.ok ? css('--ok') : css('--accent'); ctx.beginPath(); ctx.arc(p.x, surfaceY, 3.5, 0, Math.PI * 2); ctx.fill(); });
+          ctx.lineCap = 'round';
+          ctx.strokeStyle = css('--primary'); ctx.lineWidth = 14;
+          ctx.beginPath(); ctx.moveTo(base.x, base.y); ctx.lineTo(e.x, e.y); ctx.lineTo(w.x, w.y); ctx.stroke();
+          ctx.strokeStyle = css('--ink-2'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(w.x, w.y); ctx.lineTo(w.x, w.y + 22); ctx.stroke();
+          ctx.fillStyle = css('--accent'); ctx.beginPath(); ctx.arc(w.x, w.y + 25, 4.5, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = css('--steel-700'); [base, e, w].forEach(j => { ctx.beginPath(); ctx.arc(j.x, j.y, 7, 0, Math.PI * 2); ctx.fill(); });
+          document.getElementById('ik-read').textContent = `θ₁ = ${deg(t1)} · θ₂ = ${deg(t2)} · θ₃ = ${deg(t3)}`;
+        }
+        // el palpador queda 25 px debajo de la muñeca: el objetivo de la muñeca es el punto menos ese largo
+        const aim = (x, y) => ({ x, y: y - 25 });
+        c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); target = aim(e.clientX - r.left, e.clientY - r.top); });
+        c.addEventListener('click', e => {
+          const r = c.getBoundingClientRect(), x = e.clientX - r.left;
+          if (x < W * .42 || x > W * .95) return;
+          target = aim(x, surfaceY - 4.5);
+          const dev = (Math.random() - .5) * .05; probes.push({ x, ok: Math.abs(dev) <= .02 }); if (probes.length > 14) probes.shift();
+        });
+        document.getElementById('ik-down').onchange = draw;
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        size(); // fija medidas, objetivo y punta antes de arrancar el bucle
+        new ResizeObserver(size).observe(c);
+        (function loop() {
+          tip.x += (target.x - tip.x) * (reduce ? 1 : .15); tip.y += (target.y - tip.y) * (reduce ? 1 : .15);
+          draw(); requestAnimationFrame(loop);
+        })();
+      })();
+    </script>
+  </article>
+</body>
+</html>

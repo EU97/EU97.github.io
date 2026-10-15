@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor 3D de ensambles — EU97</title>
+  <meta name="description" content="Visor interactivo de piezas y ensambles STL con vista explosionada.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles/site.css">
+  <link rel="stylesheet" href="/styles/hub.css">
+  <script src="/scripts/theme.js"></script>
+  <style>
+    .asm-head { padding-block: var(--space-6) var(--space-4); }
+    .asm-head h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); letter-spacing: -.04em; line-height: .95; margin: var(--space-3) 0 var(--space-3); }
+    .asm-head h1 span { color: var(--primary); }
+    .asm { display: grid; grid-template-columns: minmax(250px, 300px) minmax(0, 1fr); gap: var(--space-5); padding-bottom: var(--space-7); }
+    .asm__panel { display: flex; flex-direction: column; gap: var(--space-5); }
+    .asm__label { font: 500 .7rem var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: var(--space-2); display: block; }
+    .asm__models { display: grid; gap: .4rem; }
+    .asm__model { text-align: left; padding: .65rem .85rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); font: 600 .92rem var(--font-sans); cursor: pointer; transition: border-color .2s; }
+    .asm__model small { display: block; font: 500 .7rem var(--font-mono); color: var(--ink-3); margin-top: .15rem; }
+    .asm__model[aria-pressed="true"] { border-color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
+    .asm__parts { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
+    .asm__part { display: grid; grid-template-columns: 12px 1fr auto; gap: .6rem; align-items: center; padding: .45rem .6rem; border-radius: var(--radius-sm); cursor: pointer; transition: background .2s; }
+    .asm__part:hover, .asm__part.is-on { background: var(--surface-2); }
+    .asm__part i { width: 12px; height: 12px; border-radius: 3px; }
+    .asm__part b { font-size: .9rem; font-weight: 600; }
+    .asm__part span { font: 500 .7rem var(--font-mono); color: var(--ink-3); }
+    .asm__range { width: 100%; accent-color: var(--accent); }
+    .asm__row { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .asm__stage { position: relative; min-height: 520px; height: calc(100vh - var(--topbar-h) - 140px); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); overflow: hidden;
+      background: radial-gradient(120% 90% at 60% 30%, color-mix(in srgb, var(--steel-50) 90%, transparent), transparent 70%), var(--surface); }
+    .asm__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+    .asm__card { position: absolute; left: 16px; bottom: 16px; z-index: 2; min-width: 220px; padding: .7rem .9rem; border: 1px solid var(--line); border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(4px); font-size: .85rem; pointer-events: none; transition: opacity .2s; }
+    .asm__card b { display: block; font-size: 1rem; text-transform: capitalize; }
+    .asm__card span { font: 500 .72rem var(--font-mono); color: var(--ink-3); }
+    .asm__card:empty { opacity: 0; }
+    .asm__hint { position: absolute; right: 16px; top: 14px; z-index: 2; font: 500 .7rem var(--font-mono); color: var(--ink-3); pointer-events: none; }
+    @media (max-width: 860px) { .asm { grid-template-columns: 1fr; } .asm__stage { height: 70vw; min-height: 360px; order: -1; } }
+  </style>
+</head>
+<body>
+  <div data-topbar data-active="herramientas"></div>
+  <main class="container">
+    <header class="asm-head">
+      <a class="eyebrow" href="/herramientas/" data-i18n="v3.k"></a>
+      <h1 data-i18n-html="v3.title"></h1>
+      <p class="lede" data-i18n="v3.lede"></p>
+    </header>
+    <div class="asm">
+      <aside class="asm__panel">
+        <div><span class="asm__label" data-i18n="v3.models"></span><div class="asm__models" id="models"></div></div>
+        <div>
+          <span class="asm__label" data-i18n="v3.explode"></span>
+          <input class="asm__range" id="explode" type="range" min="0" max="100" value="0" data-i18n-aria="v3.explode">
+          <div class="asm__row" style="margin-top:.6rem">
+            <button class="chip" id="play" type="button" aria-pressed="false" data-i18n="v3.play"></button>
+            <button class="chip" id="wire" type="button" aria-pressed="false" data-i18n="v3.wire"></button>
+          </div>
+        </div>
+        <div>
+          <span class="asm__label" data-i18n="v3.view"></span>
+          <div class="asm__row" id="views">
+            <button class="chip" data-view="iso" aria-pressed="true">ISO</button>
+            <button class="chip" data-view="front" aria-pressed="false" data-i18n="v3.front"></button>
+            <button class="chip" data-view="top" aria-pressed="false" data-i18n="v3.top"></button>
+          </div>
+        </div>
+        <div><span class="asm__label" data-i18n="v3.parts"></span><ul class="asm__parts" id="parts"></ul></div>
+      </aside>
+      <div class="asm__stage" id="stage" data-scene="assembly">
+        <div class="asm__card" id="card"></div>
+        <span class="asm__hint" data-i18n="v3.hint"></span>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><div class="container"><p>© 2023–2026 Edgar Ulises Rojo Rodriguez · <a href="/">EU97</a></p></div></footer>
+
+  <script src="/scripts/i18n.js"></script>
+  <script src="/scripts/topbar.js"></script>
+  <script src="/scripts/viewer3d.js"></script>
+  <script src="/scripts/assembly-viewer.js"></script>
+  <script>
+    SiteI18n.add({
+      es: { 'v3.k': 'Herramientas · 3D', 'v3.title': 'Visor 3D <span>de ensambles</span>',
+        'v3.lede': 'Piezas STL con su material. Explosiona el ensamble, pasa el cursor sobre una pieza para ver su ficha y haz clic para aislarla.',
+        'v3.models': 'Modelos', 'v3.explode': 'Vista explosionada', 'v3.play': 'Animar', 'v3.wire': 'Alambre', 'v3.view': 'Vista', 'v3.front': 'Frontal', 'v3.top': 'Superior',
+        'v3.parts': 'Piezas', 'v3.hint': 'Arrastra para girar · rueda para acercar · clic para aislar', 'v3.qty': 'cant.', 'v3.part': 'pieza', 'v3.parts_n': 'piezas', 'v3.assembly': 'Ensamble' },
+      en: { 'v3.k': 'Tools · 3D', 'v3.title': '3D viewer <span>for assemblies</span>',
+        'v3.lede': 'STL parts with their material. Explode the assembly, hover a part to see its card and click to isolate it.',
+        'v3.models': 'Models', 'v3.explode': 'Exploded view', 'v3.play': 'Animate', 'v3.wire': 'Wireframe', 'v3.view': 'View', 'v3.front': 'Front', 'v3.top': 'Top',
+        'v3.parts': 'Parts', 'v3.hint': 'Drag to orbit · wheel to zoom · click to isolate', 'v3.qty': 'qty', 'v3.part': 'part', 'v3.parts_n': 'parts', 'v3.assembly': 'Assembly' }
+    });
+    (async () => {
+      const $ = id => document.getElementById(id);
+      const tr = o => o[SiteI18n.lang()] ?? o.en;
+      const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      const stage = $('stage');
+      const catalog = await fetch('/models/catalog.json').then(r => r.json());
+      const v = await AssemblyViewer.mount(stage);
+      let current = catalog.models.find(m => m.id === (location.hash.slice(1) || 'conjunto-brida')) || catalog.models[0];
+
+      const card = p => p ? `<b>${esc(p.name.replace(/_/g, ' '))}</b><span>${esc(p.material)} · ${SiteI18n.t('v3.qty')} ${p.qty}</span>` : '';
+      function paintModels() {
+        $('models').innerHTML = catalog.models.map(m => `<button class="asm__model" type="button" data-id="${m.id}" aria-pressed="${m === current}">${esc(tr(m.title))}
+          <small>${m.parts.length} ${SiteI18n.t(m.parts.length === 1 ? 'v3.part' : 'v3.parts_n')} · ${esc(m.source)}</small></button>`).join('');
+      }
+      function paintParts(sel) {
+        $('parts').innerHTML = current.parts.map(p => `<li class="asm__part${p.name === sel ? ' is-on' : ''}" data-name="${esc(p.name)}"><i style="background:${p.color}"></i><b>${esc(p.name.replace(/_/g, ' '))}</b><span>×${p.qty}</span></li>`).join('');
+      }
+      async function show(m) {
+        current = m; history.replaceState(null, '', '#' + m.id);
+        paintModels(); paintParts();
+        await v.load(m);
+        const single = m.parts.length < 2;
+        $('explode').disabled = $('play').disabled = single;
+        if (!single && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play(true); $('play').setAttribute('aria-pressed', 'true'); }
+        else { v.play(false); v.setExplode(single ? 0 : .6); $('play').setAttribute('aria-pressed', 'false'); }
+      }
+      $('models').addEventListener('click', e => { const b = e.target.closest('[data-id]'); if (b) show(catalog.models.find(m => m.id === b.dataset.id)); });
+      $('explode').addEventListener('input', e => { v.play(false); $('play').setAttribute('aria-pressed', 'false'); v.setExplode(e.target.value / 100); });
+      stage.addEventListener('assembly:explode', e => { $('explode').value = Math.round(e.detail * 100); });
+      $('play').addEventListener('click', e => e.currentTarget.setAttribute('aria-pressed', String(v.play(e.currentTarget.getAttribute('aria-pressed') !== 'true'))));
+      $('wire').addEventListener('click', e => { const on = e.currentTarget.getAttribute('aria-pressed') !== 'true'; e.currentTarget.setAttribute('aria-pressed', String(on)); v.setWireframe(on); });
+      $('views').addEventListener('click', e => { const b = e.target.closest('[data-view]'); if (!b) return; $('views').querySelectorAll('[data-view]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); v.setView(b.dataset.view); });
+      $('parts').addEventListener('click', e => { const li = e.target.closest('[data-name]'); if (li) v.isolate(li.classList.contains('is-on') ? null : li.dataset.name); });
+      stage.addEventListener('assembly:hover', e => { $('card').innerHTML = card(e.detail); });
+      stage.addEventListener('assembly:isolate', e => { paintParts(e.detail); $('card').innerHTML = card(current.parts.find(p => p.name === e.detail)); });
+      document.addEventListener('languageChanged', () => { paintModels(); paintParts(); });
+      await show(current);
+    })();
+  </script>
+</body>
+</html>

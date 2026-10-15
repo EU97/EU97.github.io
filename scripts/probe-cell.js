@@ -285,7 +285,7 @@
       const dt = Math.min(.05, (now - last) / 1000); last = now;
       step(dt, now);
       renderer.render(scene, camera);
-      if (visible && (!reduce || now < wake || job)) frame = requestAnimationFrame(loop);
+      if (!frame && visible && (!reduce || now < wake || job)) frame = requestAnimationFrame(loop);
     }
 
     new ResizeObserver(resize).observe(el);

@@ -1,4 +1,4 @@
-/* Barra superior común. Uso: <div data-topbar data-active="home|cursos|herramientas"></div>
+/* Barra superior común. Uso: <div data-topbar data-active="home|cursos|herramientas|blog"></div>
    Variante de la portada para industria: <div data-topbar data-variant="industry"></div> (secciones + enlace a docencia, sin sesión). */
 (() => {
   'use strict';
@@ -7,6 +7,7 @@
     { id: 'home', href: '/', key: 'topbar.home' },
     { id: 'cursos', href: '/cursos/', key: 'topbar.courses' },
     { id: 'herramientas', href: '/herramientas/', key: 'topbar.tools' },
+    { id: 'blog', href: '/blog/', key: 'topbar.blog' },
   ];
   const INDUSTRY = [
     { id: 'servicios', href: '#servicios', key: 'topbar.services' },
@@ -28,7 +29,7 @@
           </nav>
           <div class="topbar__tools">
             ${industry
-              ? '<a class="topbar__aside" href="/cursos/" data-i18n="topbar.courses"></a><a class="topbar__aside" href="/herramientas/" data-i18n="topbar.tools"></a>'
+              ? '<a class="topbar__aside" href="/cursos/" data-i18n="topbar.courses"></a><a class="topbar__aside" href="/herramientas/" data-i18n="topbar.tools"></a><a class="topbar__aside" href="/blog/" data-i18n="topbar.blog"></a>'
               : '<button class="session-chip" type="button" data-state="out"><span class="session-chip__lock"></span><span class="session-chip__label" data-i18n="topbar.guest"></span></button>'}
             <button class="icon-btn" id="lang-btn" type="button" data-i18n-aria="topbar.lang"></button>
             <button class="icon-btn" type="button" data-theme-toggle data-theme-icon-only aria-pressed="false" data-i18n-aria="topbar.theme"><span class="theme-icon"></span></button>
@@ -54,8 +55,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     SiteI18n.add({
-      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu', 'topbar.services': 'Services', 'topbar.cases': 'Case studies', 'topbar.record': 'Track record', 'topbar.contact': 'Contact', 'topbar.teaching': 'Teaching' },
-      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú', 'topbar.services': 'Servicios', 'topbar.cases': 'Casos', 'topbar.record': 'Trayectoria', 'topbar.contact': 'Contacto', 'topbar.teaching': 'Docencia' },
+      en: { 'topbar.home': 'Portfolio', 'topbar.courses': 'Courses', 'topbar.tools': 'Tools', 'topbar.guest': 'Guest', 'topbar.lang': 'Change language', 'topbar.theme': 'Toggle theme', 'topbar.menu': 'Menu', 'topbar.services': 'Services', 'topbar.cases': 'Case studies', 'topbar.record': 'Track record', 'topbar.contact': 'Contact', 'topbar.teaching': 'Teaching', 'topbar.blog': 'Blog' },
+      es: { 'topbar.home': 'Portafolio', 'topbar.courses': 'Cursos', 'topbar.tools': 'Herramientas', 'topbar.guest': 'Invitado', 'topbar.lang': 'Cambiar idioma', 'topbar.theme': 'Cambiar tema', 'topbar.menu': 'Menú', 'topbar.services': 'Servicios', 'topbar.cases': 'Casos', 'topbar.record': 'Trayectoria', 'topbar.contact': 'Contacto', 'topbar.teaching': 'Docencia', 'topbar.blog': 'Blog' },
     });
     const mount = document.querySelector('[data-topbar]');
     if (!mount) return;

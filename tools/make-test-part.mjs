@@ -1,7 +1,9 @@
 // Genera la pieza de prueba del visor 3D: brida con cubo, chavetero y nervios (mm, Z arriba).
 // Uso: npm i --no-save --prefix <dir> three@0.128.0
 //      THREE_DIR=<dir>/node_modules/three node tools/make-test-part.mjs
-// Salida: models/pruebas/brida-eu97.stl (STL binario). Es un activo de prueba; los CAD reales llegan después.
+// Salida: models/pruebas/brida-eu97.stl (STL binario) y el ensamble models/conjunto-brida/*.stl
+// (brida + eje + chaveta + rodamiento + pernos) para la vista explosionada del visor 3D.
+// Son activos de prueba; los CAD reales llegan después.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
@@ -71,10 +73,45 @@ for (let i = 0; i < P.ribs; i++) {
 }
 group.updateMatrixWorld(true);
 
-const out = path.join(root, 'models', 'pruebas', 'brida-eu97.stl');
-mkdirSync(path.dirname(out), { recursive: true });
-const data = new STLExporter().parse(group, { binary: true });
-writeFileSync(out, Buffer.from(data.buffer));
-let tris = 0;
-group.traverse(o => { if (o.isMesh) tris += o.geometry.index ? o.geometry.index.count / 3 : o.geometry.attributes.position.count / 3; });
-console.log(`${path.relative(root, out)}: ${tris} triángulos, ${(data.byteLength / 1024).toFixed(0)} KB`);
+function save(obj, rel) {
+  const out = path.join(root, rel);
+  mkdirSync(path.dirname(out), { recursive: true });
+  obj.updateMatrixWorld(true);
+  const data = new STLExporter().parse(obj, { binary: true });
+  writeFileSync(out, Buffer.from(data.buffer));
+  let tris = 0;
+  obj.traverse(o => { if (o.isMesh) tris += o.geometry.index ? o.geometry.index.count / 3 : o.geometry.attributes.position.count / 3; });
+  console.log(`${rel}: ${tris} triángulos, ${(data.byteLength / 1024).toFixed(0)} KB`);
+}
+save(group, 'models/pruebas/brida-eu97.stl');
+
+// ---------- Ensamble: piezas que se montan sobre la brida (Z arriba, mm) ----------
+const zUp = g => g.rotateX(Math.PI / 2); // los cilindros de three van sobre Y
+const hubTop = P.flangeT + P.hubH;
+
+const shaft = new THREE.Mesh(zUp(new THREE.CylinderGeometry(P.boreR - .2, P.boreR - .2, 100, P.seg)).translate(0, 0, 42));
+const key = new THREE.Mesh(new THREE.BoxGeometry(P.keyD + 1.4, P.keyW - .3, 24).translate(P.boreR + P.keyD / 2 - .5, 0, P.flangeT + 6 + 12));
+
+const bearing = new THREE.Group();
+const ring = (ro, ri, h) => {
+  const s = new THREE.Shape(); s.absarc(0, 0, ro, 0, Math.PI * 2, false); s.holes.push(circle(ri));
+  return new THREE.ExtrudeGeometry(s, { depth: h, curveSegments: P.seg, bevelEnabled: true, bevelThickness: .5, bevelSize: .5, bevelSegments: 1 });
+};
+bearing.add(new THREE.Mesh(ring(27, 21.5, 9).translate(0, 0, hubTop + 2)));
+bearing.add(new THREE.Mesh(ring(15.5, P.boreR, 9).translate(0, 0, hubTop + 2)));
+for (let i = 0; i < 10; i++) {
+  const a = (i / 10) * Math.PI * 2;
+  bearing.add(new THREE.Mesh(new THREE.SphereGeometry(2.9, 16, 12).translate(18.5 * Math.cos(a), 18.5 * Math.sin(a), hubTop + 6.5)));
+}
+
+const bolts = new THREE.Group();
+for (let i = 0; i < P.bolts; i++) {
+  const a = (i / P.bolts) * Math.PI * 2, x = P.boltPcd * Math.cos(a), y = P.boltPcd * Math.sin(a);
+  bolts.add(new THREE.Mesh(zUp(new THREE.CylinderGeometry(5.8, 5.8, 4.5, 6)).translate(x, y, P.flangeT + .8 + 2.25)));
+  bolts.add(new THREE.Mesh(zUp(new THREE.CylinderGeometry(P.boltR - .3, P.boltR - .3, 22, 20)).translate(x, y, P.flangeT - 11 + .8)));
+}
+
+save(shaft, 'models/conjunto-brida/eje.stl');
+save(key, 'models/conjunto-brida/chaveta.stl');
+save(bearing, 'models/conjunto-brida/rodamiento.stl');
+save(bolts, 'models/conjunto-brida/pernos.stl');

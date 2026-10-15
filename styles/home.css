@@ -260,7 +260,7 @@
 .record__links { display: flex; gap: var(--space-5); margin-top: var(--space-5); font: 500 .85rem var(--font-mono); }
 
 /* ---------- Además (secundario) ---------- */
-.aside-links { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
+.aside-links { display: grid; grid-template-columns: auto repeat(4, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
 .aside-links__k { font: 500 .72rem var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); padding-top: .2rem; }
 .aside-link { display: flex; flex-direction: column; gap: .2rem; color: var(--ink-2); font-size: .88rem; padding-left: var(--space-3); border-left: 1px solid var(--line); }
 .aside-link b { color: var(--ink); font-weight: 600; font-size: .95rem; }

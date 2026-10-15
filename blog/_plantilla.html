@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!--
+    PLANTILLA DE POST (este archivo no se publica porque empieza con "_").
+    1. Cópialo a blog/posts/<slug>.html  (slug en minúsculas y con guiones: mi-primer-post.html)
+    2. Llena título, descripción, fecha y etiquetas.
+    3. Escribe el contenido dentro de <article> con HTML normal (h2, p, figure, img, code, canvas, script…).
+    4. Ejecuta:  node tools/blog.mjs   (actualiza blog/posts.json; o agrega la entrada a mano).
+    Imágenes: guárdalas en blog/media/ y enlázalas como /blog/media/archivo.png
+  -->
+  <title>Título del post</title>
+  <meta name="description" content="Resumen de una o dos líneas que aparece en el índice.">
+  <meta name="post:date" content="2026-01-31">
+  <meta name="post:tags" content="metrología, divulgación">
+  <!-- <meta name="post:cover" content="/blog/media/portada.png"> -->
+  <script src="/scripts/post.js"></script>
+</head>
+<body>
+  <article>
+    <p>Primer párrafo: plantea la pregunta o el problema.</p>
+
+    <h2>Un subtítulo</h2>
+    <p>Desarrollo. Puedes usar <strong>negritas</strong>, <a href="/herramientas/">enlaces</a> y <code>código</code>.</p>
+
+    <figure>
+      <img src="/blog/media/ejemplo.png" alt="Descripción de la imagen">
+      <figcaption>Fig. 1 — Pie de figura.</figcaption>
+    </figure>
+
+    <blockquote>Una idea clave para recordar.</blockquote>
+
+    <div class="eq">F = m · a</div>
+
+    <!-- Demo interactiva opcional: un canvas + controles con la clase "demo" -->
+    <!-- <div class="demo"><canvas id="mi-demo"></canvas><div class="demo__ctrl"><label>Valor <input type="range"></label></div></div> -->
+  </article>
+</body>
+</html>

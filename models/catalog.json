@@ -1,0 +1,138 @@
+{
+  "schema": "models/1",
+  "_note": "Modelos para el visor 3D. kind: part (un STL) | assembly (piezas con color, material y vector de explosión en mm). Los ensambles de S01 se regeneran con node tools/extract-stl.mjs.",
+  "models": [
+    {
+      "id": "brida-eu97",
+      "kind": "part",
+      "units": "mm",
+      "title": {
+        "es": "Brida de prueba",
+        "en": "Test flange"
+      },
+      "source": "tools/make-test-part.mjs",
+      "parts": [
+        {
+          "name": "brida",
+          "file": "/models/pruebas/brida-eu97.stl",
+          "color": "#8fa9c4",
+          "material": "Aluminio 6061 (referencia)",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conjunto-brida",
+      "kind": "assembly",
+      "units": "mm",
+      "title": {
+        "es": "Conjunto brida–eje",
+        "en": "Flange–shaft assembly"
+      },
+      "source": "tools/make-test-part.mjs",
+      "parts": [
+        {
+          "name": "brida",
+          "file": "/models/pruebas/brida-eu97.stl",
+          "color": "#8fa9c4",
+          "material": "Aluminio 6061",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "pernos",
+          "file": "/models/conjunto-brida/pernos.stl",
+          "color": "#3d4654",
+          "material": "Acero grado 8.8",
+          "qty": 6,
+          "explode": [
+            0,
+            0,
+            38
+          ]
+        },
+        {
+          "name": "chaveta",
+          "file": "/models/conjunto-brida/chaveta.stl",
+          "color": "#d9a441",
+          "material": "Acero 1045",
+          "qty": 1,
+          "explode": [
+            48,
+            0,
+            22
+          ]
+        },
+        {
+          "name": "rodamiento",
+          "file": "/models/conjunto-brida/rodamiento.stl",
+          "color": "#5d7086",
+          "material": "Acero al cromo 52100",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            66
+          ]
+        },
+        {
+          "name": "eje",
+          "file": "/models/conjunto-brida/eje.stl",
+          "color": "#c7ccd4",
+          "material": "Acero 4140",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            135
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exprimidor",
+      "kind": "assembly",
+      "title": {
+        "es": "Exprimidor de cítricos",
+        "en": "Citrus juicer"
+      },
+      "units": "mm",
+      "source": "Dibujo Computarizado · S01",
+      "parts": [
+        {
+          "name": "recipiente",
+          "file": "/models/exprimidor/recipiente.stl",
+          "color": "#43B02A",
+          "material": "PP reciclado",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "cono_exprimidor",
+          "file": "/models/exprimidor/cono_exprimidor.stl",
+          "color": "#F2E6C9",
+          "material": "PLA (biodegradable)",
+          "qty": 1,
+          "explode": [
+            0,
+            0,
+            70
+          ]
+        }
+      ]
+    }
+  ]
+}

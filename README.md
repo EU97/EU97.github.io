@@ -28,7 +28,9 @@ Currently serving as Associate Professor at [FIME-UANL](https://www.fime.uanl.mx
 | `/cursos/<course>/` | Course pages and activities (Dibujo Computarizado, DSM, Ingeniería de Precisión, Taller de Mecatrónica) |
 | `/herramientas/` | Tools hub generated from `herramientas/catalog.json` (simulators, open source, outreach) |
 | `/herramientas/<tool>/` | Browser simulators (flight instruments, Garmin G1000, aircraft systems, fluid dynamics) |
+| `/herramientas/visor-3d/` | 3D assembly viewer (exploded view) fed by `models/catalog.json` |
 | `/proyectos/` | Open-source and outreach project pages |
+| `/blog/` | Blog index generated from `blog/posts.json`; posts are plain HTML files in `blog/posts/` |
 | `/styleguide/` | Design system preview (not linked publicly) |
 
 Old URLs (`/curso/…`, `/addons/…`, `/projects/…`, `/CMindex.html`) redirect to their new location (`docs/redirects.json`).
@@ -38,6 +40,9 @@ Old URLs (`/curso/…`, `/addons/…`, `/projects/…`, `/CMindex.html`) redirec
 - **Course or resource:** add an object to `cursos/catalog.json`.
 - **Tool or project:** add an object to `herramientas/catalog.json`.
 - **Moved page:** add `"old": "new"` to `docs/redirects.json` and run `node tools/redirects.mjs`.
+- **Blog post:** copy `blog/_plantilla.html` to `blog/posts/<slug>.html`, fill title/description/date/tags, write HTML inside `<article>`, run `node tools/blog.mjs`.
+- **3D model:** add the STL under `models/` and an entry in `models/catalog.json` (parts with color, material and explode vector).
+- **Student accounts / protected pages:** `node tools/auth-users.mjs add <user> …` and `node tools/encrypt-courses.mjs` (see `docs/AUTH.md`).
 
 ### Checks
 

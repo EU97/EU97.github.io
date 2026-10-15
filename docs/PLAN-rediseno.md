@@ -37,8 +37,12 @@ Retomar: `git checkout feat/portfolio-redesign`, revisar la primera fase sin mar
 /herramientas/            hub de herramientas ← herramientas/catalog.json
   instrumentos-vuelo/     simulador + bundle Parcel + src/
   garmin-g1000/ · sistemas-aeronave/ · dinamica-fluidos/
+  visor-3d/               visor de ensambles ← models/catalog.json
 /proyectos/               páginas de proyectos (código abierto y divulgación)
-/models/pruebas/          STL de prueba
+/blog/                    índice ← blog/posts.json · posts en blog/posts/*.html · plantilla blog/_plantilla.html
+/models/                  STL (pruebas/, conjunto-brida/, exprimidor/) + catalog.json
+/auth/                    config.json y users.json (público: solo datos cifrados)
+/_privado/                fuentes de cursos protegidos y llaves (no se publica)
 /styleguide/              guía de estilo (no pública)
 /404.html                 página no encontrada
 curso/, addons/, projects/, CMindex.html, v2/   solo redirecciones (docs/redirects.json)
@@ -54,9 +58,11 @@ curso/, addons/, projects/, CMindex.html, v2/   solo redirecciones (docs/redirec
 - [~] **2. Home para industria** (`/`): hero de identidad (nombre destacado, áreas de especialidad vinculadas a los elementos, foto recortada sin marco con trabajos flotando alrededor: dron, escaneo, perfil aerodinámico, control; flujo potencial que rodea la figura; cifras compactas como en el sitio original), sección "En acción" con la celda de medición, problemas, método con animaciones SVG, casos, trayectoria, enlaces secundarios y contacto. Vista previa: `docs/previews/fase2/index.md`. Falta: métricas reales de los casos, avatar definitivo y revisión del autor.
 - [x] **3. Hubs**: `/cursos/` y `/herramientas/` generados por `scripts/hub.js` desde `cursos/catalog.json` y `herramientas/catalog.json` (filtros por área, búsqueda, enlace por `#área`, recursos «Alumnos» y «Próximamente»); vista de curso individual (`data-hub="curso"`). Vista previa: `docs/previews/fase3/index.md`.
 - [x] **4. Reorganización**: la portada nueva pasa a `/`; cursos en `/cursos/<curso>/`, simuladores en `/herramientas/<herramienta>/`, proyectos en `/proyectos/`; 21 redirecciones desde las rutas antiguas (`docs/redirects.json` + `tools/redirects.mjs`), anclajes antiguos de la portada (`#precision`, `#projects`…) traducidos, barra común en simuladores (`scripts/sim-bar.js`), página 404, scripts y artefactos huérfanos retirados, IBM Plex en todo el sitio, `check-links` valida también los catálogos. Vista previa: `docs/previews/fase4/index.md`.
-- [ ] **5. Login con usuarios fijos**: `scripts/auth.js`.
-- [ ] **6. Cifrado migrable**: `tools/encrypt-courses.mjs`, `KeyProvider`.
-- [ ] **7. Modelos 3D**: `tools/extract-stl.mjs`, CAD definitivos y más escenas interactivas (p. ej. banco de pruebas o mecanismo ligado al scroll) sobre `viewer3d.js` y `probe-cell.js`.
+- [x] **5. Login con usuarios fijos**: `scripts/auth.js` (adaptador local con `auth/users.json` + PBKDF2, adaptador Oracle con la misma interfaz), diálogo desde la píldora de sesión, recursos «Desbloqueado» en los hubs, `tools/auth-users.mjs`. Vista previa: `docs/previews/fase5/index.md`.
+- [x] **6. Cifrado migrable**: `tools/encrypt-courses.mjs` (gzip + AES-GCM 256 por curso, fuentes en `_privado/`), cascarón + `scripts/vault.js`, KeyProvider local/Oracle, `_config.yml`. Modelo y límites en `docs/AUTH.md`. Vista previa: `docs/previews/fase6/index.md`.
+- [x] **7. Modelos 3D**: `tools/extract-stl.mjs` (exprimidor de S01), ensamble procedural brida–eje, `models/catalog.json`, `scripts/assembly-viewer.js` y la herramienta `/herramientas/visor-3d/` (vista explosionada animada, ficha de pieza, aislamiento). Los CAD definitivos se agregan al catálogo cuando existan. Vista previa: `docs/previews/fase7/index.md`.
+- [x] **8. Blog**: `/blog/` desde `blog/posts.json`; posts HTML en `blog/posts/` envueltos por `scripts/post.js` + `styles/post.css`; plantilla `blog/_plantilla.html`; `tools/blog.mjs`; dos posts con demos interactivas. Vista previa: `docs/previews/blog/index.md`.
+- [ ] **9. Mejora de diseño**: nuevos esquemas de diseño sobre la base terminada (siguiente etapa).
 
 ## Verificación por fase
 
@@ -69,5 +75,5 @@ curso/, addons/, projects/, CMindex.html, v2/   solo redirecciones (docs/redirec
 
 ## Límites conocidos
 
-- Login y cifrado con llaves en el repositorio no son seguridad.
+- Login y cifrado: en el sitio publicado no hay contenido protegido en claro, pero `_privado/` (fuentes y llaves) está en el repositorio. Ver `docs/AUTH.md`.
 - La seguridad real llega solo con llaves entregadas por Oracle ADB y OCI Vault.
